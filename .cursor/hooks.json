@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "prompt-history/log-prompt-history.sh"
+      }
+    ],
+    "afterAgentResponse": [
+      {
+        "command": "prompt-history/log-prompt-history.sh"
+      }
+    ]
+  }
+}
