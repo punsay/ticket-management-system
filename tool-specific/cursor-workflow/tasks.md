@@ -1,13 +1,74 @@
 # Tasks
 
-Tracks implementation tasks, priorities, and progress for Cursor-assisted development.
-
-## Overview
-
-## Task List
-
-## In Progress
+Core-scope task tracker for the Support Ticket Management System. See `tool-specific/cursor-workflow/spec.md` and `tool-specific/cursor-workflow/acceptance-criteria.md` for behaviour details.
 
 ## Completed
 
-## Blocked
+- [x] Prompt-history automation (`prompt-history/`, `.cursor/hooks.json`)
+- [x] Documentation structure (`docs/`, `tool-specific/cursor-workflow/`)
+- [x] Project context (`tool-specific/cursor-workflow/project-context.md`)
+- [x] Requirement analysis (`docs/requirement-analysis.md`)
+- [x] Acceptance criteria (`tool-specific/cursor-workflow/acceptance-criteria.md`)
+- [x] Core specification (`tool-specific/cursor-workflow/spec.md`)
+
+## Design documents
+
+- [ ] System design (`docs/system-design.md`)
+- [ ] Database design (`docs/database-design.md`)
+- [ ] API specification (`docs/api-specification.md`)
+- [ ] Review planning and design documents for conflicts
+
+## Cursor rules
+
+- [ ] Cursor rules and instructions (`tool-specific/cursor-workflow/cursor-rules-or-instructions.md`)
+
+## Project setup
+
+- [ ] Scaffold client and server structure
+- [ ] Configure environment variables and dev scripts (NFR-08, AC-47)
+- [ ] Add initial README project overview and setup placeholders
+
+## Backend
+
+- [ ] Express server with safe error handling (VR-01, NFR-03)
+- [ ] MongoDB connection (NFR-01, FR-13, AC-41)
+- [ ] User, Ticket, and Comment models (FR-10, BR-02, BR-03)
+- [ ] Seed three users and sample tickets (NFR-06, AC-42, AC-43)
+- [ ] Ticket create, list, detail, and update (FR-01–FR-04, AC-05–AC-17)
+- [ ] Backend validation for ticket and comment inputs, excluding status transitions (VR-01–VR-07, VR-09–VR-11, AC-09–AC-11, AC-16, AC-17, AC-37, AC-38)
+- [ ] Comments — add and return oldest first (FR-06, FR-07, AC-18–AC-21)
+- [ ] Keyword search on title and description (FR-08, AC-22–AC-24)ƒ
+- [ ] Status filter on ticket list (FR-09, AC-25–AC-27)
+- [ ] Status transition rules enforced on update (FR-05, BR-04, BR-05, VR-08, AC-28–AC-35)
+
+## Testing
+
+- [ ] Testing strategy (`docs/testing-strategy.md`)
+- [ ] Integration tests for valid status transitions (NFR-04, AC-45)
+- [ ] Integration tests for invalid status transitions (NFR-05, AC-46)
+- [ ] Testing report (`docs/testing-report.md`)
+
+## Frontend
+
+- [ ] Acting-user dropdown — no default; required for create/comment only (FR-11, FR-12, AC-01–AC-04)
+- [ ] Ticket list and detail views (FR-02, FR-03, AC-12, AC-13)
+- [ ] Create ticket form — optional assignee (Bob or Carol) (FR-01, AC-05–AC-08)
+- [ ] Update ticket form — no acting user required (FR-04, COD-09, AC-14–AC-17)
+- [ ] Status change control with error display (FR-05, AC-28–AC-35)
+- [ ] Comment form and display — oldest first, no edit/delete (FR-06, FR-07, BR-11, AC-18–AC-21)
+- [ ] Keyword search and status filter controls — work separately (FR-08, FR-09, AC-22–AC-27)
+- [ ] Meaningful UI error messages (NFR-02, NFR-03, AC-39, AC-40)
+
+## Final documentation
+
+- [ ] Debugging log (`docs/debugging-log.md`)
+- [ ] Code review (`docs/code-review.md`)
+- [ ] Reflection (`docs/reflection.md`)
+- [ ] PR description (`docs/pr-description.md`)
+- [ ] Tool workflow (`tool-workflow.md`)
+- [ ] Review prompt history and confirm key prompts, refinements, and corrections are captured (NFR-09)
+- [ ] Finalize and verify README setup, seed, run, and test instructions (NFR-07, AC-44)
+- [ ] Final review against AC-01–AC-48
+- [ ] Verify data persists after application and MongoDB restarts (AC-41)
+- [ ] Verify no secrets committed and no delete UI (AC-47, AC-48)
+- [ ] Repository ready for submission

@@ -69,7 +69,7 @@ The selected user is recorded as `createdBy` when creating tickets and comments.
 | **BR-03** | Ticket status shall be one of: `Open`, `In Progress`, `Resolved`, `Closed`, `Cancelled`. |
 | **BR-04** | The only valid status transitions are: `Open` → `In Progress`; `Open` → `Cancelled`; `In Progress` → `Resolved`; `In Progress` → `Cancelled`; `Resolved` → `Closed`. |
 | **BR-05** | All status transitions not listed in BR-04 shall be rejected. |
-| **BR-06** | When provided, `assignedTo` shall reference a seeded user; assignee is optional on ticket creation. |
+| **BR-06** | When provided, `assignedTo` shall reference a seeded support agent (Bob Smith or Carol Davis); assignee is optional on ticket creation. |
 | **BR-07** | `createdBy` on a new ticket or comment shall be the currently selected acting user and must reference an existing seeded user. |
 | **BR-08** | Any seeded user may create a ticket; `createdBy` and `assignedTo` may differ. |
 | **BR-09** | A ticket may be assigned or reassigned to any seeded support agent through ticket updates. |
@@ -88,7 +88,7 @@ The selected user is recorded as `createdBy` when creating tickets and comments.
 | **VR-03** | The backend shall require a non-empty ticket description. |
 | **VR-04** | The backend shall reject priority values outside `Low`, `Medium`, `High`. |
 | **VR-05** | The backend shall reject status values outside the allowed set defined in BR-03. |
-| **VR-06** | The backend shall reject `assignedTo` values that are provided but do not reference an existing seeded user. |
+| **VR-06** | The backend shall reject `assignedTo` values that are provided but do not reference Bob Smith or Carol Davis. |
 | **VR-07** | The backend shall reject `createdBy` values that do not reference an existing seeded user; this validates identity without authentication. |
 | **VR-08** | The backend shall reject status transition requests that violate BR-04 and BR-05. |
 | **VR-09** | The backend shall require a non-empty comment message. |
@@ -146,7 +146,7 @@ The system shall handle the following error conditions with clear user-facing fe
 
 - Users must explicitly select the acting seeded user from a dropdown before creating tickets or comments; no default is pre-selected
 - Acting-user selection is not required for ticket updates
-- Assignee is optional on ticket creation; when provided, it must reference a seeded user
+- Assignee is optional on ticket creation; when provided, it must reference a seeded support agent (Bob Smith or Carol Davis).
 - Any seeded user may create a ticket and assign or reassign it to a seeded support agent
 - Keyword search and status filtering work independently on the ticket list
 - Search uses case-insensitive partial matching on title and description
@@ -193,7 +193,7 @@ Former open decisions resolved for Core scope:
 | **COD-03** | Comment display order | Oldest first |
 | **COD-04** | Creator vs assignee on create | Any seeded user may create a ticket and assign it to a seeded support agent; `createdBy` and `assignedTo` may differ |
 | **COD-05** | Initial seed ticket content | Seed the three confirmed users plus a small set of sample tickets covering different priorities, statuses, assignees, and at least one commented ticket |
-| **COD-06** | Assignee on create | Optional; when provided, must reference a seeded user |
+| **COD-06** | Assignee on create | Optional; when provided, must reference Bob Smith or Carol Davis |
 | **COD-07** | Assignment on update | Tickets may be assigned or reassigned later |
 | **COD-08** | Search and filter interaction | Keyword search and status filtering work independently; combined use is outside Core scope |
 | **COD-09** | Acting user for updates | Required only when creating tickets and comments, not when updating tickets |

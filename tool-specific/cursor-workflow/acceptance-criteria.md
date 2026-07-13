@@ -27,7 +27,7 @@ Each criterion uses an **AC** ID and links to related **FR**, **BR**, **VR**, an
 | **AC-08** | **Given** Alice Johnson is the acting user, **when** she creates a ticket assigned to Bob Smith, **then** the ticket is created successfully with `createdBy` as Alice and `assignedTo` as Bob. | BR-08, BR-09, COD-04 |
 | **AC-09** | **Given** an acting user is selected, **when** the user submits a ticket with an empty title or empty description, **then** the backend rejects the request and the UI shows a meaningful validation error. | VR-02, VR-03, NFR-02 |
 | **AC-10** | **Given** an acting user is selected, **when** the user submits a ticket with an invalid priority value, **then** the backend rejects the request. | VR-04 |
-| **AC-11** | **Given** an acting user is selected, **when** the user submits a ticket with a provided `assignedTo` that is not a seeded user, **then** the backend rejects the request. | VR-06, BR-06 |
+| **AC-11** | **Given** an acting user is selected, **when** the user submits a ticket with a provided `assignedTo` that is not Bob Smith or Carol Davis, **then** the backend rejects the request. | VR-06, BR-06 |
 
 ### Ticket listing and details
 
@@ -43,7 +43,7 @@ Each criterion uses an **AC** ID and links to related **FR**, **BR**, **VR**, an
 | **AC-14** | **Given** an existing ticket, **when** the user updates the title, description, or priority with valid values, **then** the changes are persisted and visible on reload. | FR-04, BR-02 |
 | **AC-15** | **Given** an existing ticket, **when** the user assigns or reassigns it to a seeded support agent (Bob Smith or Carol Davis), **then** the assignment is saved and displayed. | BR-09, FR-04, COD-07 |
 | **AC-16** | **Given** an existing ticket, **when** the user submits an update with an empty title or empty description, **then** the backend rejects the request and the UI shows a meaningful validation error. | VR-02, VR-03, NFR-02 |
-| **AC-17** | **Given** an existing ticket, **when** the user submits an update with a provided `assignedTo` that is not a seeded user, **then** the backend rejects the request. | VR-06, BR-06 |
+| **AC-17** | **Given** an existing ticket, **when** the user submits an update with a provided `assignedTo` that is not Bob Smith or Carol Davis, **then** the backend rejects the request. | VR-06, BR-06 |
 
 ### Comments
 

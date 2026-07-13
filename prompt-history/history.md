@@ -674,3 +674,237 @@ All three documents are now aligned. Here is exactly what changed:
 All seven review decisions are now consistent across the three documents. No conflicts remain between them on assignee, acting-user scope, search/filter, or `createdBy` validation.
 
 ---
+
+## 2026-07-13 15:53:01 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Read:
+
+@tool-specific/cursor-workflow/project-context.md 
+@docs/requirement-analysis.md 
+@tool-specific/cursor-workflow/acceptance-criteria.md 
+
+Complete @tool-specific/cursor-workflow/spec.md 
+
+Describe the expected behaviour of the Core ticket management system, including:
+
+- Main user flows
+- Ticket creation, viewing, and updates
+- Comments
+- Search and status filtering
+- Ticket status transitions
+- Validation and error behaviour
+- Data persistence
+- Seed data
+- Testing expectations
+
+Keep the specification simple and limited to the Core scope.
+
+Do not generate code, API endpoints, database schemas, or optional features.
+
+After updating the file, summarize the main sections created.
+
+---
+
+## 2026-07-13 15:53:42 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+`tool-specific/cursor-workflow/spec.md` is complete. Main sections:
+
+## Sections created
+
+| Section | What it covers |
+|---------|----------------|
+| **Overview** | Core purpose, entities, and seeded users |
+| **Main User Flows** | Four flows: create ticket, view/work ticket, find tickets, progress lifecycle |
+| **Acting User Selection** | Dropdown behaviour, when selection is required vs not, `createdBy` rules |
+| **Ticket Creation, Viewing, and Updates** | Required/optional fields, list and detail views, assign/reassign, no deletion |
+| **Comments** | Add, display order (oldest first), no edit/delete, not searchable |
+| **Search and Status Filtering** | Case-insensitive partial search, exact status filter, independent operation |
+| **Ticket Status Transitions** | Allowed values, five valid transitions, rejected examples |
+| **Validation and Error Behaviour** | Backend checks table, UI error expectations |
+| **Data Persistence** | Database storage, restart survival, no committed secrets |
+| **Seed Data** | Three users, varied sample tickets, setup instructions |
+| **Testing Expectations** | State-machine integration tests, manual AC verification, repo checks |
+| **Out of Scope** | Explicit exclusions to keep Core tight |
+| **References** | Links to project context, requirements, and acceptance criteria |
+
+The spec is behavioural only — no code, API endpoints, database schema, or optional features. It aligns with the confirmed decisions in your other three documents. Ready for `tasks.md` when you are.
+
+---
+
+## 2026-07-13 16:11:33 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Read:
+
+@tool-specific/cursor-workflow/project-context.md 
+@docs/requirement-analysis.md 
+@tool-specific/cursor-workflow/acceptance-criteria.md 
+@tool-specific/cursor-workflow/spec.md 
+
+Make these small updates to spec.md:
+
+- Assignee is optional and may be Bob Smith or Carol Davis only.
+- Explain that ticket updates do not require an acting user because Core does not track who performs updates.
+- Replace “no acting user” backend validation with missing or invalid createdBy.
+- Clarify that persisted data remains after normal application and MongoDB restarts.
+- Use full repository paths in the References section.
+- Keep error handling simple and consistent.
+
+Do not add new features or implementation details.
+
+After updating, summarize the changes.
+
+---
+
+## 2026-07-13 16:12:16 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Summary of changes to `tool-specific/cursor-workflow/spec.md`:
+
+## Changes
+
+| Area | Update |
+|------|--------|
+| **Assignee** | Optional on create/update; when provided, must be **Bob Smith or Carol Davis only** (updated in flows, creation, updates, and validation table) |
+| **Ticket updates** | Stated explicitly that no acting user is required because **Core does not track who performs updates** (Flow 2, Acting User Selection, Updates) |
+| **Validation** | Replaced “no acting user” row with **missing or invalid `createdBy`** on ticket/comment create |
+| **Error handling** | Merged into one section — short intro, single validation table, one paragraph for UI/error rules |
+| **Data persistence** | Clarified data remains after **normal application restarts and MongoDB restarts**; storage named as MongoDB |
+| **References** | Full repo paths (`tool-specific/cursor-workflow/...`, `docs/...`); added self-reference; intro and testing section paths updated |
+
+No new features or implementation details were added.
+
+---
+
+## 2026-07-13 16:18:35 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Read:
+
+@tool-specific/cursor-workflow/project-context.md 
+@docs/requirement-analysis.md 
+@tool-specific/cursor-workflow/spec.md 
+@tool-specific/cursor-workflow/acceptance-criteria.md 
+
+Complete @tool-specific/cursor-workflow/tasks.md 
+
+Create a small, ordered task list for the Core project only.
+
+For each task include:
+- Task ID
+- Short objective
+- Related requirement and acceptance-criteria IDs
+- Simple completion check
+
+Order the work like this:
+1. Project setup
+2. Backend and MongoDB
+3. Models and seed data
+4. Ticket API
+5. Comments
+6. Search and status filter
+7. Status transition validation
+8. Integration tests
+9. Frontend
+10. Documentation and final review
+
+Keep the tasks small and practical.
+Do not generate code.
+Do not add optional features.
+
+---
+
+## 2026-07-13 16:19:23 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+`tool-specific/cursor-workflow/tasks.md` is complete with **30 ordered tasks** (T-01–T-30) across your 10 phases.
+
+## Task breakdown
+
+| Phase | Tasks | Focus |
+|-------|-------|--------|
+| **1. Project setup** | T-01 – T-03 | Scaffold, env config, `.gitignore` |
+| **2. Backend and MongoDB** | T-04 – T-05 | Express server, MongoDB connection |
+| **3. Models and seed data** | T-06 – T-08 | Data models, three users, sample tickets |
+| **4. Ticket API** | T-09 – T-12 | Create, list, detail, update, validation |
+| **5. Comments** | T-13 – T-14 | Add comment, oldest-first display |
+| **6. Search and status filter** | T-15 – T-16 | Keyword search, status filter (independent) |
+| **7. Status transition validation** | T-17 | Five valid transitions; reject all others |
+| **8. Integration tests** | T-18 – T-19 | Valid and invalid transition tests |
+| **9. Frontend** | T-20 – T-26 | Dropdown, views, forms, search/filter, errors, status control |
+| **10. Documentation and final review** | T-27 – T-30 | README setup, design docs, testing report, AC review |
+
+Each task includes a short objective, linked FR/BR/VR/NFR and AC IDs, and a simple completion check. **In Progress**, **Completed**, and **Blocked** sections are ready for tracking as you implement.
+
+No code or optional features were added. Ready to start T-01 when you are.
+
+---
+
+## 2026-07-13 16:35:48 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Read:
+
+@tool-specific/cursor-workflow/project-context.md 
+@docs/requirement-analysis.md 
+@tool-specific/cursor-workflow/spec.md 
+@tool-specific/cursor-workflow/acceptance-criteria.md 
+@tool-specific/cursor-workflow/tasks.md 
+
+Simplify tasks.md so it reflects the actual project progress.
+
+Mark these tasks as completed:
+- Prompt-history automation
+- Documentation structure
+- Project context
+- Requirement analysis
+- Acceptance criteria
+- Core specification
+
+Then organize the remaining work into:
+- Design documents
+- Cursor rules
+- Project setup
+- Backend
+- Testing
+- Frontend
+- Final documentation
+
+Use simple Markdown checkboxes instead of large tables.
+
+Keep the Core scope only.
+Do not generate code.
+
+---
+
+## 2026-07-13 16:36:20 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+`tasks.md` is simplified to match current progress.
+
+## What changed
+
+- **Removed** large tables, task IDs (T-01–T-30), and In Progress / Completed / Blocked sections
+- **Added** a **Completed** section with six checked items (prompt history through core spec)
+- **Organized** remaining work into seven checkbox sections:
+  - Design documents (3 items)
+  - Cursor rules (2 items)
+  - Project setup (3 items)
+  - Backend (10 items)
+  - Testing (4 items)
+  - Frontend (8 items)
+  - Final documentation (8 items)
+
+Each remaining item is a single checkbox with a short label and, where useful, linked doc paths or AC/FR IDs. Core scope only — no optional features or code.
+
+---

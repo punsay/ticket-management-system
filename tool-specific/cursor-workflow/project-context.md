@@ -123,7 +123,7 @@ All other transitions must be rejected by the backend. The frontend should displ
 - A single team or organization uses the system (no multi-tenant isolation required in core scope)
 - Users are pre-seeded; the UI provides a simple user selector to choose the acting user without login
 - Acting-user selection is required only when creating tickets and comments, not when updating tickets
-- Assignee is optional on ticket creation; when provided, it must reference a seeded user
+- Assignee is optional on ticket creation; when provided, it must reference a seeded support agent (Bob Smith or Carol Davis).
 - Ticket volume is moderate and does not require specialized performance optimization in the initial release
 
 ## Out-of-Scope Items
@@ -171,7 +171,7 @@ Additionally:
 - The UI will provide a simple dropdown to select the acting seeded user without authentication.
 - Acting-user selection is required only when creating tickets and comments, not when updating tickets.
 - The selected user will be used as `createdBy` when creating tickets and comments.
-- Assignee is optional on ticket creation; when `assignedTo` is provided, it must reference a seeded user.
+- Assignee is optional on ticket creation; when `assignedTo` is provided, it must reference a seeded support agent (Bob Smith or Carol Davis).
 - A ticket may be assigned or reassigned later through ticket updates.
 - Keyword search and status filtering work independently; combined search-and-filter is outside Core scope.
 - The backend validates that `createdBy` references an existing seeded user; authentication is not required.
