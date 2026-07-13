@@ -1,0 +1,44 @@
+---
+description: Code quality — readability, focused functions, consistent API responses
+alwaysApply: true
+---
+
+# Code Quality
+
+## General
+
+- Prefer **readable code** over clever code.
+- **Avoid duplicate logic** — extract shared behaviour when it repeats.
+- Keep functions focused on **one responsibility**.
+- Add comments only when they explain **non-obvious decisions** — not what the code already shows.
+- **Avoid unnecessary dependencies** — justify any new package.
+
+## API responses
+
+Use consistent shapes for all Express endpoints:
+
+**Success:**
+
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+**Error:**
+
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Human-readable description"
+  }
+}
+```
+
+## HTTP and errors
+
+- Use **appropriate HTTP status codes** (`200`, `201`, `400`, `404`, `500`).
+- Do **not** expose stack traces, secrets, or internal implementation details in error messages.
+- Log internal errors server-side; return only safe messages to the client.

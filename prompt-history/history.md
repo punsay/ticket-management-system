@@ -985,3 +985,296 @@ Three design documents are complete. Main decisions:
 All three docs align with `spec.md`, requirement analysis, and acceptance criteria. No application code was generated.
 
 ---
+
+## 2026-07-13 19:15:06 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+/create-rule  Create a Project Rule named `project-workflow`.
+
+Before major changes, Cursor should read:
+
+- tool-specific/cursor-workflow/project-context.md
+- tool-specific/cursor-workflow/spec.md
+- tool-specific/cursor-workflow/tasks.md
+- tool-specific/cursor-workflow/acceptance-criteria.md
+
+Rules:
+
+- Keep implementation within Core scope.
+- Do not invent requirements.
+- Report conflicts or unclear requirements before coding.
+- After each task, summarize changed files, related requirement IDs, and checks performed.
+
+Keep the rule short and apply it throughout the repository.
+
+---
+
+## 2026-07-13 19:15:29 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Created **`.cursor/rules/project-workflow.mdc`** with `alwaysApply: true` so it applies in every session across the repo.
+
+## Rule: `project-workflow`
+
+| Setting | Value |
+|---------|--------|
+| **File** | `.cursor/rules/project-workflow.mdc` |
+| **Scope** | Repository-wide (`alwaysApply: true`) |
+
+**Before major changes** — read:
+- `tool-specific/cursor-workflow/project-context.md`
+- `tool-specific/cursor-workflow/spec.md`
+- `tool-specific/cursor-workflow/tasks.md`
+- `tool-specific/cursor-workflow/acceptance-criteria.md`
+
+**Behaviour:**
+- Stay within Core scope
+- Don't invent requirements
+- Report conflicts or gaps before coding
+- After each task: summarize changed files, related FR/BR/VR/NFR/AC IDs, and checks performed
+
+Cursor should pick this up automatically. If it doesn't appear, reload the window or check **Settings → Rules**.
+
+---
+
+## 2026-07-13 19:20:31 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+/create-rule 
+Create a Project Rule named `architecture-backend`.
+
+Use this architecture:
+
+Routes -> Controllers -> Services -> Mongoose Models
+
+Rules:
+
+- Routes define endpoints.
+- Controllers handle HTTP requests and responses.
+- Services contain business rules.
+- Mongoose models handle database access.
+- Keep controllers small.
+- Place ticket status-transition logic in a service.
+- Use Express, MongoDB, Mongoose, JavaScript, and async/await.
+- Use centralized error handling.
+- Use Zod for request validation.
+- Backend validation is authoritative.
+- Do not expose stack traces or secrets.
+
+Keep the implementation simple for a small project.
+
+---
+
+## 2026-07-13 19:20:54 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Created **`.cursor/rules/architecture-backend.mdc`**.
+
+| Setting | Value |
+|---------|--------|
+| **Scope** | `server/**/*` (activates when working on backend files) |
+| **alwaysApply** | `false` |
+
+## What it enforces
+
+- **Layering:** Routes → Controllers → Services → Mongoose Models
+- **Routes** — endpoints only
+- **Controllers** — HTTP in/out, kept small
+- **Services** — business rules, including ticket status transitions
+- **Models** — database access only
+- **Stack** — Express, MongoDB, Mongoose, JavaScript, async/await
+- **Validation** — Zod for requests; backend is authoritative
+- **Errors** — centralized handler; no stack traces or secrets exposed
+
+Includes a short `PUT /api/tickets/:id` flow example. Applies when you edit files under `server/` once that folder exists.
+
+---
+
+## 2026-07-13 19:26:20 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+/create-rule 
+Create a Project Rule named `frontend`.
+
+Rules:
+
+- Use React functional components and hooks.
+- Use Tailwind CSS for styling.
+- Separate pages, components, services, hooks, and utils.
+- Keep API calls in services.
+- Create custom hooks only when logic is reused.
+- Keep components focused and reusable.
+- Show loading, empty, and meaningful error states.
+- Do not use class components.
+
+Keep the frontend simple.
+
+---
+
+## 2026-07-13 19:26:50 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Created **`.cursor/rules/frontend.mdc`**.
+
+| Setting | Value |
+|---------|--------|
+| **Scope** | `client/**/*` |
+| **alwaysApply** | `false` |
+
+## What it enforces
+
+- **React** — functional components and hooks only (no class components)
+- **Tailwind CSS** — primary styling approach
+- **Structure** — `pages/`, `components/`, `services/`, `hooks/`, `utils/`
+- **API calls** — live in services, not components
+- **Hooks** — custom hooks only when logic is reused
+- **Components** — focused and reusable
+- **UI states** — loading, empty, and meaningful errors (from backend `{ error.message }`)
+
+Includes a short `TicketListPage` flow example. The rule activates when you work on files under `client/`.
+
+---
+
+## 2026-07-13 19:28:42 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+/create-rule 
+Create a Project Rule named `code-quality`.
+
+Rules:
+
+- Prefer readable code over clever code.
+- Avoid duplicate logic.
+- Keep functions focused on one responsibility.
+- Add comments only when they explain non-obvious decisions.
+- Avoid unnecessary dependencies.
+- Use appropriate HTTP status codes.
+- Use consistent API response shapes:
+
+Success:
+{
+  "success": true,
+  "data": {}
+}
+
+Error:
+{
+  "success": false,
+  "error": {
+    "message": ""
+  }
+}
+
+Do not expose internal implementation details in errors.
+
+---
+
+## 2026-07-13 19:28:53 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Created **`.cursor/rules/code-quality.mdc`**.
+
+| Setting | Value |
+|---------|--------|
+| **Scope** | Repository-wide (`alwaysApply: true`) |
+
+## What it enforces
+
+- Readable over clever code; no duplicate logic
+- Single-responsibility functions
+- Comments only for non-obvious decisions
+- No unnecessary dependencies
+- Appropriate HTTP status codes
+- Consistent API shapes with `success: true/false` and `data` / `error.message`
+- No stack traces, secrets, or internal details in client-facing errors
+
+**Note:** `docs/api-specification.md` currently documents responses without the `success` field. When you implement the backend, either update that doc to match this rule or adjust the rule — they should stay aligned. Want me to update the API spec to use the `success` wrapper?
+
+---
+
+## 2026-07-13 19:30:07 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+/create-rule 
+
+Create a Project Rule named `output-format`.
+
+Rules:
+
+- Keep explanations concise.
+- Show file paths when describing changes.
+- Show only relevant changed or new sections.
+- Do not repeat unchanged file contents.
+- Full files may be shown for small new files or when explicitly requested.
+
+---
+
+## 2026-07-13 19:30:16 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Created **`.cursor/rules/output-format.mdc`**.
+
+| Setting | Value |
+|---------|--------|
+| **Scope** | Repository-wide (`alwaysApply: true`) |
+
+## What it enforces
+
+- Concise explanations
+- File paths when describing changes
+- Only relevant changed or new sections — no dumping full unchanged files
+- Full files allowed for small new files or when you ask explicitly
+
+You now have five project rules: `project-workflow`, `architecture-backend`, `frontend`, `code-quality`, and `output-format`.
+
+---
+
+## 2026-07-13 19:31:38 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Read the active rules under `.cursor/rules/`.
+
+Update:
+
+@tool-specific/cursor-workflow/cursor-rules-or-instructions.md 
+
+Document:
+
+- Why project rules were introduced
+- The path and purpose of each active rule
+- The main instructions in each rule
+- How the rules support context-driven and task-by-task development
+- How the rules may be refined during implementation
+
+Do not copy every rule word for word.
+Keep the document concise and human-readable.
+
+---
+
+## 2026-07-13 19:32:19 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Updated `tool-specific/cursor-workflow/cursor-rules-or-instructions.md`. It now covers:
+
+- **Why rules exist** — persistent guardrails so Cursor follows scope, conventions, and context docs
+- **Active rules table** — all five `.mdc` files with paths, scope (`always` vs `server/**` / `client/**`), and purpose
+- **Per-rule summaries** — main instructions without copying each rule verbatim
+- **Development model** — context-driven reads before major work; task-by-task summaries with requirement IDs; layer rules activate on relevant files
+- **Refinement** — when and how to edit rules during implementation, including keeping rules and API docs aligned
+- **Core restrictions** — pointer to out-of-scope items from spec/requirements
+
+Want `tasks.md` updated to mark the Cursor rules item complete?
+
+---

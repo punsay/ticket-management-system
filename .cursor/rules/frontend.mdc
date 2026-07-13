@@ -1,0 +1,41 @@
+---
+description: React frontend — components, hooks, services, Tailwind
+globs: client/**/*
+alwaysApply: false
+---
+
+# Frontend
+
+Stack: React (functional components + hooks), Tailwind CSS, JavaScript.
+
+## Folder structure
+
+```
+client/src/
+  pages/       # Route-level views
+  components/  # Reusable UI pieces
+  services/    # API calls (fetch to Express backend)
+  hooks/       # Custom hooks — only when logic is reused
+  utils/       # Pure helpers
+```
+
+## Rules
+
+- Use **functional components** and hooks only — no class components.
+- Style with **Tailwind CSS**; avoid inline style objects unless necessary.
+- Keep **API calls in services** (e.g. `ticketService.js`); components call services, not `fetch` directly.
+- Create **custom hooks** only when the same stateful logic appears in multiple components.
+- Keep components **focused and reusable** — one clear responsibility per component.
+- Always handle **loading**, **empty**, and **meaningful error** states in the UI.
+- Display backend error messages from `{ error: { message } }`; do not show stack traces.
+
+## Example
+
+```
+TicketListPage
+  → useTickets() hook (if reused) or local state
+  → ticketService.getTickets()
+  → <TicketList /> + loading / empty / error UI
+```
+
+Keep the frontend simple for a small internal tool.

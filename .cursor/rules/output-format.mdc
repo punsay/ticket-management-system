@@ -1,0 +1,14 @@
+---
+description: Concise agent output — paths, diffs only, no repeated unchanged content
+alwaysApply: true
+---
+
+# Output Format
+
+When describing work or changes:
+
+- Keep explanations **concise**.
+- Show **file paths** when describing what changed.
+- Show only **relevant changed or new sections** — not entire files.
+- Do **not** repeat unchanged file contents.
+- Full files may be shown for **small new files** or when **explicitly requested**.

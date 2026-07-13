@@ -1,0 +1,24 @@
+---
+description: Core workflow — read context docs before major changes; stay in scope
+alwaysApply: true
+---
+
+# Project Workflow
+
+## Before major changes
+
+Read these files first:
+
+- `tool-specific/cursor-workflow/project-context.md`
+- `tool-specific/cursor-workflow/spec.md`
+- `tool-specific/cursor-workflow/tasks.md`
+- `tool-specific/cursor-workflow/acceptance-criteria.md`
+
+Also consult `docs/requirement-analysis.md` and design docs (`docs/system-design.md`, `docs/database-design.md`, `docs/api-specification.md`) when relevant.
+
+## Rules
+
+- Keep implementation within **Core scope** only.
+- Do not invent requirements or add optional features.
+- If requirements conflict or are unclear, report them before coding.
+- After each task, summarize: changed files, related requirement IDs (FR/BR/VR/NFR/AC), and checks performed.
