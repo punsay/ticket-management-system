@@ -17,7 +17,7 @@
 - [x] acceptance-criteria.md
 - [x] spec.md
 - [x] tasks.md
-- [ ] cursor-rules-or-instructions.md
+- [x] cursor-rules-or-instructions.md
 - [ ] tool-workflow.md
 
 ---

@@ -54,15 +54,18 @@ During planning, Cursor identified inconsistencies between the project context, 
 - align the task plan with the actual project progress
 - keep optional features outside the Core scope
 
+Related commit:
+
+- `docs: validated AI suggestions and updated task plan`
+
 I also reviewed the generated Cursor coding rules against the existing design documents. The code-quality rule introduced a consistent API response format using `success`, `data`, and `error`, while the API specification used a different response shape.
 
 I chose to update the API specification so it matched the approved rule. I also added HTTP `409 Conflict` for invalid ticket status transitions, while keeping `400 Bad Request` for normal validation errors.
 
 This review happened before backend implementation so the frontend, backend, tests, and API documentation can follow one consistent contract.
 
-Related commits:
+Related commit:
 
-- `docs: validated AI suggestions and updated task plan`
 - `docs: align API specification with validated Cursor rules`
 
 ## Code Generation

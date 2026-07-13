@@ -1278,3 +1278,167 @@ Updated `tool-specific/cursor-workflow/cursor-rules-or-instructions.md`. It now 
 Want `tasks.md` updated to mark the Cursor rules item complete?
 
 ---
+
+## 2026-07-13 21:14:41 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Read:
+
+@tool-specific/cursor-workflow/project-context.md 
+@docs/requirement-analysis.md 
+@tool-specific/cursor-workflow/spec.md 
+@tool-specific/cursor-workflow/acceptance-criteria.md 
+@tool-specific/cursor-workflow/tasks.md 
+@docs/project-checklist.md 
+@docs/system-design.md 
+@docs/database-design.md 
+@docs/api-specification.md 
+@.cursor/rules/ 
+
+Check for contradictions or missing Core requirements.
+
+Do not modify files.
+Do not suggest optional features.
+
+Report only issues that would block implementation.
+
+---
+
+## 2026-07-13 21:15:42 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+## Blocking issues
+
+### 1. Conflicting API error response shape (active rules)
+
+**`code-quality.mdc`** (always on) and **`docs/api-specification.md`** require:
+
+```json
+{ "success": false, "error": { "message": "..." } }
+```
+
+**`.cursor/rules/architecture-backend.mdc`** says to return `{ error: { message } }` only — no `success` field.
+
+When implementing `server/**/*`, both rules apply. Pick one envelope before writing controllers/middleware, or backend and frontend services will disagree on the response contract.
+
+---
+
+### 2. Undefined behaviour when both `search` and `status` are sent
+
+**`docs/api-specification.md`** allows `GET /api/tickets?search=...` or `?status=...` and states Core does not support combined use, but it does **not** define server behaviour if both query params are present (reject with `400`, ignore one, prefer one, etc.).
+
+**BR-14** / **COD-08** forbid combined use from a product perspective; the API contract is still incomplete for implementation of `GET /api/tickets`.
+
+---
+
+### 3. Minor rule gap on success responses (frontend)
+
+**`code-quality.mdc`** and **`api-specification.md`** wrap successes as `{ success: true, data: ... }`.
+
+**`.cursor/rules/frontend.mdc`** only documents parsing `{ error: { message } }`, not reading `data` from success responses.
+
+This is secondary to the api-spec, but client `services/` have no rule-level guidance matching the success envelope. Low risk if implementers follow the api-spec; worth aligning before frontend work to avoid inconsistent parsing.
+
+---
+
+## Not blocking (verified aligned)
+
+- Status transitions (BR-04), backend enforcement, integration tests (NFR-04/05, AC-45/46)
+- Acting user / `createdBy` rules (create & comment only; updates don't require it)
+- Optional assignee; Bob Smith / Carol Davis only when `assignedTo` is set
+- Search and filter independently (UI/product level)
+- No auth, no delete, comments oldest-first
+- Mongoose model fields vs entity requirements
+- Endpoint set covers Core flows (`GET /users`, ticket CRUD, comments, search/filter)
+- `VR-11` (“no acting user”) maps cleanly to missing/invalid `createdBy` on create
+
+---
+
+## Summary
+
+**Two issues block clean implementation without a decision:**
+
+1. Resolve the error JSON envelope conflict between `architecture-backend.mdc` and `code-quality.mdc` / `api-specification.md`.
+2. Define `GET /api/tickets` behaviour when both `search` and `status` query params are supplied.
+
+Everything else is consistent enough to start project setup and backend/frontend work once those two are settled. I did not modify any files per your request.
+
+---
+
+## 2026-07-13 21:23:03 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Read:
+
+@docs/api-specification.md 
+@.cursor/rules/architecture-backend.mdc 
+@.cursor/rules/code-quality.mdc 
+@.cursor/rules/frontend.mdc 
+@docs/requirement-analysis.md 
+@tool-specific/cursor-workflow/spec.md 
+Resolve the blocking conflicts using these decisions:
+
+1. Use this response format everywhere:
+
+Success:
+{
+  "success": true,
+  "data": {}
+}
+
+Error:
+{
+  "success": false,
+  "error": {
+    "message": ""
+  }
+}
+
+2. If both `search` and `status` query parameters are provided to
+`GET /api/tickets`, return HTTP 400 with the message:
+"Use either search or status filter, not both."
+
+3. Update the frontend rule so API services read successful payloads from `data`
+and errors from `error.message`.
+
+Update only the relevant API specification and Cursor rule files.
+
+Do not generate application code.
+Do not add optional features.
+
+After updating, summarize each file changed.
+
+---
+
+## 2026-07-13 21:23:32 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Conflicts resolved. Summary of changes:
+
+## Files changed
+
+### `docs/api-specification.md`
+- Documented **HTTP 400** when both `search` and `status` are sent, with the exact error message
+- Standardized **POST/PUT/comment** success responses to `{ success: true, data }`
+- Added explicit **404** error envelope for ticket detail
+- Added combined-filter case to the **Error Codes** table
+- Clarified **Out of Scope**: combined filtering is rejected, not supported
+
+### `.cursor/rules/architecture-backend.mdc`
+- Error responses now use `{ success: false, error: { message } }`
+- Success responses now use `{ success: true, data }` (aligned with `code-quality.mdc`)
+
+### `.cursor/rules/frontend.mdc`
+- Services read successful payloads from **`response.data`** when `success` is `true`
+- Services read errors from **`response.error.message`** when `success` is `false`
+
+### `.cursor/rules/code-quality.mdc`
+- **No changes** — already matched the decided response format
+
+The three blocking conflicts from the review are resolved. Implementation can proceed.
+
+---

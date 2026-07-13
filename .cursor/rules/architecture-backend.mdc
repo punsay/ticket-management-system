@@ -26,7 +26,7 @@ Routes → Controllers → Services → Mongoose Models
 - Ticket **status-transition logic** lives in a service (single source of truth for BR-04/BR-05).
 - Validate requests with **Zod** in controllers or a validation middleware; services enforce business rules.
 - **Backend validation is authoritative** — never rely on the client alone.
-- Use **centralized error handling** middleware; return `{ error: { message } }` with appropriate status codes.
+- Use **centralized error handling** middleware; return `{ success: false, error: { message } }` with appropriate status codes; successes return `{ success: true, data }`.
 - Do **not** expose stack traces, secrets, or internal config in responses.
 - Controllers should not contain business logic or direct complex queries — delegate to services.
 

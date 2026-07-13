@@ -91,6 +91,17 @@ List all seeded users for the acting-user dropdown.
 
 List tickets. Supports **one** query mode at a time for Core (not combined).
 
+If both `search` and `status` are provided, return **HTTP `400`**:
+
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Use either search or status filter, not both."
+  }
+}
+```
+
 | Query param | Type | Description |
 |-------------|------|-------------|
 | `search` | string | Case-insensitive partial match on title and description |
@@ -159,7 +170,16 @@ Get one ticket with comments (oldest first).
 }
 ```
 
-**Response `404`:** Ticket not found.
+**Response `404`:**
+
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Ticket not found"
+  }
+}
+```
 
 ---
 
@@ -189,9 +209,18 @@ Create a ticket.
 
 Server sets `status` to `Open`. Rejects missing/invalid `createdBy`.
 
-**Response `201`:** Created ticket object.
+**Response `201`:**
 
-**Response `400`:** Validation error.
+```json
+{
+  "success": true,
+  "data": { }
+}
+```
+
+The `data` object is the created ticket.
+
+**Response `400`:** Validation error (see Common Response Format).
 
 ---
 
@@ -229,13 +258,22 @@ Status transition rules (backend-enforced):
 | Closed | _(none)_ |
 | Cancelled | _(none)_ |
 
-**Response `200`:** Updated ticket.
+**Response `200`:**
 
-**Response `400`:** Validation error.
+```json
+{
+  "success": true,
+  "data": { }
+}
+```
 
-**Response `404`:** Ticket not found.
+The `data` object is the updated ticket.
 
-**Response `409`:** Invalid status transition.
+**Response `400`:** Validation error (see Common Response Format).
+
+**Response `404`:** Ticket not found (see Common Response Format).
+
+**Response `409`:** Invalid status transition (see Common Response Format).
 
 ---
 
@@ -259,11 +297,20 @@ Add a comment to a ticket.
 | `message` | yes | Non-empty string |
 | `createdBy` | yes | Valid seeded user ID |
 
-**Response `201`:** Created comment object.
+**Response `201`:**
 
-**Response `400`:** Validation error.
+```json
+{
+  "success": true,
+  "data": { }
+}
+```
 
-**Response `404`:** Ticket not found.
+The `data` object is the created comment.
+
+**Response `400`:** Validation error (see Common Response Format).
+
+**Response `404`:** Ticket not found (see Common Response Format).
 
 ---
 
@@ -281,6 +328,7 @@ Core uses HTTP status codes only — no custom error code enum.
 | Status | Meaning | Example message |
 |--------|---------|-----------------|
 | `400` | Bad request | `"Title is required"` |
+| `400` | Combined search and status | `"Use either search or status filter, not both."` |
 | `409` | Invalid transition | `"Cannot transition from Open to Resolved"` |
 | `400` | Invalid assignee | `"Assignee must be a support agent"` |
 | `400` | Invalid createdBy | `"Invalid user"` |
@@ -298,7 +346,7 @@ The following are **not** exposed by the API:
 - User create, update, or delete
 - Ticket delete
 - Comment update or delete
-- Combined `search` + `status` query parameters
+- Combined `search` + `status` filtering (requests with both parameters are rejected with `400`)
 - Pagination
 - Authentication tokens or sessions
 

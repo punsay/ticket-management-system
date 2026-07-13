@@ -16,7 +16,7 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 - [x] System design (`docs/system-design.md`)
 - [x] Database design (`docs/database-design.md`)
 - [x] API specification (`docs/api-specification.md`)
-- [] Review planning and design documents for conflicts
+- [x] Review planning and design documents for conflicts
 
 ## Cursor rules
 

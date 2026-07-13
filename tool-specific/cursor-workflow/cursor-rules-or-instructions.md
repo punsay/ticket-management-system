@@ -66,3 +66,18 @@ Prefer small, focused edits to one rule at a time. After changing a rule, note t
 ## Restrictions (from Core scope)
 
 Regardless of rules, do not implement: authentication, ticket/comment deletion, combined search-and-filter, pagination, or other items listed as out of scope in `spec.md` and `docs/requirement-analysis.md`.
+
+## Rule Refinements
+
+Before implementation, the active Cursor rules were reviewed against the API specification.
+
+The review found inconsistent API response formats across the backend and code-quality rules.
+The rules were aligned to use:
+
+- `success` and `data` for successful responses
+- `success` and `error.message` for failed responses
+
+The frontend rule was also updated to read successful responses from `data` and failures from
+`error.message`.
+
+The API behaviour for combined `search` and `status` parameters was clarified as HTTP 400.
