@@ -16,6 +16,8 @@ The main context files are:
 
 For important prompts, I reference these files directly so Cursor uses the approved project decisions instead of relying only on the current chat.
 
+I also created persistent Cursor project rules under `.cursor/rules/`. These rules guide Cursor to read the approved project documents, work on one task at a time, remain within the Core scope, follow the agreed architecture, enforce backend validation, and avoid unnecessary dependencies or unrelated changes.
+
 ## Requirement Analysis
 
 I used Cursor to create an initial requirement analysis for the ticket management system.
@@ -34,12 +36,59 @@ I used Cursor to create the project context, requirement analysis, acceptance cr
 
 The task plan was later reorganized so it reflected the actual project workflow, including work already completed.
 
+After the planning documents were stable, I created the system design, database design, and API specification before starting implementation. I introduced Cursor rules only after these design decisions were reviewed, so the rules were based on approved project context rather than early assumptions.
+
+Related commits:
+
+- `docs: add system, database, API design and workflow artifacts`
+- `chore(cursor): added persistent workflow and cursor coding rules`
+
 ## Validation of AI Suggestions
 
-I did not accept all AI-generated content without review.
+I did not accept AI-generated content without review.
 
-During planning, Cursor identified inconsistencies between the project context, requirements, and acceptance criteria. I reviewed those findings and updated the documents to use one consistent assignee rule, separate general validation from status-transition validation, and align the task plan with the actual project progress.
+During planning, Cursor identified inconsistencies between the project context, requirements, acceptance criteria, and task plan. I reviewed the findings and updated the documents to:
 
-Related commit:
+- use one consistent assignee rule
+- separate general input validation from status-transition validation
+- align the task plan with the actual project progress
+- keep optional features outside the Core scope
 
-`docs: validated AI suggestions and updated task plan`
+I also reviewed the generated Cursor coding rules against the existing design documents. The code-quality rule introduced a consistent API response format using `success`, `data`, and `error`, while the API specification used a different response shape.
+
+I chose to update the API specification so it matched the approved rule. I also added HTTP `409 Conflict` for invalid ticket status transitions, while keeping `400 Bad Request` for normal validation errors.
+
+This review happened before backend implementation so the frontend, backend, tests, and API documentation can follow one consistent contract.
+
+Related commits:
+
+- `docs: validated AI suggestions and updated task plan`
+- `docs: align API specification with validated Cursor rules`
+
+## Code Generation
+
+_To be updated during implementation._
+
+## Validation of AI-Generated Code
+
+_To be updated during implementation._
+
+## Testing
+
+_To be updated when tests are written and run._
+
+## Debugging
+
+_To be updated when real implementation issues are investigated._
+
+## Code Review
+
+_To be updated after implementation review._
+
+## Responsible Information Sharing
+
+I avoid sharing secrets, real credentials, private environment values, and unnecessary sensitive information with AI tools. Environment-specific values are represented through `.env.example`, while real `.env` files are excluded from Git.
+
+## Reusing This Workflow
+
+_To be completed near the end of the project._
