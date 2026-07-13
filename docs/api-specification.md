@@ -25,6 +25,7 @@ None. The client sends `createdBy` (user ID) on ticket and comment creation. The
 
 ```json
 {
+  "success": true,
   "data": { }
 }
 ```
@@ -33,6 +34,7 @@ Or for lists:
 
 ```json
 {
+  "success": true,
   "data": [ ]
 }
 ```
@@ -41,6 +43,7 @@ Or for lists:
 
 ```json
 {
+  "success": false,
   "error": {
     "message": "Human-readable description"
   }
@@ -49,8 +52,9 @@ Or for lists:
 
 | HTTP status | When |
 |-------------|------|
-| `400` | Validation failure or invalid status transition |
+| `400` | Validation failure |
 | `404` | Ticket or user not found |
+| `409` | Invalid status transition |
 | `500` | Unexpected server error (generic message only) |
 
 Stack traces and internal details are never returned to the client.
@@ -67,6 +71,7 @@ List all seeded users for the acting-user dropdown.
 
 ```json
 {
+  "success": true,
   "data": [
     {
       "_id": "...",
@@ -102,6 +107,7 @@ Examples:
 
 ```json
 {
+  "success": true,
   "data": [
     {
       "_id": "...",
@@ -130,6 +136,7 @@ Get one ticket with comments (oldest first).
 
 ```json
 {
+  "success": true,
   "data": {
     "_id": "...",
     "title": "...",
@@ -224,9 +231,11 @@ Status transition rules (backend-enforced):
 
 **Response `200`:** Updated ticket.
 
-**Response `400`:** Validation or invalid transition.
+**Response `400`:** Validation error.
 
 **Response `404`:** Ticket not found.
+
+**Response `409`:** Invalid status transition.
 
 ---
 
@@ -272,7 +281,7 @@ Core uses HTTP status codes only — no custom error code enum.
 | Status | Meaning | Example message |
 |--------|---------|-----------------|
 | `400` | Bad request | `"Title is required"` |
-| `400` | Invalid transition | `"Cannot transition from Open to Resolved"` |
+| `409` | Invalid transition | `"Cannot transition from Open to Resolved"` |
 | `400` | Invalid assignee | `"Assignee must be a support agent"` |
 | `400` | Invalid createdBy | `"Invalid user"` |
 | `404` | Not found | `"Ticket not found"` |

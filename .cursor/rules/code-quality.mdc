@@ -39,6 +39,6 @@ Use consistent shapes for all Express endpoints:
 
 ## HTTP and errors
 
-- Use **appropriate HTTP status codes** (`200`, `201`, `400`, `404`, `500`).
+- Use appropriate HTTP status codes (`200`, `201`, `400`, `404`, `409`, `500`).
 - Do **not** expose stack traces, secrets, or internal implementation details in error messages.
 - Log internal errors server-side; return only safe messages to the client.
