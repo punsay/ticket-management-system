@@ -15,8 +15,8 @@
 - [x] project-context.md
 - [x] requirement-analysis.md
 - [x] acceptance-criteria.md
-- [ ] spec.md
-- [ ] tasks.md
+- [x] spec.md
+- [x] tasks.md
 - [ ] cursor-rules-or-instructions.md
 - [ ] tool-workflow.md
 
@@ -24,9 +24,9 @@
 
 ## 📐 Design
 
-- [ ] System design
-- [ ] Database design
-- [ ] API specification
+- [x] System design
+- [x] Database design
+- [x] API specification
 
 ---
 

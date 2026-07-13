@@ -1,27 +1,29 @@
-# Ticket Management System
+# Support Ticket Management System
 
-## Description
+A small MERN application for creating, assigning, tracking, commenting on, searching, and progressing internal support tickets through a controlled status lifecycle.
 
-## Features
+## Current Status
 
-## Tech Stack
+Planning and specification are complete. System design and implementation are in progress.
 
-## Project Structure
+## Technology Stack
 
-## Getting Started
+- React
+- JavaScript
+- Tailwind CSS
+- Node.js
+- Express
+- MongoDB
 
-### Prerequisites
+## Project Documentation
 
-### Installation
+- [Project context](tool-specific/cursor-workflow/project-context.md)
+- [Requirement analysis](docs/requirement-analysis.md)
+- [Acceptance criteria](tool-specific/cursor-workflow/acceptance-criteria.md)
+- [Specification](tool-specific/cursor-workflow/spec.md)
+- [Task plan](tool-specific/cursor-workflow/tasks.md)
+- [Project checklist](docs/project-checklist.md)
 
-### Environment Setup
+## Setup
 
-### Running the Application
-
-## Documentation
-
-## Testing
-
-## Contributing
-
-## License
+Setup instructions will be added after the client, server, database connection, and seed scripts are implemented.

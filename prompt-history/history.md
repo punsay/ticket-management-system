@@ -908,3 +908,80 @@ Do not generate code.
 Each remaining item is a single checkbox with a short label and, where useful, linked doc paths or AC/FR IDs. Core scope only — no optional features or code.
 
 ---
+
+## 2026-07-13 17:37:21 +0530 — User
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Read:
+
+@tool-specific/cursor-workflow/project-context.md 
+@docs/requirement-analysis.md 
+@tool-specific/cursor-workflow/spec.md 
+@tool-specific/cursor-workflow/acceptance-criteria.md 
+
+Complete:
+
+@docs/system-design.md 
+@docs/database-design.md 
+@docs/api-specification.md 
+
+Keep the design simple for a small MERN application.
+
+Use:
+- React and Tailwind CSS
+- Node.js and Express
+- MongoDB with Mongoose
+- Simple REST APIs
+- Backend-enforced ticket status transitions
+
+Do not generate application code or optional features.
+
+After updating the documents, summarize the main design decisions.
+
+---
+
+## 2026-07-13 17:38:25 +0530 — Assistant
+
+**Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
+
+Three design documents are complete. Main decisions:
+
+## System design (`docs/system-design.md`)
+
+- **Two-tier MERN layout** — React + Tailwind client, Express API, MongoDB via Mongoose
+- **Layered backend** — Routes → controllers → services → models, with a shared status-transition module
+- **No authentication** — `createdBy` sent from the client and validated on the server
+- **Backend is authoritative** — Validation and status rules enforced server-side
+- **Independent search/filter** — Separate query modes on the ticket list API
+- **Local dev only** — MongoDB + client + server; data survives restarts
+
+## Database design (`docs/database-design.md`)
+
+- **Three collections** — `users`, `tickets`, `comments`
+- **References** — `ObjectId` refs for `createdBy`, optional `assignedTo`, and `ticketId`
+- **Assignee rule** — Optional; when set, must be Bob Smith or Carol Davis
+- **Status on ticket** — Not its own collection; new tickets default to `Open`
+- **Comments** — Append-only; sorted by `createdAt` ascending
+- **Indexes** — Email (unique), status, ticketId+createdAt; regex search for Core volume
+- **Seed data** — Three users plus varied sample tickets and comments
+
+## API specification (`docs/api-specification.md`)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| `GET` | `/api/users` | List seeded users for dropdown |
+| `GET` | `/api/tickets` | List all, search, or filter by status (one mode at a time) |
+| `GET` | `/api/tickets/:id` | Ticket detail with comments |
+| `POST` | `/api/tickets` | Create ticket (`createdBy` required) |
+| `PUT` | `/api/tickets/:id` | Update ticket; enforces status transitions |
+| `POST` | `/api/tickets/:id/comments` | Add comment (`createdBy` required) |
+
+- **JSON** request/response with simple `{ data }` / `{ error.message }` shapes
+- **Status transitions** documented on `PUT /api/tickets/:id` — five allowed paths; all others return `400`
+- **No delete endpoints** — Tickets and comments are not removable in Core
+- **No rate limiting, pagination, or auth** — Out of scope
+
+All three docs align with `spec.md`, requirement analysis, and acceptance criteria. No application code was generated.
+
+---
