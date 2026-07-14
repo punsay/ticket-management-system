@@ -31,7 +31,7 @@ Before major changes, read the workflow docs (`project-context.md`, `spec.md`, `
 
 ### `architecture-backend` (server files)
 
-Use **Routes → Controllers → Services → Mongoose Models**. Routes define endpoints; controllers handle HTTP; services hold business rules (including ticket status transitions); models handle persistence. Validate with Zod, enforce rules in services, use centralized error handling, and keep controllers thin.
+Use **Routes → Controllers → Services → Mongoose Models**. Routes define endpoints; controllers handle HTTP; services hold business rules (including ticket status transitions); models handle persistence. Connect to **MongoDB Atlas** via `MONGODB_URI` only — never hardcode or commit credentials. The React frontend never accesses MongoDB directly. Validate API input with **Zod**; use **Mongoose schema validation** as a persistence safeguard; enforce business rules in services. Use centralized error handling and keep controllers thin.
 
 ### `frontend` (client files)
 

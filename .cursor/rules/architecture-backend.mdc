@@ -24,8 +24,12 @@ Routes → Controllers → Services → Mongoose Models
 ## Rules
 
 - Ticket **status-transition logic** lives in a service (single source of truth for BR-04/BR-05).
-- Validate requests with **Zod** in controllers or a validation middleware; services enforce business rules.
+- Validate request bodies, query parameters, and route parameters with **Zod** where applicable — in controllers or validation middleware; services enforce business rules.
+- Use **Mongoose schema validation** as an additional persistence-level safeguard.
 - **Backend validation is authoritative** — never rely on the client alone.
+- All MongoDB reads and writes must happen through the Express backend; the React frontend must never access MongoDB or Mongoose directly.
+- Use **MongoDB Atlas** as the database environment; read the connection string only from the `MONGODB_URI` environment variable.
+- Never hardcode or commit database credentials.
 - Use **centralized error handling** middleware; return `{ success: false, error: { message } }` with appropriate status codes; successes return `{ success: true, data }`.
 - Do **not** expose stack traces, secrets, or internal config in responses.
 - Controllers should not contain business logic or direct complex queries — delegate to services.

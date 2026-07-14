@@ -98,7 +98,7 @@ All other transitions must be rejected by the backend. The frontend should displ
 | **Tailwind CSS** | Styling | Utility-first styling for rapid, consistent internal-tool UI |
 | **Node.js** | Server runtime | JavaScript on the server pairs naturally with the React frontend |
 | **Express** | HTTP API layer | Lightweight, well-understood framework for REST-style APIs |
-| **MongoDB** | Data store | Flexible document model fits evolving ticket and comment structures |
+| **MongoDB Atlas** | Data store | Managed cloud database; flexible document model for tickets and comments |
 
 ## High-Level Engineering Principles
 
@@ -107,14 +107,15 @@ All other transitions must be rejected by the backend. The frontend should displ
 - **Fail gracefully** — Surface meaningful errors to users without exposing internal details
 - **Keep scope tight** — Deliver the core ticket workflow completely before considering enhancements
 - **Document as you go** — Maintain design docs, prompt history, and testing records for traceability
-- **No secrets in source** — Use environment variables for sensitive configuration
+- **No secrets in source** — Use environment variables for sensitive configuration; never commit database credentials
+- **Database via API only** — MongoDB Atlas is accessed only by the Express backend (`MONGODB_URI`); the React frontend never connects to MongoDB directly
 
 ## Project Constraints
 
 - Internal users only; no public or customer self-service portal in core scope
 - Seeded users only; no authentication or user-management UI in core scope
 - Time-boxed delivery: complete the end-to-end Core workflow before optional enhancements
-- Use React, Node.js, Express, MongoDB, JavaScript, and Tailwind CSS
+- Use React, Node.js, Express, MongoDB Atlas, JavaScript, and Tailwind CSS
 - AI-assisted development must remain traceable via project documentation and prompt history
 
 ## Assumptions
@@ -157,7 +158,7 @@ Additionally:
 - The backend validates all ticket and comment input and rejects invalid records
 - Integration tests cover the ticket status state machine, including both allowed and rejected transitions
 - Seed data provides sample internal users and sample tickets for local testing
-- The repository includes clear local database setup and seed instructions
+- The repository includes clear MongoDB Atlas setup and seed instructions
 - No secrets are committed to the repository
 
 ---

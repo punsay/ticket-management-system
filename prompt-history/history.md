@@ -1575,3 +1575,105 @@ Open `http://localhost:5173` — you should see “Support Ticket Management Sys
 The next task (“Configure environment variables and dev scripts”) is not started.
 
 ---
+
+## 2026-07-15 00:23:39 +0530 — User
+
+**Conversation:** `bc5efd98-65d1-4dc6-b1c9-b78952e3bf1b`
+
+Use /create-rule  to update the existing @.cursor/rules/architecture-backend.mdc rule.
+
+Keep the current structure and existing instructions.
+
+Add only these missing rules:
+
+- All MongoDB reads and writes must happen through the Express backend.
+- The React frontend must never access MongoDB or Mongoose directly.
+- Validate request bodies, query parameters, and route parameters with Zod where applicable.
+- Use Mongoose schema validation as an additional persistence-level safeguard.
+- Use MongoDB Atlas as the database environment.
+- Read the connection string only from the `MONGODB_URI` environment variable.
+- Never hardcode or commit database credentials.
+
+Avoid duplicating rules that are already present.
+Keep the rule concise.
+Do not generate application code.
+
+---
+
+## 2026-07-15 00:23:58 +0530 — Assistant
+
+**Conversation:** `bc5efd98-65d1-4dc6-b1c9-b78952e3bf1b`
+
+Updated `.cursor/rules/architecture-backend.mdc` while keeping the existing structure (frontmatter, layer flow, table, rules, example flow).
+
+**Changes in the Rules section:**
+
+1. **Expanded** the existing Zod bullet to cover request bodies, query parameters, and route parameters (instead of adding a duplicate).
+2. **Added** Mongoose schema validation as a persistence-level safeguard.
+3. **Added** a data-access boundary: all MongoDB I/O through Express; React must not touch MongoDB/Mongoose.
+4. **Added** MongoDB Atlas, `MONGODB_URI` for the connection string, and a rule against hardcoding or committing credentials.
+
+Existing rules on status transitions, authoritative backend validation, error handling, and controller responsibilities are unchanged. The file stays at 48 lines.
+
+---
+
+## 2026-07-15 00:27:04 +0530 — User
+
+**Conversation:** `bc5efd98-65d1-4dc6-b1c9-b78952e3bf1b`
+
+Read:
+
+@.cursor/rules/architecture-backend.mdc 
+@tool-specific/cursor-workflow/project-context.md 
+@docs/system-design.md 
+@docs/database-design.md 
+@tool-specific/cursor-workflow/cursor-rules-or-instructions.md 
+@.env.example 
+
+Update the documentation to record MongoDB Atlas as the chosen database environment.
+
+Document that:
+
+- the Express backend connects using `MONGODB_URI`
+- the React frontend never connects directly to MongoDB
+- Zod validates incoming API data
+- Mongoose provides schema-level validation
+- real credentials must not be committed
+
+Use placeholders only in `.env.example`.
+
+Do not add database connection code.
+Keep the updates concise.
+
+---
+
+## 2026-07-15 00:27:28 +0530 — Assistant
+
+**Conversation:** `bc5efd98-65d1-4dc6-b1c9-b78952e3bf1b`
+
+Documentation now records MongoDB Atlas as the chosen database environment. Summary of changes:
+
+### `tool-specific/cursor-workflow/project-context.md`
+- Tech stack and constraints reference **MongoDB Atlas**
+- Added principles: database via API only (`MONGODB_URI`), no committed credentials
+- Success criteria point to Atlas setup instructions
+
+### `docs/system-design.md`
+- Overview covers Atlas, `MONGODB_URI`, Zod, and Mongoose validation
+- Diagram and tech stack table updated for Atlas
+- Security section covers frontend isolation and layered validation
+- Deployment steps use Atlas instead of local MongoDB/Docker
+
+### `docs/database-design.md`
+- Overview and new **Connection** section: Atlas, `MONGODB_URI`, no committed credentials, backend-only access
+- **Validation** table: Zod (API), Mongoose (persistence), services (business rules)
+
+### `tool-specific/cursor-workflow/cursor-rules-or-instructions.md`
+- `architecture-backend` summary aligned with Atlas, `MONGODB_URI`, access boundary, and validation layers
+
+### `.env.example` and `server/.env.example`
+- `MONGODB_URI` uses an Atlas placeholder URI with a comment not to commit real credentials
+
+`.cursor/rules/architecture-backend.mdc` was already up to date from the prior change — no edits needed. No connection code was added.
+
+---

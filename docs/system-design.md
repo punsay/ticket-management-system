@@ -4,7 +4,7 @@ High-level architecture for the Core Support Ticket Management System. Derived f
 
 ## Overview
 
-A small MERN application with a React frontend and an Express API backed by MongoDB. The client calls simple REST endpoints; the server validates all input, enforces ticket status transitions, and persists data through Mongoose.
+A small MERN application with a React frontend and an Express API backed by **MongoDB Atlas**. The client calls REST endpoints only — it never connects to MongoDB directly. The Express backend connects via the `MONGODB_URI` environment variable, validates incoming API data with **Zod**, enforces ticket status transitions, and persists through **Mongoose** (schema-level validation as a safeguard).
 
 There is no authentication. Seeded users are selected in the UI and sent as `createdBy` on ticket and comment creation only.
 
@@ -34,7 +34,8 @@ There is no authentication. Seeded users are selected in the UI and sent as `cre
 └─────────────────────────────┼────────────────────────────┘
                               ▼
                     ┌──────────────────┐
-                    │ MongoDB (Mongoose)│
+                    │ MongoDB Atlas     │
+                    │ (Mongoose)        │
                     │ users · tickets   │
                     │ · comments        │
                     └──────────────────┘
@@ -107,14 +108,15 @@ Built with React and Tailwind CSS. Uses `fetch` (or a thin wrapper) to call the 
 |-------|--------|-------|
 | Frontend | React, Tailwind CSS, Vite | Component-based UI for a small internal tool |
 | Backend | Node.js, Express | Simple REST API |
-| Database | MongoDB, Mongoose | Document store for users, tickets, comments |
+| Database | MongoDB Atlas, Mongoose | Cloud document store; backend connects via `MONGODB_URI` |
 | Testing | Integration test runner (e.g. Jest + supertest) | Status state-machine tests against live API |
 
 ## Security Considerations
 
 - **No authentication in Core** — Trusted internal environment; `createdBy` validated as an existing seeded user only.
-- **No secrets in repo** — `MONGODB_URI` and other config via environment variables.
-- **Backend is authoritative** — All business rules enforced server-side; UI validation is optional.
+- **No secrets in repo** — `MONGODB_URI` and other config via environment variables; never commit real credentials.
+- **Frontend isolation** — React calls the REST API only; no direct MongoDB or Mongoose access.
+- **Backend is authoritative** — All business rules enforced server-side; Zod validates API input; Mongoose schemas add persistence-level checks.
 - **Safe errors** — Error handler returns generic messages; no stack traces to client (NFR-03).
 - **CORS** — Restrict to local dev origin in development.
 
@@ -122,12 +124,12 @@ Built with React and Tailwind CSS. Uses `fetch` (or a thin wrapper) to call the 
 
 Local development only for Core:
 
-1. Run MongoDB locally (or via Docker).
+1. Provision a MongoDB Atlas cluster; set `MONGODB_URI` in `server/.env` (see `.env.example` — placeholders only).
 2. Start Express server (`server/`).
 3. Start React dev server (`client/`).
 4. Run seed script once to load users and sample data.
 
-Production deployment is outside Core scope. Data persists across normal application and MongoDB restarts.
+Production deployment is outside Core scope. Data persists across normal application and Atlas restarts.
 
 ## Project Structure (planned)
 

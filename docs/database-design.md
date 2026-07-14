@@ -1,10 +1,20 @@
 # Database Design
 
-Data model for the Core Support Ticket Management System using MongoDB and Mongoose.
+Data model for the Core Support Ticket Management System using **MongoDB Atlas** and Mongoose.
 
 ## Overview
 
-Three collections: `users`, `tickets`, and `comments`. Status is a field on tickets, not a separate collection. References use MongoDB `ObjectId`. All data persists across application and MongoDB restarts.
+Three collections: `users`, `tickets`, and `comments`. Status is a field on tickets, not a separate collection. References use MongoDB `ObjectId`. All data persists across application and Atlas restarts.
+
+The Express backend is the only layer that reads from or writes to the database, connecting via `MONGODB_URI`. The React frontend never accesses MongoDB or Mongoose directly.
+
+## Connection
+
+| Setting | Value |
+|---------|-------|
+| **Environment** | MongoDB Atlas |
+| **Connection string** | `MONGODB_URI` environment variable only |
+| **Credentials** | Never hardcoded or committed; use placeholders in `.env.example` |
 
 ## Entity Relationship Diagram
 
@@ -127,9 +137,15 @@ Seed a small set covering:
 
 Seed script should be idempotent or clear existing seed data on re-run for local development.
 
-## Validation (enforced in application layer)
+## Validation
 
-Mongoose schema validators handle basic types and enums; business rules enforced in services:
+| Layer | Tool | Responsibility |
+|-------|------|----------------|
+| **API boundary** | Zod | Validate request bodies, query parameters, and route parameters |
+| **Persistence** | Mongoose schemas | Types, enums, and required fields as a safeguard on save |
+| **Business rules** | Services | Assignee rules, `createdBy` checks, status transitions |
+
+Business rules enforced in services:
 
 - `assignedTo` must reference Bob or Carol when provided
 - `createdBy` must reference any existing seeded user
