@@ -1738,3 +1738,49 @@ You should see `Connected to MongoDB Atlas` followed by the server URL. No model
 **Related requirements:** NFR-01, FR-13, AC-41 (connection layer only; full persistence verification comes with models/seed later)
 
 ---
+
+## 2026-07-15 01:53:42 +0530 — User
+
+**Conversation:** `8e3fe7df-42c5-40b3-92be-37458ecd5a83`
+
+Complete only the Mongoose models task.
+Use @docs/database-design.md '
+Create the User, Ticket, and Comment models under `server/src/models/`.
+
+Include the documented fields, references, enums, timestamps, defaults, and indexes.
+
+---
+
+## 2026-07-15 01:54:09 +0530 — Assistant
+
+**Conversation:** `8e3fe7df-42c5-40b3-92be-37458ecd5a83`
+
+Mongoose models are in place under `server/src/models/` per `docs/database-design.md`.
+
+### `server/src/models/user.js`
+- Fields: `name`, `email`, `role` (enum: `Requester`, `Support Agent`)
+- Index: unique `{ email: 1 }`
+- Collection: `users`
+
+### `server/src/models/ticket.js`
+- Fields: `title`, `description` (non-empty), `priority` (`Low` | `Medium` | `High`), `status` (enum, default `Open`), `assignedTo` → `User` (optional), `createdBy` → `User` (required)
+- Timestamps: `createdAt`, `updatedAt`
+- Indexes: `{ status: 1 }`, text index on `{ title, description }`
+- Collection: `tickets`
+- Exported enums: `PRIORITIES`, `STATUSES`
+
+### `server/src/models/comment.js`
+- Fields: `ticketId` → `Ticket`, `message` (non-empty), `createdBy` → `User`
+- Timestamp: `createdAt` only (no `updatedAt`)
+- Index: `{ ticketId: 1, createdAt: 1 }` for oldest-first fetch
+- Collection: `comments`
+
+### Checks
+- Schema smoke test: paths, defaults, and indexes match the design
+- Marked the task complete in `tool-specific/cursor-workflow/tasks.md`
+
+**Requirements:** FR-10, BR-02, BR-03
+
+Assignee and status-transition rules stay in the service layer; the schemas only enforce types, enums, required fields, and persistence safeguards.
+
+---

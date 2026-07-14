@@ -19,7 +19,7 @@ Read these files first:
 For backend, database, or infrastructure tasks, also read:
 
 - `docs/system-design.md`
-- `docs/database-design.md`
+- `docs/'database-design.md'`
 - `docs/api-specification.md`
 
 For frontend tasks, also read:
@@ -34,6 +34,8 @@ For validation or business-rule tasks, also read:
 
 ## Rules
 
+- Complete only the requested task.
+- Do not begin later tasks unless explicitly requested.
 - Keep implementation within **Core scope** only.
 - Do not invent requirements or add optional features.
 - If requirements conflict or are unclear, report them before coding.
