@@ -81,3 +81,18 @@ The frontend rule was also updated to read successful responses from `data` and 
 `error.message`.
 
 The API behaviour for combined `search` and `status` parameters was clarified as HTTP 400.
+
+## Rule Refinements
+
+Before implementation, the active Cursor rules were reviewed against the API specification.
+
+The review found inconsistent API response formats across the backend and code-quality rules.
+The rules were aligned to use:
+
+- `success` and `data` for successful responses
+- `success` and `error.message` for failed responses
+
+The frontend rule was also updated to read successful responses from `data` and failures from
+`error.message`.
+
+The API behaviour for combined `search` and `status` parameters was clarified as HTTP 400.

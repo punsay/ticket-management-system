@@ -68,6 +68,17 @@ Related commit:
 
 - `docs: align API specification with validated Cursor rules`
 
+Cursor’s consistency review also found that the API behaviour was undefined when both
+`search` and `status` query parameters were supplied together.
+
+I decided that Core supports these controls independently. Therefore, the backend returns
+HTTP 400 with a clear validation message when both parameters are provided.
+
+I updated the API specification and Cursor rules before implementation so that the frontend,
+backend, and tests follow the same behaviour.
+
+- `docs: resolve API specification and Cursor rule conflicts`
+
 ## Code Generation
 
 _To be updated during implementation._

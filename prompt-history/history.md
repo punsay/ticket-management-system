@@ -1442,3 +1442,136 @@ Conflicts resolved. Summary of changes:
 The three blocking conflicts from the review are resolved. Implementation can proceed.
 
 ---
+
+## 2026-07-14 00:39:45 +0530 — User
+
+**Conversation:** `7c5757a9-d0bc-4b4a-8292-327c7dc628e2`
+
+Read:
+
+@tool-specific/cursor-workflow/project-context.md 
+@tool-specific/cursor-workflow/spec.md 
+@tool-specific/cursor-workflow/tasks.md 
+@docs/system-design.md 
+@docs/database-design.md 
+@docs/api-specification.md 
+@.cursor/rules/ 
+
+Complete only the project scaffolding task.
+
+Create:
+
+- a React frontend using Vite inside `client/`
+- an Express backend inside `server/`
+- the agreed folder structure
+- `package.json` files for both client and server
+- basic environment configuration
+- a simple Express health endpoint
+- a simple frontend page confirming the client is running
+
+For the server:
+
+- add a `dev` script using nodemon
+- add a `start` script using node
+- make `npm run dev` start `server/src/server.js`
+
+For the client:
+
+- make `npm run dev` start the React development server
+
+Do not implement tickets, users, comments, database models, database connection, or business logic yet.
+
+Use JavaScript only.
+
+After completing the task:
+
+- summarize the files created
+- list the commands required to install and run both applications
+- mention any assumptions
+- do not begin the next task
+
+---
+
+## 2026-07-14 00:40:35 +0530 — Assistant
+
+**Conversation:** `7c5757a9-d0bc-4b4a-8292-327c7dc628e2`
+
+Project scaffolding is complete. Here is what was created and how to run it.
+
+## Files created
+
+### Server (`server/`)
+
+| Path | Purpose |
+|------|---------|
+| `package.json` | Dependencies and `dev` / `start` scripts |
+| `.env.example` | `PORT`, `MONGODB_URI`, `CLIENT_URL` placeholders |
+| `src/server.js` | Entry point — loads env and starts Express |
+| `src/app.js` | Express app: CORS, JSON parsing, routes, error handler |
+| `routes/healthRoutes.js` | `GET /api/health` route |
+| `controllers/healthController.js` | Health check handler |
+| `models/.gitkeep` | Placeholder for Mongoose models |
+| `services/.gitkeep` | Placeholder for business logic |
+| `scripts/.gitkeep` | Placeholder for seed script |
+
+### Client (`client/`)
+
+| Path | Purpose |
+|------|---------|
+| `package.json` | React + Vite + Tailwind dependencies |
+| `.env.example` | `VITE_API_URL` placeholder |
+| `vite.config.js` | Vite config (port 5173) |
+| `tailwind.config.js` | Tailwind content paths |
+| `postcss.config.js` | PostCSS + Tailwind |
+| `index.html` | HTML shell |
+| `src/main.jsx` | React entry |
+| `src/index.css` | Tailwind directives |
+| `src/App.jsx` | Root component |
+| `src/pages/HomePage.jsx` | “Client is running” confirmation page |
+| `src/components/.gitkeep` | Placeholder |
+| `src/services/.gitkeep` | Placeholder |
+| `src/hooks/.gitkeep` | Placeholder |
+| `src/utils/.gitkeep` | Placeholder |
+
+### Updated
+
+- `.env.example` — root env template for server and client
+- `tool-specific/cursor-workflow/tasks.md` — scaffold task marked complete
+
+## Commands to install and run
+
+**Server**
+
+```bash
+cd server
+cp .env.example .env
+npm install
+npm run dev
+```
+
+Health check: `GET http://localhost:5000/api/health` → `{ "success": true, "data": { "status": "ok" } }`
+
+**Client**
+
+```bash
+cd client
+cp .env.example .env
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173` — you should see “Support Ticket Management System — Client is running.”
+
+## Assumptions
+
+1. **Ports** — Server on `5000`, client on `5173` (per `docs/api-specification.md`).
+2. **Module systems** — Server uses CommonJS (`require`); client uses ES modules (Vite default).
+3. **Health endpoint** — `GET /api/health` under the `/api` prefix; not in the API spec yet, added for scaffolding only.
+4. **CORS** — Restricted to `CLIENT_URL` (`http://localhost:5173` by default).
+5. **Tailwind** — Configured now; minimal styling on the home page only.
+6. **No database** — `MONGODB_URI` is in env templates only; no connection or models yet.
+7. **Error handler** — Basic 500 handler in place; full centralized handling comes in a later task.
+
+The next task (“Configure environment variables and dev scripts”) is not started.
+
+---

@@ -16,7 +16,9 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 - [x] System design (`docs/system-design.md`)
 - [x] Database design (`docs/database-design.md`)
 - [x] API specification (`docs/api-specification.md`)
-- [x] Review planning and design documents for conflicts
+- [x] Review planning, design documents, and Cursor rules for implementation-blocking conflicts
+  - Resolved API response-envelope conflict
+  - Defined HTTP 400 behaviour when `search` and `status` are supplied together
 
 ## Cursor rules
 
@@ -24,7 +26,7 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 
 ## Project setup
 
-- [ ] Scaffold client and server structure
+- [x] Scaffold client and server structure
 - [ ] Configure environment variables and dev scripts (NFR-08, AC-47)
 - [ ] Add initial README project overview and setup placeholders
 
