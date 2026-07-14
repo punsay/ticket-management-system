@@ -14,7 +14,23 @@ Read these files first:
 - `tool-specific/cursor-workflow/tasks.md`
 - `tool-specific/cursor-workflow/acceptance-criteria.md`
 
-Also consult `docs/requirement-analysis.md` and design docs (`docs/system-design.md`, `docs/database-design.md`, `docs/api-specification.md`) when relevant.
+## Relevant design context
+
+For backend, database, or infrastructure tasks, also read:
+
+- `docs/system-design.md`
+- `docs/database-design.md`
+- `docs/api-specification.md`
+
+For frontend tasks, also read:
+
+- `docs/system-design.md`
+- `docs/api-specification.md`
+
+For validation or business-rule tasks, also read:
+
+- `docs/requirement-analysis.md`
+- `tool-specific/cursor-workflow/acceptance-criteria.md`
 
 ## Rules
 

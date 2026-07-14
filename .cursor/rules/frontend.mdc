@@ -27,8 +27,8 @@ client/src/
 - Create **custom hooks** only when the same stateful logic appears in multiple components.
 - Keep components **focused and reusable** — one clear responsibility per component.
 - Always handle **loading**, **empty**, and **meaningful error** states in the UI.
-- In **services**, read successful payloads from `response.data` when `success` is `true`.
-- On failure, read the user-facing message from `response.error.message` when `success` is `false`; do not show stack traces.
+- In **services**, parse the JSON response and read successful payloads from `payload.data` when `payload.success` is `true`.
+- On failure, read the user-facing message from `payload.error.message`.
 
 ## Example
 

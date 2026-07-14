@@ -1677,3 +1677,64 @@ Documentation now records MongoDB Atlas as the chosen database environment. Summ
 `.cursor/rules/architecture-backend.mdc` was already up to date from the prior change — no edits needed. No connection code was added.
 
 ---
+
+## 2026-07-15 01:25:45 +0530 — User
+
+**Conversation:** `6e00c080-ddf6-4636-b086-82f658d42022`
+
+Complete only the MongoDB Atlas connection task.
+
+Use `MONGODB_URI`, connect before starting the server, and keep the health endpoint working.
+
+Do not create models, seed data, or feature APIs.
+
+---
+
+## 2026-07-15 01:27:28 +0530 — Assistant
+
+**Conversation:** `6e00c080-ddf6-4636-b086-82f658d42022`
+
+MongoDB Atlas connection is wired up. Summary of changes:
+
+### Changes
+
+**`server/src/config/database.js`** (new)  
+- Reads `MONGODB_URI` from the environment  
+- Connects with Mongoose before the server starts  
+- Throws a clear error if `MONGODB_URI` is missing  
+
+**`server/src/server.js`**  
+- Calls `connectDatabase()` before `app.listen()`  
+- Exits with code 1 if the connection fails  
+
+**`server/src/app.js`**  
+- Fixed health route import: `./routes/healthRoutes` (was `../routes/healthRoutes`, which broke the app)  
+
+**`server/package.json`** / **`server/package-lock.json`**  
+- Added `mongoose` dependency  
+
+### Behaviour
+
+1. Server loads `.env` and requires `MONGODB_URI`
+2. Connects to MongoDB Atlas via Mongoose
+3. Starts Express only after a successful connection
+4. `GET /api/health` still returns `{ "success": true, "data": { "status": "ok" } }`
+
+### Checks performed
+
+- Health endpoint returns `200` with the expected JSON (verified via direct app test)
+- Missing `MONGODB_URI` fails startup with: `MONGODB_URI environment variable is not set`
+
+### To run locally
+
+Set a real Atlas URI in `server/.env` (from `server/.env.example`), then:
+
+```bash
+cd server && npm start
+```
+
+You should see `Connected to MongoDB Atlas` followed by the server URL. No models, seed data, or feature APIs were added.
+
+**Related requirements:** NFR-01, FR-13, AC-41 (connection layer only; full persistence verification comes with models/seed later)
+
+---

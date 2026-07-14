@@ -146,6 +146,22 @@ ticket-management-system/
 └── tool-specific/
 ```
 
+## Backend Project Structure
+
+All backend application source code is stored under `server/src/`.
+
+```text
+server/src/
+├── config/
+├── controllers/
+├── middleware/
+├── models/
+├── routes/
+├── services/
+├── utils/
+├── app.js
+└── server.js
+
 ## References
 
 - `docs/database-design.md` — Data model detail
