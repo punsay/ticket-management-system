@@ -37,7 +37,7 @@
 - [x] MongoDB connected
 - [x] User, Ticket, and Comment models created
 - [x] Seed data created
-- [ ] Ticket CRUD completed
+- [x] Ticket CRUD completed
 - [ ] Comments implemented
 - [ ] Search and status filter
 - [ ] Status transition rules implemented

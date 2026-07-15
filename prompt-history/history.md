@@ -1920,3 +1920,123 @@ Matches `docs/api-specification.md`:
 `GET http://localhost:5001/api/users` returned all three seeded users (Alice, Bob, Carol) in the documented format. Errors are passed to the existing centralized error middleware for a `500` response.
 
 ---
+
+## 2026-07-15 15:12:59 +0530 — User
+
+**Conversation:** `f49bad54-4802-4e62-8336-b893fa924a2f`
+
+Complete only the ticket creation and listing API task.
+
+Use @docs/api-specification.md 
+
+Implement:
+
+- POST /api/tickets
+- GET /api/tickets without search or status filtering
+
+---
+
+## 2026-07-15 15:14:04 +0530 — Assistant
+
+**Conversation:** `f49bad54-4802-4e62-8336-b893fa924a2f`
+
+Implemented ticket creation and listing following the existing Routes → Controllers → Services → Models pattern.
+
+### Changed files
+
+- `server/src/utils/AppError.js` — validation errors with HTTP status codes
+- `server/src/services/userService.js` — added `findUserById` for `createdBy` / assignee checks
+- `server/src/services/ticketService.js` — `getAllTickets` and `createTicket` with validation
+- `server/src/controllers/ticketController.js` — request handlers
+- `server/src/routes/ticketRoutes.js` — `GET` and `POST /tickets`
+- `server/src/app.js` — mounts ticket routes; `AppError` returns `400` responses
+
+### Endpoints
+
+**`GET /api/tickets`** — returns all tickets with populated `assignedTo` and `createdBy` (`{ _id, name }`), `assignedTo: null` when unassigned.
+
+**`POST /api/tickets`** — creates a ticket with:
+- Required: `title`, `description`, `priority` (`Low` | `Medium` | `High`), `createdBy`
+- Optional: `assignedTo` (Bob or Carol only)
+- Server sets `status` to `Open`
+- Returns `201` with the created ticket
+
+### Validation (`400`)
+
+| Condition | Message |
+|-----------|---------|
+| Empty/missing title | `"Title is required"` |
+| Empty/missing description | `"Description is required"` |
+| Invalid priority | `"Invalid priority"` |
+| Missing/invalid `createdBy` | `"Invalid user"` |
+| Invalid assignee | `"Assignee must be a support agent"` |
+
+### Related requirements
+
+- **FR-01, FR-02** — create and list tickets
+- **AC-05–AC-07, AC-12** — ticket creation and listing behaviour
+- **VR-02–VR-07, VR-11** — backend validation on create
+- **BR-01, BR-02, BR-06, BR-07** — defaults, assignee rules, `createdBy`
+
+Search and status filtering are intentionally out of scope for this task.
+
+### Verification
+
+Tested against the running server: list returns seeded tickets; valid create returns `201` with `status: "Open"`; validation errors return `400` with the documented messages.
+
+---
+
+## 2026-07-15 17:27:03 +0530 — User
+
+**Conversation:** `f49bad54-4802-4e62-8336-b893fa924a2f`
+
+Complete the remaining ticket detail and update APIs.
+
+Use @docs/api-specification.md 
+
+Implement:
+
+- GET /api/tickets/:id
+- PUT /api/tickets/:id
+
+---
+
+## 2026-07-15 17:28:13 +0530 — Assistant
+
+**Conversation:** `f49bad54-4802-4e62-8336-b893fa924a2f`
+
+Implemented `GET /api/tickets/:id` and `PUT /api/tickets/:id` following the existing backend architecture.
+
+### Changed files
+
+- `server/src/services/statusTransitionService.js` — single source of truth for allowed status transitions (BR-04/BR-05)
+- `server/src/services/ticketService.js` — added `getTicketById` and `updateTicket`
+- `server/src/controllers/ticketController.js` — added `getTicket` and `updateTicket` handlers
+- `server/src/routes/ticketRoutes.js` — registered both routes
+
+### `GET /api/tickets/:id`
+
+- Returns one ticket with populated `assignedTo` and `createdBy` (`{ _id, name }`)
+- Includes `comments` sorted oldest first, each with populated `createdBy`
+- Returns `404` with `"Ticket not found"` for missing or invalid IDs
+
+### `PUT /api/tickets/:id`
+
+- Accepts partial updates: `title`, `description`, `priority`, `assignedTo`, `status`
+- Validates non-empty `title`/`description` when provided
+- Validates `priority` enum and support-agent `assignedTo` (Bob/Carol); `null` unassigns
+- Enforces status transitions via `statusTransitionService`; same status is a no-op
+- Returns `200` with the updated ticket, `404` if not found, `400` for validation errors, `409` for invalid transitions (e.g. `"Cannot transition from Open to Resolved"`)
+
+### Related requirements
+
+- **FR-03, FR-04, FR-05** — ticket detail, update, status transitions
+- **AC-13–AC-17, AC-28–AC-35** — detail view, updates, valid/invalid transitions
+- **VR-02–VR-06, VR-08** — field validation and transition enforcement
+- **BR-04, BR-05** — allowed transition rules
+
+### Verification
+
+Tested against the running server: detail returns comments oldest-first; valid updates return `200`; invalid transitions return `409`; missing ticket returns `404`; empty title returns `400`.
+
+---
