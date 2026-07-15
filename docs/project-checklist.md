@@ -60,6 +60,7 @@
 
 ## 🧪 Testing
 
+- [x] Seeded-users, ticket CRUD, and comment APIs manually validated in Postman
 - [ ] Integration tests
 - [ ] Status transition tests
 - [ ] Testing strategy

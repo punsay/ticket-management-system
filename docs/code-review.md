@@ -42,6 +42,16 @@ This document records reviews of completed implementation phases. It is updated 
 - Confirmed ticket creation defaults to `Open`
 - Confirmed validation and update behaviour through Postman checks
 
+
+### Review 3 — Comments API
+
+**Date:** 2026-07-15
+
+- Reviewed `POST /api/tickets/:id/comments`
+- Confirmed comments are associated with the requested ticket
+- Confirmed comment input and creator validation through Postman checks
+- Confirmed successful creation and expected error responses
+
 ## Feedback Summary
 
 ### Positive
@@ -59,7 +69,7 @@ This document records reviews of completed implementation phases. It is updated 
 
 - Business rules such as valid assignees and ticket status transitions must remain in the service layer.
 - Centralized error handling still needs to be implemented for feature APIs.
-- Comment, search, filter, and status-transition APIs still need implementation and review.
+- Search, filter, and status-transition APIs still need implementation and review.
 - Integration tests are still required for valid and invalid status transitions.
 
 ## Action Items
@@ -69,6 +79,7 @@ This document records reviews of completed implementation phases. It is updated 
 - [x] Create User, Ticket, and Comment models.
 - [x] Add repeatable seed data.
 - [x] Review seeded users and ticket CRUD APIs.
+- [x] Review comments API.
 - [ ] Review remaining backend APIs after implementation.
 - [ ] Review frontend behaviour after UI implementation.
 - [ ] Review integration tests and final acceptance criteria.

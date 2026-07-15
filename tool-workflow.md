@@ -81,15 +81,15 @@ backend, and tests follow the same behaviour.
 
 ## Code Generation
 
-I used Cursor to complete the initial React and Express setup, connect the backend to MongoDB Atlas, create the Mongoose models, add the seed script, and implement the seeded-users and ticket CRUD APIs. Each prompt was limited to one task, and I reviewed the generated changes before continuing.
+I used Cursor to complete the initial React and Express setup, connect the backend to MongoDB Atlas, create the Mongoose models, add the seed script, and implement the seeded-users, ticket CRUD, and comments APIs. Each prompt was limited to one task, and I reviewed the generated changes before continuing.
 
 ## Validation of AI-Generated Code
 
-I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB and manually verified the seeded-users and ticket CRUD APIs in Postman.
+I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB and manually verified the seeded-users, ticket CRUD, and comments APIs in Postman.
 
 ## Testing
 
-_To be updated when tests are written and run._
+I manually validated the seeded-users, ticket CRUD, and comments APIs in Postman. Automated integration tests, including valid and invalid status-transition coverage, are still pending.
 
 ## Debugging
 
@@ -100,7 +100,7 @@ I documented two setup issues in `docs/debugging-log.md`:
 
 ## Code Review
 
-I completed an initial review of the project setup, backend structure, MongoDB connection, Mongoose models, seed data, seeded-users API, and ticket CRUD APIs. The review notes and remaining follow-up items are recorded in `docs/code-review.md`.
+I completed an initial review of the project setup, backend structure, MongoDB connection, Mongoose models, seed data, seeded-users API, ticket CRUD APIs, and comments API. The review notes and remaining follow-up items are recorded in `docs/code-review.md`.
 
 ## Responsible Information Sharing
 
