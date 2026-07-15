@@ -1784,3 +1784,82 @@ Mongoose models are in place under `server/src/models/` per `docs/database-desig
 Assignee and status-transition rules stay in the service layer; the schemas only enforce types, enums, required fields, and persistence safeguards.
 
 ---
+
+## 2026-07-15 10:36:57 +0530 — User
+
+**Conversation:** `3bce888b-c0e6-405e-b261-a86db1127469`
+
+Complete only the seed data task.
+
+Use @docs/database-design.md 
+
+Create a seed script under @server/src/scripts/ that:
+
+- creates Alice Johnson, Bob Smith, and Carol Davis
+- creates sample tickets with varied priorities, statuses, and assignees
+- includes at least one unassigned ticket
+- includes at least one ticket with multiple comments
+- is safe to run multiple times without creating duplicate data
+
+Add an npm script to run the seed command.
+
+---
+
+## 2026-07-15 10:37:49 +0530 — Assistant
+
+**Conversation:** `3bce888b-c0e6-405e-b261-a86db1127469`
+
+## Summary
+
+Added an idempotent seed script and npm command.
+
+### Changed files
+
+- `server/src/scripts/seed.js` — new seed script
+- `server/package.json` — added `"seed": "node src/scripts/seed.js"`
+- `tool-specific/cursor-workflow/tasks.md` — marked seed task complete
+
+### Seed data
+
+**Users (3):** Alice Johnson (Requester), Bob Smith (Support Agent), Carol Davis (Support Agent)
+
+**Tickets (6):**
+
+| Title | Priority | Status | Assignee | Created by |
+|-------|----------|--------|----------|------------|
+| Cannot access email on mobile | High | Open | Bob | Alice |
+| Request new monitor | Low | In Progress | Carol | Bob |
+| VPN connection drops frequently | Medium | Resolved | Bob | Alice |
+| Password reset needed | Medium | Closed | Carol | Alice |
+| Cancel duplicate software license | Low | Cancelled | *(unassigned)* | Carol |
+| Office printer not responding | Medium | Open | *(unassigned)* | Bob |
+
+**Comments:** The VPN ticket has 3 comments; other tickets have 0–1.
+
+### Idempotency
+
+Uses `findOneAndUpdate` with `$setOnInsert` and upsert:
+
+- Users keyed by `email` (unique index)
+- Tickets keyed by `title`
+- Comments keyed by `ticketId` + `message`
+
+Re-running does not create duplicates.
+
+### Run
+
+```bash
+cd server
+npm run seed
+```
+
+### Requirements
+
+- **NFR-06**, **AC-42**, **AC-43**
+
+### Checks
+
+- Syntax check passed
+- Live seed run failed with `bad auth : authentication failed` — update `MONGODB_URI` in `server/.env` with valid Atlas credentials, then re-run `npm run seed`
+
+---

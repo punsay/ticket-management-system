@@ -27,3 +27,17 @@ Planning and specification are complete. System design and implementation are in
 ## Setup
 
 Setup instructions will be added after the client, server, database connection, and seed scripts are implemented.
+
+## Database setup
+
+1. Create a MongoDB Atlas cluster.
+2. Create a database user.
+3. Allow your current IP address in Atlas Network Access.
+4. Copy `server/.env.example` to `server/.env`.
+5. Set `MONGODB_URI` using your Atlas connection string.
+6. Run the seed script:
+
+```bash
+cd server
+npm install
+npm run seed

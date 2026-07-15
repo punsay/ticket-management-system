@@ -34,8 +34,8 @@
 
 ## 💻 Backend
 
-- [ ] MongoDB connected
-- [ ] Seed data created
+- [x] MongoDB connected
+- [x] Seed data created
 - [ ] Ticket CRUD completed
 - [ ] Comments implemented
 - [ ] Search and status filter

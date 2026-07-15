@@ -35,7 +35,7 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 - [x] Express server with safe error handling (VR-01, NFR-03)
 - [x] MongoDB connection (NFR-01, FR-13, AC-41)
 - [x] User, Ticket, and Comment models (FR-10, BR-02, BR-03)
-- [ ] Seed three users and sample tickets (NFR-06, AC-42, AC-43)
+- [x] Seed three users and sample tickets (NFR-06, AC-42, AC-43)
 - [ ] Ticket create, list, detail, and update (FR-01–FR-04, AC-05–AC-17)
 - [ ] Backend validation for ticket and comment inputs, excluding status transitions (VR-01–VR-07, VR-09–VR-11, AC-09–AC-11, AC-16, AC-17, AC-37, AC-38)
 - [ ] Comments — add and return oldest first (FR-06, FR-07, AC-18–AC-21)
