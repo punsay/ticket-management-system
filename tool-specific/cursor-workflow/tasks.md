@@ -39,9 +39,9 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 - [x] Ticket create, list, detail, and update (FR-01–FR-04, AC-05–AC-17)
 - [x] Backend validation for ticket and comment inputs, excluding status transitions (VR-01–VR-07, VR-09–VR-11, AC-09–AC-11, AC-16, AC-17, AC-37, AC-38)
 - [x] Comments — add and return oldest first (FR-06, FR-07, AC-18–AC-21)
-- [ ] Keyword search on title and description (FR-08, AC-22–AC-24)
-- [ ] Status filter on ticket list (FR-09, AC-25–AC-27)
-- [ ] Status transition rules enforced on update (FR-05, BR-04, BR-05, VR-08, AC-28–AC-35)
+- [x] Keyword search on title and description (FR-08, AC-22–AC-24)
+- [x] Status filter on ticket list (FR-09, AC-25–AC-27)
+- [x] Status transition rules enforced on update (FR-05, BR-04, BR-05, VR-08, AC-28–AC-35)
 
 ## Testing
 

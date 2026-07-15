@@ -17,8 +17,28 @@ function isNonEmptyString(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
-async function getAllTickets() {
-  return Ticket.find()
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+async function getAllTickets(filters = {}) {
+  const { search, status } = filters;
+  const query = {};
+
+  if (search) {
+    const pattern = escapeRegex(search);
+    query.$or = [
+      { title: { $regex: pattern, $options: 'i' } },
+      { description: { $regex: pattern, $options: 'i' } },
+    ];
+  } else if (status) {
+    if (!STATUSES.includes(status)) {
+      throw new AppError('Invalid status');
+    }
+    query.status = status;
+  }
+
+  return Ticket.find(query)
     .populate(TICKET_POPULATE)
     .sort({ createdAt: -1 })
     .lean();

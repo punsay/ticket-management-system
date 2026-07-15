@@ -2098,3 +2098,145 @@ Implemented the comments API. `GET /api/tickets/:id` already returned comments o
 - **VR-09, VR-10, VR-11** — message, ticket existence, acting user validation
 
 ---
+
+## 2026-07-15 21:43:36 +0530 — User
+
+**Conversation:** `488109da-8907-4a7c-8fd5-0141cab5b71e`
+
+Implement the next backend task: keyword search and status filtering.
+
+Follow the existing project docs and Cursor rules. Keep changes minimal.
+
+---
+
+## 2026-07-15 21:44:42 +0530 — Assistant
+
+**Conversation:** `488109da-8907-4a7c-8fd5-0141cab5b71e`
+
+Implemented keyword search and status filtering for `GET /api/tickets`.
+
+### Changes
+
+**`server/src/services/ticketService.js`**
+- `getAllTickets` accepts optional `{ search, status }` filters.
+- **Search:** case-insensitive partial match on `title` and `description` only (regex with escaped special characters).
+- **Status:** exact match; invalid values throw `Invalid status` (400).
+- No filters → returns all tickets (unchanged).
+
+**`server/src/controllers/ticketController.js`**
+- Parses `search` and `status` query params.
+- Returns **400** with `"Use either search or status filter, not both."` when both are provided.
+- Empty/whitespace params are ignored (treated as no filter).
+
+**`tool-specific/cursor-workflow/tasks.md`**
+- Marked keyword search and status filter tasks complete.
+
+### Requirements covered
+
+| IDs | Behaviour |
+|-----|-----------|
+| **FR-08, AC-22–AC-24** | Case-insensitive partial search on title/description; comments excluded; empty results return `200` with `[]` |
+| **FR-09, AC-25–AC-27** | Exact status filter; empty results return `200` with `[]`; search and status work independently |
+| **BR-12, BR-13, BR-14** | Search scope, exact status match, no combined filters |
+
+### Verification
+
+Manual integration checks against seeded data:
+- `GET /api/tickets` → 12 tickets
+- `GET /api/tickets?search=printer` → 1 match (case-insensitive)
+- `GET /api/tickets?status=Open` → 7 matches
+- `GET /api/tickets?search=printer&status=Open` → 400
+- `GET /api/tickets?status=BadStatus` → 400
+- `GET /api/tickets?search=zzzznotfound12345` → 200, `[]`
+
+No automated test suite exists yet for this behaviour; integration tests are a later task (AC-45/46 cover status transitions only).
+
+---
+
+## 2026-07-15 22:04:47 +0530 — User
+
+**Conversation:** `f79b07ce-e136-4924-b47d-c1e554d04276`
+
+Implement the next backend task: ticket status transition rules.
+
+Follow the existing project docs and Cursor rules. Keep changes minimal.
+
+---
+
+## 2026-07-15 22:06:49 +0530 — Assistant
+
+**Conversation:** `f79b07ce-e136-4924-b47d-c1e554d04276`
+
+Status transition rules are already implemented in the ticket update flow. I verified them end-to-end and marked the task complete in `tasks.md`.
+
+### Implementation (already in place)
+
+**`server/src/services/statusTransitionService.js`** — single source of truth for BR-04/BR-05:
+
+```1:22:server/src/services/statusTransitionService.js
+const AppError = require('../utils/AppError');
+
+const ALLOWED_TRANSITIONS = {
+  Open: ['In Progress', 'Cancelled'],
+  'In Progress': ['Resolved', 'Cancelled'],
+  Resolved: ['Closed'],
+  Closed: [],
+  Cancelled: [],
+};
+
+function validateTransition(fromStatus, toStatus) {
+  const allowed = ALLOWED_TRANSITIONS[fromStatus] || [];
+
+  if (!allowed.includes(toStatus)) {
+    throw new AppError(`Cannot transition from ${fromStatus} to ${toStatus}`, 409);
+  }
+}
+
+module.exports = {
+  ALLOWED_TRANSITIONS,
+  validateTransition,
+};
+```
+
+**`server/src/services/ticketService.js`** — `updateTicket` enforces transitions on status change; same status is a no-op:
+
+```158:167:server/src/services/ticketService.js
+  if (status !== undefined) {
+    if (!STATUSES.includes(status)) {
+      throw new AppError('Invalid status');
+    }
+
+    if (status !== ticket.status) {
+      statusTransitionService.validateTransition(ticket.status, status);
+      ticket.status = status;
+    }
+  }
+```
+
+Invalid transitions return **HTTP 409** with a readable message via centralized error handling in `server/src/app.js`.
+
+### Verification
+
+| Scenario | Result |
+|----------|--------|
+| Open → In Progress | `200` |
+| Open → Resolved | `409` — `"Cannot transition from Open to Resolved"` |
+| In Progress → Open | `409` |
+| Closed → In Progress | `409` |
+| Same status (no-op) | `200` |
+| Invalid status value | `400` — `"Invalid status"` |
+
+### Changed files
+
+- `tool-specific/cursor-workflow/tasks.md` — marked status transitions task complete
+
+### Related requirements
+
+- **FR-05**, **BR-04**, **BR-05**, **VR-08**
+- **AC-28–AC-35** (backend enforcement; UI error display is a separate frontend task)
+
+### Next backend task
+
+Integration tests for valid and invalid status transitions (**AC-45**, **AC-46**, **NFR-04**, **NFR-05**).
+
+---

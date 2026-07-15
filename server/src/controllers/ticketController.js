@@ -1,8 +1,21 @@
 const ticketService = require('../services/ticketService');
+const AppError = require('../utils/AppError');
 
 async function listTickets(req, res, next) {
   try {
-    const tickets = await ticketService.getAllTickets();
+    const { search, status } = req.query;
+    const hasSearch = typeof search === 'string' && search.trim().length > 0;
+    const hasStatus = typeof status === 'string' && status.trim().length > 0;
+
+    if (hasSearch && hasStatus) {
+      throw new AppError('Use either search or status filter, not both.');
+    }
+
+    const tickets = await ticketService.getAllTickets({
+      search: hasSearch ? search.trim() : undefined,
+      status: hasStatus ? status.trim() : undefined,
+    });
+
     res.status(200).json({
       success: true,
       data: tickets,

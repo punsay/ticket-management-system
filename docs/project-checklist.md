@@ -39,7 +39,7 @@
 - [x] Seed data created
 - [x] Ticket CRUD completed
 - [x] Comments implemented
-- [ ] Search and status filter
+- [x] Search and status filter
 - [ ] Status transition rules implemented
 - [ ] Backend validation
 - [ ] Error handling
