@@ -52,6 +52,17 @@ This document records reviews of completed implementation phases. It is updated 
 - Confirmed comment input and creator validation through Postman checks
 - Confirmed successful creation and expected error responses
 
+
+### Review 4 — Search, filtering, and status transitions
+
+**Date:** 2026-07-15
+
+- Reviewed keyword search and exact status filtering on `GET /api/tickets`
+- Confirmed search is case-insensitive and matches partial title or description text
+- Confirmed combined search and status parameters are rejected
+- Confirmed valid status transitions succeed and invalid transitions are rejected
+- Confirmed behaviour through manual Postman checks
+
 ## Feedback Summary
 
 ### Positive
@@ -69,7 +80,7 @@ This document records reviews of completed implementation phases. It is updated 
 
 - Business rules such as valid assignees and ticket status transitions must remain in the service layer.
 - Centralized error handling still needs to be implemented for feature APIs.
-- Search, filter, and status-transition APIs still need implementation and review.
+- Automated integration tests are still required for search, filtering, and status-transition behaviour.
 - Integration tests are still required for valid and invalid status transitions.
 
 ## Action Items
@@ -80,7 +91,7 @@ This document records reviews of completed implementation phases. It is updated 
 - [x] Add repeatable seed data.
 - [x] Review seeded users and ticket CRUD APIs.
 - [x] Review comments API.
-- [ ] Review remaining backend APIs after implementation.
+- [x] Review search, filtering, and status-transition behaviour.
 - [ ] Review frontend behaviour after UI implementation.
 - [ ] Review integration tests and final acceptance criteria.
 

@@ -40,7 +40,7 @@
 - [x] Ticket CRUD completed
 - [x] Comments implemented
 - [x] Search and status filter
-- [ ] Status transition rules implemented
+- [x] Status transition rules implemented
 - [ ] Backend validation
 - [ ] Error handling
 
@@ -60,7 +60,7 @@
 
 ## 🧪 Testing
 
-- [x] Seeded-users, ticket CRUD, and comment APIs manually validated in Postman
+- [x] Seeded-users, ticket CRUD, comments, search/filter, and status transitions manually validated in Postman
 - [ ] Integration tests
 - [ ] Status transition tests
 - [ ] Testing strategy

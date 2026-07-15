@@ -4,7 +4,7 @@ Personal reflection on the development process, challenges faced, skills gained,
 
 ## Overview
 
-This reflection is being updated throughout the project. So far, the planning, design, project setup, MongoDB Atlas connection, Mongoose models, and seed-data phases are complete.
+This reflection is being updated throughout the project. So far, planning, design, project setup, MongoDB Atlas integration, backend APIs, search and filtering, and ticket status-transition enforcement are complete.
 
 ## What Went Well
 
@@ -13,7 +13,7 @@ This reflection is being updated throughout the project. So far, the planning, d
 - Cursor rules made later prompts shorter while preserving project scope and coding conventions.
 - Separating the work into small tasks made it easier to verify each change before continuing.
 - The backend structure was corrected early so all application source code is consistently stored under `server/src/`.
-- The MongoDB connection, models, and seed data were implemented and verified successfully.
+- The MongoDB connection, models, seed data, backend APIs, search and filtering, and status-transition behaviour were implemented and manually verified successfully.
 - Prompt-history automation and meaningful commits provide a traceable development record.
 
 ## Challenges
@@ -36,9 +36,10 @@ This reflection is being updated throughout the project. So far, the planning, d
 - Diagnosing port conflicts with `lsof` and inspecting processes with `ps`
 - Debugging Atlas authentication errors without exposing credentials
 - Recording AI-assisted decisions, corrections, and debugging steps
+- Verifying REST API behaviour and status-transition rules with Postman
 
 ## Conclusion
 
-The project foundation is now stable. The planning documents, Cursor rules, React and Express setup, MongoDB Atlas connection, Mongoose models, and seed data are aligned and working.
+The project foundation and Core backend are now stable. The planning documents, Cursor rules, React and Express setup, MongoDB Atlas connection, models, seed data, APIs, search and filtering, and status-transition rules are aligned and working.
 
-The next major work is implementing backend APIs and business rules, followed by the frontend, integration tests, final code review, and completion of the project documentation. This reflection will be updated as those phases are completed.
+The next major work is the frontend, automated integration tests, final code review, and completion of the project documentation. This reflection will be updated as those phases are completed.
