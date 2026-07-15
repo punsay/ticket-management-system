@@ -1863,3 +1863,60 @@ npm run seed
 - Live seed run failed with `bad auth : authentication failed` — update `MONGODB_URI` in `server/.env` with valid Atlas credentials, then re-run `npm run seed`
 
 ---
+
+## 2026-07-15 14:51:48 +0530 — User
+
+**Conversation:** `f49bad54-4802-4e62-8336-b893fa924a2f`
+
+Complete only the seeded users API task.
+
+Use @docs/api-specification.md 
+
+Implement `GET /api/users` using the existing backend architecture.
+
+Return all seeded users in the documented response format.
+
+---
+
+## 2026-07-15 14:52:36 +0530 — Assistant
+
+**Conversation:** `f49bad54-4802-4e62-8336-b893fa924a2f`
+
+Implemented `GET /api/users` following the existing Routes → Controllers → Services → Models architecture.
+
+### Changed files
+
+- `server/src/services/userService.js` — fetches all users with `_id`, `name`, `email`, `role`, sorted by name
+- `server/src/controllers/userController.js` — handles the request and returns the standard success envelope
+- `server/src/routes/userRoutes.js` — registers `GET /users`
+- `server/src/app.js` — mounts user routes under `/api`
+
+### Response format
+
+Matches `docs/api-specification.md`:
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "...",
+      "name": "Alice Johnson",
+      "email": "alice.johnson@example.com",
+      "role": "Requester"
+    }
+  ]
+}
+```
+
+### Related requirements
+
+- **FR-10** — pre-seeded users exposed for client use
+- **AC-02** — three seeded users available for the acting-user dropdown
+- **NFR-06** — seeded user data served from the backend
+
+### Verification
+
+`GET http://localhost:5001/api/users` returned all three seeded users (Alice, Bob, Carol) in the documented format. Errors are passed to the existing centralized error middleware for a `500` response.
+
+---

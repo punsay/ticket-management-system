@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const healthRoutes = require('./routes/healthRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(
 app.use(express.json());
 
 app.use('/api', healthRoutes);
+app.use('/api', userRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

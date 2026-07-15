@@ -35,6 +35,7 @@
 ## 💻 Backend
 
 - [x] MongoDB connected
+- [x] User, Ticket, and Comment models created
 - [x] Seed data created
 - [ ] Ticket CRUD completed
 - [ ] Comments implemented
