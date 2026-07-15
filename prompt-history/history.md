@@ -2040,3 +2040,61 @@ Implemented `GET /api/tickets/:id` and `PUT /api/tickets/:id` following the exis
 Tested against the running server: detail returns comments oldest-first; valid updates return `200`; invalid transitions return `409`; missing ticket returns `404`; empty title returns `400`.
 
 ---
+
+## 2026-07-15 18:35:09 +0530 — User
+
+**Conversation:** `31461f05-a725-4b5b-8820-1a17959cffcb`
+
+Complete only the comments API task.
+
+Use @docs/api-specification.md 
+
+Implement:
+
+- POST /api/tickets/:id/comments
+- return ticket comments oldest first in GET /api/tickets/:id
+
+Include the documented validation for `message`, `createdBy`, ticket ID, and ticket existence.
+
+---
+
+## 2026-07-15 18:37:07 +0530 — Assistant
+
+**Conversation:** `31461f05-a725-4b5b-8820-1a17959cffcb`
+
+Implemented the comments API. `GET /api/tickets/:id` already returned comments oldest-first; I added `POST /api/tickets/:id/comments`.
+
+### Changed files
+
+**`server/src/services/ticketService.js`** — added `addComment`:
+- Invalid or missing ticket ID → `404` `"Ticket not found"`
+- Empty/missing `message` → `400` `"Message is required"`
+- Missing/invalid `createdBy` → `400` `"Invalid user"`
+- Creates comment with populated `createdBy` (`{ _id, name }`)
+
+**`server/src/controllers/ticketController.js`** — added `addComment` handler returning `201`
+
+**`server/src/routes/ticketRoutes.js`** — registered `POST /tickets/:id/comments`
+
+### Behaviour
+
+| Endpoint | Status | Notes |
+|----------|--------|-------|
+| `GET /api/tickets/:id` | Already done | Comments sorted by `createdAt` ascending |
+| `POST /api/tickets/:id/comments` | New | Returns created comment with populated `createdBy` |
+
+### Verification (against running server)
+
+- Valid comment → `201` with populated `createdBy`
+- Empty `message` → `400` `"Message is required"`
+- Missing/invalid `createdBy` → `400` `"Invalid user"`
+- Non-existent/invalid ticket ID → `404` `"Ticket not found"`
+- Multi-comment ticket (VPN) → comments returned oldest first
+
+### Related requirements
+
+- **FR-06, FR-07** — add comment, oldest-first display
+- **AC-18, AC-19, AC-20, AC-38** — comment create, order, validation, non-existent ticket
+- **VR-09, VR-10, VR-11** — message, ticket existence, acting user validation
+
+---

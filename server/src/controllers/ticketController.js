@@ -48,9 +48,22 @@ async function updateTicket(req, res, next) {
   }
 }
 
+async function addComment(req, res, next) {
+  try {
+    const comment = await ticketService.addComment(req.params.id, req.body);
+    res.status(201).json({
+      success: true,
+      data: comment,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   listTickets,
   createTicket,
   getTicket,
   updateTicket,
+  addComment,
 };

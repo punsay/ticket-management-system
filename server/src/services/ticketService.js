@@ -150,9 +150,44 @@ async function updateTicket(id, input) {
   return ticket.populate(TICKET_POPULATE);
 }
 
+async function addComment(ticketId, input) {
+  if (!mongoose.isValidObjectId(ticketId)) {
+    throw new AppError('Ticket not found', 404);
+  }
+
+  const ticket = await Ticket.findById(ticketId).select('_id');
+  if (!ticket) {
+    throw new AppError('Ticket not found', 404);
+  }
+
+  const { message, createdBy } = input;
+
+  if (!isNonEmptyString(message)) {
+    throw new AppError('Message is required');
+  }
+
+  if (!createdBy) {
+    throw new AppError('Invalid user');
+  }
+
+  const creator = await userService.findUserById(createdBy);
+  if (!creator) {
+    throw new AppError('Invalid user');
+  }
+
+  const comment = await Comment.create({
+    ticketId: ticket._id,
+    message: message.trim(),
+    createdBy: creator._id,
+  });
+
+  return comment.populate(COMMENT_POPULATE);
+}
+
 module.exports = {
   getAllTickets,
   getTicketById,
   createTicket,
   updateTicket,
+  addComment,
 };

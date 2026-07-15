@@ -38,7 +38,7 @@
 - [x] User, Ticket, and Comment models created
 - [x] Seed data created
 - [x] Ticket CRUD completed
-- [ ] Comments implemented
+- [x] Comments implemented
 - [ ] Search and status filter
 - [ ] Status transition rules implemented
 - [ ] Backend validation
