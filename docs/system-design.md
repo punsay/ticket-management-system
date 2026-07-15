@@ -136,7 +136,7 @@ Production deployment is outside Core scope. Data persists across normal applica
 ```
 ticket-management-system/
 ├── client/          # React + Tailwind frontend
-├── server/          # Express API + Mongoose models
+├── server/src          # Express API + Mongoose models
 │   ├── models/
 │   ├── routes/
 │   ├── controllers/
