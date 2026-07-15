@@ -81,11 +81,11 @@ backend, and tests follow the same behaviour.
 
 ## Code Generation
 
-_To be updated during implementation._
+I used Cursor to complete the initial React and Express setup, connect the backend to MongoDB Atlas, create the Mongoose models, and add the seed script. Each prompt was limited to one task, and I reviewed the generated changes before continuing.
 
 ## Validation of AI-Generated Code
 
-_To be updated during implementation._
+I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB.
 
 ## Testing
 
@@ -93,11 +93,14 @@ _To be updated when tests are written and run._
 
 ## Debugging
 
-_To be updated when real implementation issues are investigated._
+I documented two setup issues in `docs/debugging-log.md`:
+
+- port `5000` was already in use by a macOS service, so the backend was moved to port `5001`
+- the seed script initially failed because `MONGODB_URI` still contained an old Atlas password; after updating the local environment value, the seed completed successfully
 
 ## Code Review
 
-_To be updated after implementation review._
+I completed an initial review of the project setup, backend structure, MongoDB connection, Mongoose models, and seed data. The review notes and remaining follow-up items are recorded in `docs/code-review.md`.
 
 ## Responsible Information Sharing
 

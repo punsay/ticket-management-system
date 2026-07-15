@@ -8,6 +8,14 @@ This log records real issues encountered during development and how they were re
 
 ## Issue Log
 
+### Port 5000 already in use
+
+**Status:** Resolved
+
+The backend could not start on port `5000` because it was already being used by a macOS system service.
+
+The backend port was changed to `5001`, and the health endpoint worked successfully.
+
 ### MongoDB Atlas authentication failure during seed run
 
 **Status:** Resolved
