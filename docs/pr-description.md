@@ -1,12 +1,12 @@
-# Pull Request Description
+# Project Change Summary
 
-Working draft for the final project pull request.
+Working draft summarizing the project changes for final submission.
 
 ## Overview
 
-This pull request builds the foundation of a MERN Support Ticket Management System. Planning, design, Cursor workflow rules, project setup, MongoDB Atlas integration, data models, and seed data are complete.
+This document summarizes the work completed for the MERN Support Ticket Management System. Planning, design, Cursor workflow rules, project setup, MongoDB Atlas integration, data models, seed data, seeded-users API, and ticket CRUD APIs are complete.
 
-The ticket APIs, frontend feature screens, and integration tests are still in progress.
+Comments, search, filtering, status transitions, frontend feature screens, and integration tests are still in progress.
 
 ## Summary
 
@@ -22,6 +22,8 @@ Completed so far:
 - Added User, Ticket, and Comment Mongoose models
 - Added repeatable seed data for users, tickets, and comments
 - Documented and resolved a MongoDB authentication issue
+- Added the seeded-users API
+- Added ticket create, list, detail, and update APIs
 
 ## Changes
 
@@ -64,10 +66,11 @@ Completed checks:
 - [x] Required users, tickets, and comments are created
 - [x] Seed script can be rerun without duplicate data
 - [x] `.env` and `node_modules` are not tracked
+- [x] Seeded-users API manually verified in Postman
+- [x] Ticket CRUD APIs manually verified in Postman
 
 Pending checks:
 
-- [ ] Ticket API tests
 - [ ] Comment API tests
 - [ ] Search and status-filter tests
 - [ ] Valid status-transition integration tests
@@ -75,6 +78,6 @@ Pending checks:
 - [ ] Frontend workflow verification
 - [ ] Final review against AC-01 through AC-48
 
-## Related Issues
+## Related Issues and Fixes
 
 - MongoDB Atlas seed authentication failed after the database-user password changed. The local `MONGODB_URI` was updated and the seed script then completed successfully.

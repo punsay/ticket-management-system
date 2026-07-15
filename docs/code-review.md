@@ -32,6 +32,16 @@ This document records reviews of completed implementation phases. It is updated 
 - Confirmed the seed script can be run multiple times without creating duplicates.
 - Confirmed the health endpoint still works after the database connection changes.
 
+### Review 2 — Seeded users and ticket CRUD APIs
+
+**Date:** 2026-07-15
+
+- Reviewed `GET /api/users`
+- Reviewed ticket create, list, detail, and update APIs
+- Confirmed layered backend structure and documented response format
+- Confirmed ticket creation defaults to `Open`
+- Confirmed validation and update behaviour through Postman checks
+
 ## Feedback Summary
 
 ### Positive
@@ -49,7 +59,7 @@ This document records reviews of completed implementation phases. It is updated 
 
 - Business rules such as valid assignees and ticket status transitions must remain in the service layer.
 - Centralized error handling still needs to be implemented for feature APIs.
-- Ticket, comment, search, filter, and status-transition APIs still need implementation and review.
+- Comment, search, filter, and status-transition APIs still need implementation and review.
 - Integration tests are still required for valid and invalid status transitions.
 
 ## Action Items
@@ -58,7 +68,8 @@ This document records reviews of completed implementation phases. It is updated 
 - [x] Use MongoDB Atlas through `MONGODB_URI`.
 - [x] Create User, Ticket, and Comment models.
 - [x] Add repeatable seed data.
-- [ ] Review backend APIs after ticket and comment features are implemented.
+- [x] Review seeded users and ticket CRUD APIs.
+- [ ] Review remaining backend APIs after implementation.
 - [ ] Review frontend behaviour after UI implementation.
 - [ ] Review integration tests and final acceptance criteria.
 
