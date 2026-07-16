@@ -65,15 +65,14 @@ I want to set up the documentation and repository structure before starting deve
 
 Create the following folders and Markdown files:
 
-docs/
-- requirement-analysis.md
+- requirements-analysis.md
 - system-design.md
 - database-design.md
 - api-specification.md
-- testing-strategy.md
-- testing-report.md
-- debugging-log.md
-- code-review.md
+- test-strategy.md
+- test-results.md
+- debugging-notes.md
+- code-review-notes-notes-notes-notes-notes-notes-notes.md
 - reflection.md
 - pr-description.md
 
@@ -133,15 +132,15 @@ ticket-management-system/
 ├── tool-workflow.md
 ├── .gitignore
 ├── .env.example
-├── docs/
-│   ├── requirement-analysis.md
+├── 
+│   ├── requirements-analysis.md
 │   ├── system-design.md
 │   ├── database-design.md
 │   ├── api-specification.md
 │   ├── testing-strategy.md
-│   ├── testing-report.md
-│   ├── debugging-log.md
-│   ├── code-review.md
+│   ├── test-results.md
+│   ├── debugging-notes.md
+│   ├── code-review-notes-notes-notes.md
 │   ├── reflection.md
 │   └── pr-description.md
 └── tool-specific/cursor-workflow/
@@ -154,18 +153,18 @@ ticket-management-system/
 
 ---
 
-## `docs/` — project documentation
+## `project documentation
 
 | File | Purpose |
 |------|---------|
-| `requirement-analysis.md` | Captures what the system must do — user needs, scope, constraints, and assumptions. |
+| `requirements-analysis.md` | Captures what the system must do — user needs, scope, constraints, and assumptions. |
 | `system-design.md` | High-level architecture — components, data flow, tech stack, and deployment overview. |
 | `database-design.md` | Data model — entities, fields, relationships, and indexes. |
-| `api-specification.md` | REST API contract — endpoints, request/response formats, auth, and errors. |
-| `testing-strategy.md` | How testing will be done — types, tools, coverage targets, and CI integration. |
-| `testing-report.md` | Results of test runs — pass/fail summary, coverage, and known issues. |
-| `debugging-log.md` | Bug diary — issues found, investigation steps, root causes, and fixes. |
-| `code-review.md` | Review record — feedback received, action items, and resolutions. |
+| `api-contract.md` | REST API contract — endpoints, request/response formats, auth, and errors. |
+| `test-strategy.md` | How testing will be done — types, tools, coverage targets, and CI integration. |
+| `test-results.md` | Results of test runs — pass/fail summary, coverage, and known issues. |
+| `debugging-notes.md` | Bug diary — issues found, investigation steps, root causes, and fixes. |
+| `code-review-notes-notes-notes.md` | Review record — feedback received, action items, and resolutions. |
 | `reflection.md` | Post-project reflection — what went well, challenges, and lessons learned. |
 | `pr-description.md` | PR template and archive — summaries, test plans, and review notes. |
 
@@ -288,7 +287,7 @@ Do not generate application code, API endpoints, database schema, folder structu
 
 **What was deliberately avoided** — API endpoints, database schema, folder structure, code, and implementation details.
 
-The confirm-before-implementation table is the main handoff into `requirement-analysis.md` and `spec.md`. Resolving those 12 questions first will keep later design and implementation aligned. Want me to work through `requirement-analysis.md` next using this context?
+The confirm-before-implementation table is the main handoff into `requirements-analysis.md` and `spec.md`. Resolving those 12 questions first will keep later design and implementation aligned. Want me to work through `requirements-analysis.md` next using this context?
 
 ---
 
@@ -345,7 +344,7 @@ Corrections applied to `project-context.md`. Summary:
 3. **Deletion** — Can tickets or comments be deleted, or is that out of scope?
 4. **Comment editing** — Are comments editable after creation?
 
-These four should be resolved in `requirement-analysis.md` before design and implementation. Want me to draft that next?
+These four should be resolved in `requirements-analysis.md` before design and implementation. Want me to draft that next?
 
 ---
 
@@ -356,9 +355,9 @@ These four should be resolved in `requirement-analysis.md` before design and imp
 Read these files first:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 
-Help me complete `docs/requirement-analysis.md` for the Core scope of the Support Ticket Management System.
+Help me complete `requirements-analysis.md` for the Core scope of the Support Ticket Management System.
 
 Keep the existing headings where possible.
 
@@ -412,7 +411,7 @@ After editing, summarize what was added and highlight anything I should review b
 
 **Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
 
-`docs/requirement-analysis.md` is complete. Here is what was added and what to review next.
+`requirements-analysis.md` is complete. Here is what was added and what to review next.
 
 ## What was added
 
@@ -460,8 +459,8 @@ Want me to draft `acceptance-criteria.md` next using these requirements?
 
 **Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
 
-@tool-specific/cursor-workflow/project-context.md @docs/requirement-analysis.md 
-Update `docs/requirement-analysis.md` to resolve the listed open decisions using these Core choices:
+@tool-specific/cursor-workflow/project-context.md @requirements-analysis.md 
+Update `requirements-analysis.md` to resolve the listed open decisions using these Core choices:
 
 - No default acting user; require selection from the seeded-user dropdown.
 - Search is case-insensitive partial matching across title and description.
@@ -479,7 +478,7 @@ Do not add authentication, advanced permissions, pagination, or other optional f
 
 **Conversation:** `8f641c14-7cf8-4ea5-aac5-8088f9f135ed`
 
-`docs/requirement-analysis.md` is updated. Summary of changes:
+`requirements-analysis.md` is updated. Summary of changes:
 
 ## Resolved decisions (now in **Confirmed Open Decisions**)
 
@@ -517,7 +516,7 @@ No open decisions remain — you can move on to `acceptance-criteria.md` when re
 Read these files first:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/acceptance-criteria.md 
 
 Help me complete `tool-specific/cursor-workflow/acceptance-criteria.md` for the Core scope.
@@ -609,7 +608,7 @@ Recommend resolving **#1** before `spec.md`; the others can be clarified during 
 Read these files:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/acceptance-criteria.md 
 
 Resolve the review findings using these decisions:
@@ -644,7 +643,7 @@ All three documents are now aligned. Here is exactly what changed:
 - **Success Criteria** — Search and filter described as independent operations.
 - **Confirmed Core Decisions** — Added six decisions: optional assignee, assign/reassign on update, independent search/filter, acting user scope, `createdBy` validation without auth.
 
-## `requirement-analysis.md`
+## `requirements-analysis.md`
 
 - **FR-01** — Assignee is optional on create.
 - **FR-08 / FR-09** — Search and status filter each work independently.
@@ -682,7 +681,7 @@ All seven review decisions are now consistent across the three documents. No con
 Read:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/acceptance-criteria.md 
 
 Complete @tool-specific/cursor-workflow/spec.md 
@@ -742,7 +741,7 @@ The spec is behavioural only — no code, API endpoints, database schema, or opt
 Read:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/acceptance-criteria.md 
 @tool-specific/cursor-workflow/spec.md 
 
@@ -776,7 +775,7 @@ Summary of changes to `tool-specific/cursor-workflow/spec.md`:
 | **Validation** | Replaced “no acting user” row with **missing or invalid `createdBy`** on ticket/comment create |
 | **Error handling** | Merged into one section — short intro, single validation table, one paragraph for UI/error rules |
 | **Data persistence** | Clarified data remains after **normal application restarts and MongoDB restarts**; storage named as MongoDB |
-| **References** | Full repo paths (`tool-specific/cursor-workflow/...`, `docs/...`); added self-reference; intro and testing section paths updated |
+| **References** | Full repo paths (`tool-specific/cursor-workflow/...`, `...`); added self-reference; intro and testing section paths updated |
 
 No new features or implementation details were added.
 
@@ -789,7 +788,7 @@ No new features or implementation details were added.
 Read:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/spec.md 
 @tool-specific/cursor-workflow/acceptance-criteria.md 
 
@@ -855,7 +854,7 @@ No code or optional features were added. Ready to start T-01 when you are.
 Read:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/spec.md 
 @tool-specific/cursor-workflow/acceptance-criteria.md 
 @tool-specific/cursor-workflow/tasks.md 
@@ -916,15 +915,15 @@ Each remaining item is a single checkbox with a short label and, where useful, l
 Read:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/spec.md 
 @tool-specific/cursor-workflow/acceptance-criteria.md 
 
 Complete:
 
-@docs/system-design.md 
-@docs/database-design.md 
-@docs/api-specification.md 
+@system-design.md 
+@database-design.md 
+@api-specification.md 
 
 Keep the design simple for a small MERN application.
 
@@ -947,7 +946,7 @@ After updating the documents, summarize the main design decisions.
 
 Three design documents are complete. Main decisions:
 
-## System design (`docs/system-design.md`)
+## System design (`system-design.md`)
 
 - **Two-tier MERN layout** — React + Tailwind client, Express API, MongoDB via Mongoose
 - **Layered backend** — Routes → controllers → services → models, with a shared status-transition module
@@ -956,7 +955,7 @@ Three design documents are complete. Main decisions:
 - **Independent search/filter** — Separate query modes on the ticket list API
 - **Local dev only** — MongoDB + client + server; data survives restarts
 
-## Database design (`docs/database-design.md`)
+## Database design (`database-design.md`)
 
 - **Three collections** — `users`, `tickets`, `comments`
 - **References** — `ObjectId` refs for `createdBy`, optional `assignedTo`, and `ticketId`
@@ -966,7 +965,7 @@ Three design documents are complete. Main decisions:
 - **Indexes** — Email (unique), status, ticketId+createdAt; regex search for Core volume
 - **Seed data** — Three users plus varied sample tickets and comments
 
-## API specification (`docs/api-specification.md`)
+## API specification (`api-specification.md`)
 
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
@@ -1196,7 +1195,7 @@ Created **`.cursor/rules/code-quality.mdc`**.
 - Consistent API shapes with `success: true/false` and `data` / `error.message`
 - No stack traces, secrets, or internal details in client-facing errors
 
-**Note:** `docs/api-specification.md` currently documents responses without the `success` field. When you implement the backend, either update that doc to match this rule or adjust the rule — they should stay aligned. Want me to update the API spec to use the `success` wrapper?
+**Note:** `api-specification.md` currently documents responses without the `success` field. When you implement the backend, either update that doc to match this rule or adjust the rule — they should stay aligned. Want me to update the API spec to use the `success` wrapper?
 
 ---
 
@@ -1286,14 +1285,14 @@ Want `tasks.md` updated to mark the Cursor rules item complete?
 Read:
 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/spec.md 
 @tool-specific/cursor-workflow/acceptance-criteria.md 
 @tool-specific/cursor-workflow/tasks.md 
-@docs/project-checklist.md 
-@docs/system-design.md 
-@docs/database-design.md 
-@docs/api-specification.md 
+@project-checklist.md 
+@system-design.md 
+@database-design.md 
+@api-specification.md 
 @.cursor/rules/ 
 
 Check for contradictions or missing Core requirements.
@@ -1313,7 +1312,7 @@ Report only issues that would block implementation.
 
 ### 1. Conflicting API error response shape (active rules)
 
-**`code-quality.mdc`** (always on) and **`docs/api-specification.md`** require:
+**`code-quality.mdc`** (always on) and **`api-specification.md`** require:
 
 ```json
 { "success": false, "error": { "message": "..." } }
@@ -1327,7 +1326,7 @@ When implementing `server/**/*`, both rules apply. Pick one envelope before writ
 
 ### 2. Undefined behaviour when both `search` and `status` are sent
 
-**`docs/api-specification.md`** allows `GET /api/tickets?search=...` or `?status=...` and states Core does not support combined use, but it does **not** define server behaviour if both query params are present (reject with `400`, ignore one, prefer one, etc.).
+**`api-specification.md`** allows `GET /api/tickets?search=...` or `?status=...` and states Core does not support combined use, but it does **not** define server behaviour if both query params are present (reject with `400`, ignore one, prefer one, etc.).
 
 **BR-14** / **COD-08** forbid combined use from a product perspective; the API contract is still incomplete for implementation of `GET /api/tickets`.
 
@@ -1373,11 +1372,11 @@ Everything else is consistent enough to start project setup and backend/frontend
 
 Read:
 
-@docs/api-specification.md 
+@api-specification.md 
 @.cursor/rules/architecture-backend.mdc 
 @.cursor/rules/code-quality.mdc 
 @.cursor/rules/frontend.mdc 
-@docs/requirement-analysis.md 
+@requirements-analysis.md 
 @tool-specific/cursor-workflow/spec.md 
 Resolve the blocking conflicts using these decisions:
 
@@ -1421,7 +1420,7 @@ Conflicts resolved. Summary of changes:
 
 ## Files changed
 
-### `docs/api-specification.md`
+### `api-specification.md`
 - Documented **HTTP 400** when both `search` and `status` are sent, with the exact error message
 - Standardized **POST/PUT/comment** success responses to `{ success: true, data }`
 - Added explicit **404** error envelope for ticket detail
@@ -1452,9 +1451,9 @@ Read:
 @tool-specific/cursor-workflow/project-context.md 
 @tool-specific/cursor-workflow/spec.md 
 @tool-specific/cursor-workflow/tasks.md 
-@docs/system-design.md 
-@docs/database-design.md 
-@docs/api-specification.md 
+@system-design.md 
+@database-design.md 
+@api-specification.md 
 @.cursor/rules/ 
 
 Complete only the project scaffolding task.
@@ -1564,7 +1563,7 @@ Open `http://localhost:5173` — you should see “Support Ticket Management Sys
 
 ## Assumptions
 
-1. **Ports** — Server on `5000`, client on `5173` (per `docs/api-specification.md`).
+1. **Ports** — Server on `5000`, client on `5173` (per `api-specification.md`).
 2. **Module systems** — Server uses CommonJS (`require`); client uses ES modules (Vite default).
 3. **Health endpoint** — `GET /api/health` under the `/api` prefix; not in the API spec yet, added for scaffolding only.
 4. **CORS** — Restricted to `CLIENT_URL` (`http://localhost:5173` by default).
@@ -1625,8 +1624,8 @@ Read:
 
 @.cursor/rules/architecture-backend.mdc 
 @tool-specific/cursor-workflow/project-context.md 
-@docs/system-design.md 
-@docs/database-design.md 
+@system-design.md 
+@database-design.md 
 @tool-specific/cursor-workflow/cursor-rules-or-instructions.md 
 @.env.example 
 
@@ -1658,13 +1657,13 @@ Documentation now records MongoDB Atlas as the chosen database environment. Summ
 - Added principles: database via API only (`MONGODB_URI`), no committed credentials
 - Success criteria point to Atlas setup instructions
 
-### `docs/system-design.md`
+### `system-design.md`
 - Overview covers Atlas, `MONGODB_URI`, Zod, and Mongoose validation
 - Diagram and tech stack table updated for Atlas
 - Security section covers frontend isolation and layered validation
 - Deployment steps use Atlas instead of local MongoDB/Docker
 
-### `docs/database-design.md`
+### `database-design.md`
 - Overview and new **Connection** section: Atlas, `MONGODB_URI`, no committed credentials, backend-only access
 - **Validation** table: Zod (API), Mongoose (persistence), services (business rules)
 
@@ -1744,7 +1743,7 @@ You should see `Connected to MongoDB Atlas` followed by the server URL. No model
 **Conversation:** `8e3fe7df-42c5-40b3-92be-37458ecd5a83`
 
 Complete only the Mongoose models task.
-Use @docs/database-design.md '
+Use @database-design.md '
 Create the User, Ticket, and Comment models under `server/src/models/`.
 
 Include the documented fields, references, enums, timestamps, defaults, and indexes.
@@ -1755,7 +1754,7 @@ Include the documented fields, references, enums, timestamps, defaults, and inde
 
 **Conversation:** `8e3fe7df-42c5-40b3-92be-37458ecd5a83`
 
-Mongoose models are in place under `server/src/models/` per `docs/database-design.md`.
+Mongoose models are in place under `server/src/models/` per `database-design.md`.
 
 ### `server/src/models/user.js`
 - Fields: `name`, `email`, `role` (enum: `Requester`, `Support Agent`)
@@ -1791,7 +1790,7 @@ Assignee and status-transition rules stay in the service layer; the schemas only
 
 Complete only the seed data task.
 
-Use @docs/database-design.md 
+Use @database-design.md 
 
 Create a seed script under @server/src/scripts/ that:
 
@@ -1870,7 +1869,7 @@ npm run seed
 
 Complete only the seeded users API task.
 
-Use @docs/api-specification.md 
+Use @api-specification.md 
 
 Implement `GET /api/users` using the existing backend architecture.
 
@@ -1893,7 +1892,7 @@ Implemented `GET /api/users` following the existing Routes → Controllers → S
 
 ### Response format
 
-Matches `docs/api-specification.md`:
+Matches `api-specification.md`:
 
 ```json
 {
@@ -1927,7 +1926,7 @@ Matches `docs/api-specification.md`:
 
 Complete only the ticket creation and listing API task.
 
-Use @docs/api-specification.md 
+Use @api-specification.md 
 
 Implement:
 
@@ -1992,7 +1991,7 @@ Tested against the running server: list returns seeded tickets; valid create ret
 
 Complete the remaining ticket detail and update APIs.
 
-Use @docs/api-specification.md 
+Use @api-specification.md 
 
 Implement:
 
@@ -2047,7 +2046,7 @@ Tested against the running server: detail returns comments oldest-first; valid u
 
 Complete only the comments API task.
 
-Use @docs/api-specification.md 
+Use @api-specification.md 
 
 Implement:
 

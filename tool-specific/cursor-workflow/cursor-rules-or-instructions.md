@@ -61,11 +61,11 @@ Rules are living guidance, not frozen law. Update a `.mdc` file when:
 - A rule conflicts with an updated spec or API doc (align the rule and docs together)
 - A convention proves too heavy for this small project (simplify)
 
-Prefer small, focused edits to one rule at a time. After changing a rule, note the reason briefly in a commit or task summary. If a rule and `docs/api-specification.md` diverge (e.g. response envelope shape), update both so they match.
+Prefer small, focused edits to one rule at a time. After changing a rule, note the reason briefly in a commit or task summary. If a rule and `api-contract.md` diverge (e.g. response envelope shape), update both so they match.
 
 ## Restrictions (from Core scope)
 
-Regardless of rules, do not implement: authentication, ticket/comment deletion, combined search-and-filter, pagination, or other items listed as out of scope in `spec.md` and `docs/requirement-analysis.md`.
+Regardless of rules, do not implement: authentication, ticket/comment deletion, combined search-and-filter, pagination, or other items listed as out of scope in `spec.md` and `requirements-analysis.md`.
 
 ## Rule Refinements
 

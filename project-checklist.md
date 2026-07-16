@@ -13,7 +13,7 @@
 ## 🤖 AI Workflow
 
 - [x] project-context.md
-- [x] requirement-analysis.md
+- [x] requirements-analysis.md
 - [x] acceptance-criteria.md
 - [x] spec.md
 - [x] tasks.md

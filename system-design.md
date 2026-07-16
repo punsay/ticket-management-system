@@ -1,6 +1,6 @@
 # System Design
 
-High-level architecture for the Core Support Ticket Management System. Derived from `tool-specific/cursor-workflow/project-context.md`, `docs/requirement-analysis.md`, and `tool-specific/cursor-workflow/spec.md`.
+High-level architecture for the Core Support Ticket Management System. Derived from `tool-specific/cursor-workflow/project-context.md`, `requirements-analysis.md`, and `tool-specific/cursor-workflow/spec.md`.
 
 ## Overview
 
@@ -142,7 +142,6 @@ ticket-management-system/
 │   ├── controllers/
 │   ├── services/
 │   └── scripts/     # seed script
-├── docs/
 └── tool-specific/
 ```
 
@@ -164,6 +163,6 @@ server/src/
 
 ## References
 
-- `docs/database-design.md` — Data model detail
-- `docs/api-specification.md` — REST endpoint detail
+- `database-design.md` — Data model detail
+- `api-contract.md` — REST endpoint detail
 - `tool-specific/cursor-workflow/spec.md` — Behavioural specification

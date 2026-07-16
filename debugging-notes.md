@@ -76,3 +76,7 @@ The local database was then removed and `npm run seed` was run again.
 ## Lesson Learned
 
 Successful output can still include maintenance warnings. Warnings should be reviewed and resolved when the fix is small, safe, and supported by the current library API.
+
+## Related Commit
+
+- `fix(seed): replace deprecated mongoose option and document local database setup`

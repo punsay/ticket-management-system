@@ -352,7 +352,7 @@ The following are **not** exposed by the API:
 
 ## References
 
-- `docs/system-design.md` — Architecture and data flow
-- `docs/database-design.md` — Collection and field definitions
+- `system-design.md` — Architecture and data flow
+- `database-design.md` — Collection and field definitions
 - `tool-specific/cursor-workflow/spec.md` — Behavioural rules
 - `tool-specific/cursor-workflow/acceptance-criteria.md` — AC-01 through AC-48

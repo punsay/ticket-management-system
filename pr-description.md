@@ -93,3 +93,4 @@ Pending checks:
 - Earlier Atlas seed authentication failed after the database-user password changed; the environment value was corrected.
 - The project was later aligned to local MongoDB Community Edition for local setup.
 - Repeated Mongoose seed warnings were resolved by replacing `new: true` with `returnDocument: 'after'`.
+  Related commit: `fix(seed): replace deprecated mongoose option and document local database setup`

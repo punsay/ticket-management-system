@@ -1,6 +1,6 @@
 # Acceptance Criteria
 
-Defines testable conditions that must be met for the Core scope to be considered complete and ready for review. Derived from `tool-specific/cursor-workflow/project-context.md` and `docs/requirement-analysis.md`.
+Defines testable conditions that must be met for the Core scope to be considered complete and ready for review. Derived from `tool-specific/cursor-workflow/project-context.md` and `requirements-analysis.md`.
 
 ## Overview
 

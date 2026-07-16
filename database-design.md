@@ -149,11 +149,11 @@ Business rules enforced in services:
 
 - `assignedTo` must reference Bob or Carol when provided
 - `createdBy` must reference any existing seeded user
-- Status transitions checked on update (see `docs/api-specification.md`)
+- Status transitions checked on update (see `api-contract.md`)
 - No delete operations on tickets or comments
 
 ## References
 
-- `docs/system-design.md` — Architecture overview
-- `docs/api-specification.md` — How data is accessed via REST
+- `system-design.md` — Architecture overview
+- `api-contract.md` — How data is accessed via REST
 - `tool-specific/cursor-workflow/spec.md` — Business rules

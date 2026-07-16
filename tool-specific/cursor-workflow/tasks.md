@@ -5,17 +5,17 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 ## Completed
 
 - [x] Prompt-history automation (`prompt-history/`, `.cursor/hooks.json`)
-- [x] Documentation structure (`docs/`, `tool-specific/cursor-workflow/`)
+- [x] Documentation structure (``, `tool-specific/cursor-workflow/`)
 - [x] Project context (`tool-specific/cursor-workflow/project-context.md`)
-- [x] Requirement analysis (`docs/requirement-analysis.md`)
+- [x] Requirement analysis (`requirements-analysis.md`)
 - [x] Acceptance criteria (`tool-specific/cursor-workflow/acceptance-criteria.md`)
 - [x] Core specification (`tool-specific/cursor-workflow/spec.md`)
 
 ## Design documents
 
-- [x] System design (`docs/system-design.md`)
-- [x] Database design (`docs/database-design.md`)
-- [x] API specification (`docs/api-specification.md`)
+- [x] System design (`system-design.md`)
+- [x] Database design (`database-design.md`)
+- [x] API specification (`api-contract.md`)
 - [x] Review planning, design documents, and Cursor rules for implementation-blocking conflicts
   - Resolved API response-envelope conflict
   - Defined HTTP 400 behaviour when `search` and `status` are supplied together
@@ -48,10 +48,10 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 
 ## Testing
 
-- [ ] Testing strategy (`docs/testing-strategy.md`)
+- [ ] Testing strategy (`test-strategy.md`)
 - [ ] Integration tests for valid status transitions (NFR-04, AC-45)
 - [ ] Integration tests for invalid status transitions (NFR-05, AC-46)
-- [ ] Testing report (`docs/testing-report.md`)
+- [ ] Testing report (`test-results.md`)
 
 ## Frontend
 
@@ -66,10 +66,10 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 
 ## Final documentation
 
-- [ ] Debugging log (`docs/debugging-log.md`)
-- [ ] Code review (`docs/code-review.md`)
-- [ ] Reflection (`docs/reflection.md`)
-- [ ] PR description (`docs/pr-description.md`)
+- [ ] Debugging log (`debugging-notes.md`)
+- [ ] Code review (`code-review-notes.md`)
+- [ ] Reflection (`reflection.md`)
+- [ ] PR description (`pr-description.md`)
 - [ ] Tool workflow (`tool-workflow.md`)
 - [ ] Review prompt history and confirm key prompts, refinements, and corrections are captured (NFR-09)
 - [ ] Finalize and verify README setup, seed, run, and test instructions (NFR-07, AC-44)

@@ -18,11 +18,11 @@ Planning and specification are complete. System design and implementation are in
 ## Project Documentation
 
 - [Project context](tool-specific/cursor-workflow/project-context.md)
-- [Requirement analysis](docs/requirement-analysis.md)
+- [Requirement analysis](requirements-analysis.md)
 - [Acceptance criteria](tool-specific/cursor-workflow/acceptance-criteria.md)
 - [Specification](tool-specific/cursor-workflow/spec.md)
 - [Task plan](tool-specific/cursor-workflow/tasks.md)
-- [Project checklist](docs/project-checklist.md)
+- [Project checklist](project-checklist.md)
 
 ## Local Setup
 

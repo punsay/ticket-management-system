@@ -93,7 +93,7 @@ I manually validated the seeded-users, ticket CRUD, comments, search and status-
 
 ## Debugging
 
-I documented two setup issues in `docs/debugging-log.md`:
+I documented two setup issues in `debugging-notes.md`:
 
 - port `5000` was already in use by a macOS service, so the backend was moved to port `5001`
 - the seed script initially failed because `MONGODB_URI` still contained an old Atlas password; after updating the environment value, the seed completed successfully
@@ -102,7 +102,7 @@ I documented two setup issues in `docs/debugging-log.md`:
 
 ## Code Review
 
-I completed an initial review of the project setup, backend structure, MongoDB connection, Mongoose models, seed data, seeded-users API, ticket CRUD APIs, comments API, search and filtering, and ticket status transitions. The review notes and remaining follow-up items are recorded in `docs/code-review.md`.
+I completed an initial review of the project setup, backend structure, MongoDB connection, Mongoose models, seed data, seeded-users API, ticket CRUD APIs, comments API, search and filtering, and ticket status transitions. The review notes and remaining follow-up items are recorded in `code-review-notes.md`.
 
 ## Responsible Information Sharing
 

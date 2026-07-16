@@ -1,6 +1,6 @@
 # Specification
 
-Behavioural specification for the Core scope of the Support Ticket Management System. Describes what the system must do — not how it will be built. Derived from `tool-specific/cursor-workflow/project-context.md`, `docs/requirement-analysis.md`, and `tool-specific/cursor-workflow/acceptance-criteria.md`.
+Behavioural specification for the Core scope of the Support Ticket Management System. Describes what the system must do — not how it will be built. Derived from `tool-specific/cursor-workflow/project-context.md`, `requirements-analysis.md`, and `tool-specific/cursor-workflow/acceptance-criteria.md`.
 
 ## Overview
 
@@ -205,6 +205,6 @@ The following are not part of this specification:
 | Document | Purpose |
 |----------|---------|
 | `tool-specific/cursor-workflow/project-context.md` | Long-term project background and confirmed decisions |
-| `docs/requirement-analysis.md` | FR, BR, VR, and NFR IDs |
+| `requirements-analysis.md` | FR, BR, VR, and NFR IDs |
 | `tool-specific/cursor-workflow/acceptance-criteria.md` | Testable AC-01 through AC-48 |
 | `tool-specific/cursor-workflow/spec.md` | Core behavioural specification (this document) |

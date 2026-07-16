@@ -18,18 +18,18 @@ Read these files first:
 
 For backend, database, or infrastructure tasks, also read:
 
-- `docs/system-design.md`
-- `docs/'database-design.md'`
-- `docs/api-specification.md`
+- `system-design.md`
+- `'database-design.md'`
+- `api-contract.md`
 
 For frontend tasks, also read:
 
-- `docs/system-design.md`
-- `docs/api-specification.md`
+- `system-design.md`
+- `api-contract.md`
 
 For validation or business-rule tasks, also read:
 
-- `docs/requirement-analysis.md`
+- `requirements-analysis.md`
 - `tool-specific/cursor-workflow/acceptance-criteria.md`
 
 ## Rules
