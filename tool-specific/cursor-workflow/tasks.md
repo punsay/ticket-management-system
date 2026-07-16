@@ -29,6 +29,9 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 - [x] Scaffold client and server structure
 - [x] Configure environment variables and dev scripts (NFR-08, AC-47)
 - [x] Add initial README project overview and setup placeholders
+- [x] Configure local MongoDB Community Edition for development
+- [x] Add local database setup and seed instructions
+- [x] Verify seeded data in MongoDB Compass
 
 ## Backend
 

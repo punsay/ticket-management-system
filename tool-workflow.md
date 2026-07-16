@@ -81,11 +81,11 @@ backend, and tests follow the same behaviour.
 
 ## Code Generation
 
-I used Cursor to complete the initial React and Express setup, connect the backend to MongoDB Atlas, create the Mongoose models, add the seed script, and implement the seeded-users, ticket CRUD, comments, search and status-filtering, and ticket status-transition behaviour. Each prompt was limited to one task, and I reviewed the generated changes before continuing.
+I used Cursor to complete the initial React and Express setup, connect the backend to local MongoDB Community Edition, create the Mongoose models, add the seed script, and implement the seeded-users, ticket CRUD, comments, search and status-filtering, and ticket status-transition behaviour. Each prompt was limited to one task, and I reviewed the generated changes before continuing.
 
 ## Validation of AI-Generated Code
 
-I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB and manually verified the seeded-users, ticket CRUD, comments, search and status-filtering, and valid and invalid ticket status transitions in Postman.
+I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the local MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB and manually verified the seeded-users, ticket CRUD, comments, search and status-filtering, and valid and invalid ticket status transitions in Postman.
 
 ## Testing
 
@@ -96,7 +96,9 @@ I manually validated the seeded-users, ticket CRUD, comments, search and status-
 I documented two setup issues in `docs/debugging-log.md`:
 
 - port `5000` was already in use by a macOS service, so the backend was moved to port `5001`
-- the seed script initially failed because `MONGODB_URI` still contained an old Atlas password; after updating the local environment value, the seed completed successfully
+- the seed script initially failed because `MONGODB_URI` still contained an old Atlas password; after updating the environment value, the seed completed successfully
+- the project was later aligned to local MongoDB Community Edition, verified in Compass, and documented for repeatable setup
+- repeated Mongoose seed warnings were resolved by replacing `new: true` with `returnDocument: 'after'` and rerunning the seed process
 
 ## Code Review
 

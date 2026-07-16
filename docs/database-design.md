@@ -1,10 +1,10 @@
 # Database Design
 
-Data model for the Core Support Ticket Management System using **MongoDB Atlas** and Mongoose.
+Data model for the Core Support Ticket Management System using **MongoDB Community Edition locally** and Mongoose.
 
 ## Overview
 
-Three collections: `users`, `tickets`, and `comments`. Status is a field on tickets, not a separate collection. References use MongoDB `ObjectId`. All data persists across application and Atlas restarts.
+Three collections: `users`, `tickets`, and `comments`. Status is a field on tickets, not a separate collection. References use MongoDB `ObjectId`. All data persists across application and MongoDB restarts.
 
 The Express backend is the only layer that reads from or writes to the database, connecting via `MONGODB_URI`. The React frontend never accesses MongoDB or Mongoose directly.
 
@@ -12,9 +12,9 @@ The Express backend is the only layer that reads from or writes to the database,
 
 | Setting | Value |
 |---------|-------|
-| **Environment** | MongoDB Atlas |
-| **Connection string** | `MONGODB_URI` environment variable only |
-| **Credentials** | Never hardcoded or committed; use placeholders in `.env.example` |
+| **Environment** | Local MongoDB Community Edition |
+| **Connection string** | `mongodb://127.0.0.1:27017/ticket_management_system` through `MONGODB_URI` |
+| **Credentials** | No authentication is required for the default local setup; secrets must still never be committed |
 
 ## Entity Relationship Diagram
 
@@ -135,7 +135,7 @@ Seed a small set covering:
 - Creators: mix of Alice, Bob, and Carol
 - At least one ticket with two or more comments
 
-Seed script should be idempotent or clear existing seed data on re-run for local development.
+The seed script is idempotent and can be rerun without creating duplicate seed records. Local setup steps are documented in `database/setup-notes.md`.
 
 ## Validation
 

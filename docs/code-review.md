@@ -15,7 +15,7 @@ This document records reviews of completed implementation phases. It is updated 
 
 - React and Express project setup
 - Backend source structure under `server/src/`
-- MongoDB Atlas connection
+- local MongoDB Community Edition connection
 - User, Ticket, and Comment Mongoose models
 - Seed script for users, tickets, and comments
 - Related Cursor rules and design documentation
@@ -23,13 +23,15 @@ This document records reviews of completed implementation phases. It is updated 
 ### Checks Performed
 
 - Confirmed backend files follow the documented layered structure.
-- Confirmed MongoDB Atlas is accessed only through the Express backend.
+- Confirmed local MongoDB is accessed only through the Express backend.
 - Confirmed credentials are loaded from `MONGODB_URI` and are not committed.
 - Confirmed model fields, references, enums, defaults, timestamps, and indexes match the database design.
 - Confirmed new tickets default to `Open`.
 - Confirmed `assignedTo` remains optional.
 - Confirmed the seed script creates the three required users and varied sample data.
 - Confirmed the seed script can be run multiple times without creating duplicates.
+- Confirmed the seed script uses `returnDocument: 'after'` instead of the deprecated `new: true` option.
+- Confirmed local setup and Compass verification steps are documented.
 - Confirmed the health endpoint still works after the database connection changes.
 
 ### Review 2 — Seeded users and ticket CRUD APIs
@@ -86,7 +88,7 @@ This document records reviews of completed implementation phases. It is updated 
 ## Action Items
 
 - [x] Keep all backend source code under `server/src/`.
-- [x] Use MongoDB Atlas through `MONGODB_URI`.
+- [x] Use local MongoDB Community Edition through `MONGODB_URI`.
 - [x] Create User, Ticket, and Comment models.
 - [x] Add repeatable seed data.
 - [x] Review seeded users and ticket CRUD APIs.
@@ -100,3 +102,5 @@ This document records reviews of completed implementation phases. It is updated 
 - Resolved the backend folder-structure inconsistency.
 - Resolved API response-format conflicts before implementation.
 - Resolved MongoDB Atlas authentication failure caused by an outdated local password.
+- Aligned the project with local MongoDB Community Edition setup requirements.
+- Resolved repeated Mongoose deprecation warnings in the seed script.

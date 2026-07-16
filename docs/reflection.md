@@ -4,7 +4,7 @@ Personal reflection on the development process, challenges faced, skills gained,
 
 ## Overview
 
-This reflection is being updated throughout the project. So far, planning, design, project setup, MongoDB Atlas integration, backend APIs, search and filtering, and ticket status-transition enforcement are complete.
+This reflection is being updated throughout the project. So far, planning, design, project setup, local MongoDB Community Edition integration, backend APIs, search and filtering, and ticket status-transition enforcement are complete.
 
 ## What Went Well
 
@@ -22,6 +22,8 @@ This reflection is being updated throughout the project. So far, planning, desig
 - The API specification and Cursor rules initially used conflicting response formats.
 - Port `5000` was already used by a macOS service, so the backend was moved to port `5001`.
 - A previously working MongoDB connection later failed during seeding because the Atlas database-user password had changed while the local `MONGODB_URI` still used the old password.
+- The project then needed to be aligned with a fully local MongoDB setup and documented so another developer could reproduce it.
+- The seed script completed with repeated Mongoose deprecation warnings, which required a small API-option update and revalidation.
 - It was necessary to distinguish between application problems, environment problems, and system processes before making changes.
 
 ## Skills Learned
@@ -30,9 +32,12 @@ This reflection is being updated throughout the project. So far, planning, desig
 - Creating and refining persistent Cursor project rules
 - Using a layered Express architecture
 - Organizing backend source code consistently
-- Connecting Mongoose to MongoDB Atlas through environment variables
+- Connecting Mongoose to local MongoDB through environment variables
 - Designing Mongoose schemas with references, enums, timestamps, defaults, and indexes
 - Creating seed scripts that can be run repeatedly without duplicates
+- Installing and running MongoDB Community Edition locally on macOS
+- Verifying local databases and collections in MongoDB Compass
+- Resolving Mongoose deprecation warnings by replacing `new: true` with `returnDocument: 'after'`
 - Diagnosing port conflicts with `lsof` and inspecting processes with `ps`
 - Debugging Atlas authentication errors without exposing credentials
 - Recording AI-assisted decisions, corrections, and debugging steps
@@ -40,6 +45,6 @@ This reflection is being updated throughout the project. So far, planning, desig
 
 ## Conclusion
 
-The project foundation and Core backend are now stable. The planning documents, Cursor rules, React and Express setup, MongoDB Atlas connection, models, seed data, APIs, search and filtering, and status-transition rules are aligned and working.
+The project foundation and Core backend are now stable. The planning documents, Cursor rules, React and Express setup, local MongoDB connection, models, seed data, APIs, search and filtering, and status-transition rules are aligned and working.
 
 The next major work is the frontend, automated integration tests, final code review, and completion of the project documentation. This reflection will be updated as those phases are completed.

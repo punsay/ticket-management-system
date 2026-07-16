@@ -108,7 +108,7 @@ async function upsertUser(userData) {
   return User.findOneAndUpdate(
     { email: userData.email },
     { $setOnInsert: userData },
-    { upsert: true, new: true, setDefaultsOnInsert: true }
+    { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
   );
 }
 
@@ -130,7 +130,7 @@ async function upsertTicket(ticketData, usersByEmail) {
         assignedTo: assignedTo ? assignedTo._id : null,
       },
     },
-    { upsert: true, new: true, setDefaultsOnInsert: true }
+    { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
   );
 }
 
@@ -146,7 +146,7 @@ async function upsertComment(ticketId, commentData, usersByEmail) {
         createdBy: createdBy._id,
       },
     },
-    { upsert: true, new: true, setDefaultsOnInsert: true }
+    { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
   );
 }
 

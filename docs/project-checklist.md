@@ -34,9 +34,12 @@
 
 ## 💻 Backend
 
-- [x] MongoDB connected
+- [x] Local MongoDB Community Edition connected
+- [x] Local database setup documented
+- [x] Seeded data verified in MongoDB Compass
 - [x] User, Ticket, and Comment models created
 - [x] Seed data created
+- [x] Seed-script deprecation warnings resolved
 - [x] Ticket CRUD completed
 - [x] Comments implemented
 - [x] Search and status filter

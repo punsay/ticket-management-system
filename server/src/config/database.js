@@ -8,7 +8,7 @@ async function connectDatabase() {
   }
 
   await mongoose.connect(uri);
-  console.log('Connected to MongoDB Atlas');
+  console.log('Connected to MongoDB Local');
 }
 
 module.exports = {

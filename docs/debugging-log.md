@@ -43,3 +43,36 @@ The seed completed successfully and created the expected users, tickets, and com
 ## Lessons Learned
 
 When Atlas credentials change, the local environment configuration must also be updated. Authentication errors should be checked against recent credential changes before modifying working application code.
+
+### Mongoose deprecation warnings during seed run
+
+**Status:** Resolved
+
+The local seed script completed successfully but printed repeated warnings that the `new` option used with `findOneAndUpdate()` was deprecated.
+
+## Investigation Notes
+
+- Confirmed that the seed operation itself completed and inserted the expected data.
+- Reviewed the three upsert helpers in `server/src/scripts/seed.js`.
+- Identified `new: true` in the user, ticket, and comment `findOneAndUpdate()` options.
+
+## Resolution
+
+Replaced `new: true` with:
+
+```js
+returnDocument: 'after'
+```
+
+The local database was then removed and `npm run seed` was run again.
+
+## Validation
+
+- Seeded 3 users
+- Seeded 6 tickets and 5 comments
+- Seed completed successfully
+- The repeated Mongoose deprecation warnings no longer appeared
+
+## Lesson Learned
+
+Successful output can still include maintenance warnings. Warnings should be reviewed and resolved when the fix is small, safe, and supported by the current library API.

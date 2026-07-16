@@ -4,7 +4,7 @@ Working draft summarizing the project changes for final submission.
 
 ## Overview
 
-This document summarizes the work completed for the MERN Support Ticket Management System. Planning, design, Cursor workflow rules, project setup, MongoDB Atlas integration, data models, seed data, seeded-users API, ticket CRUD APIs, comments, search and status filtering, and ticket status-transition enforcement are complete.
+This document summarizes the work completed for the MERN Support Ticket Management System. Planning, design, Cursor workflow rules, project setup, local MongoDB Community Edition integration, data models, seed data, seeded-users API, ticket CRUD APIs, comments, search and status filtering, and ticket status-transition enforcement are complete.
 
 Frontend feature screens and automated integration tests are still in progress.
 
@@ -18,7 +18,7 @@ Completed so far:
 - Added prompt-history automation
 - Created the React client and Express server
 - Organized backend source code under `server/src/`
-- Connected the backend to MongoDB Atlas
+- Connected the backend to local MongoDB Community Edition
 - Added User, Ticket, and Comment Mongoose models
 - Added repeatable seed data for users, tickets, and comments
 - Documented and resolved a MongoDB authentication issue
@@ -48,7 +48,7 @@ Completed so far:
 
 - Initialized the Express server
 - Added a health endpoint
-- Added MongoDB Atlas connection through `MONGODB_URI`
+- Added local MongoDB connection through `MONGODB_URI`
 - Organized backend source files under `server/src/`
 
 ### Database
@@ -57,6 +57,8 @@ Completed so far:
 - Added references, enums, defaults, timestamps, and indexes
 - Added seed data for Alice Johnson, Bob Smith, Carol Davis, sample tickets, and comments
 - Made the seed script safe to run multiple times
+- Replaced deprecated `new: true` seed options with `returnDocument: 'after'`
+- Added local MongoDB setup and Compass verification instructions
 
 ## Test Plan
 
@@ -65,10 +67,12 @@ Completed checks:
 - [x] React development server starts
 - [x] Express development server starts
 - [x] Health endpoint responds successfully
-- [x] MongoDB Atlas connection succeeds
+- [x] Local MongoDB connection succeeds
 - [x] Seed script completes successfully
 - [x] Required users, tickets, and comments are created
 - [x] Seed script can be rerun without duplicate data
+- [x] Seed script completes without Mongoose deprecation warnings
+- [x] Seeded data verified in MongoDB Compass
 - [x] `.env` and `node_modules` are not tracked
 - [x] Seeded-users API manually verified in Postman
 - [x] Ticket CRUD APIs manually verified in Postman
@@ -86,4 +90,6 @@ Pending checks:
 
 ## Related Issues and Fixes
 
-- MongoDB Atlas seed authentication failed after the database-user password changed. The local `MONGODB_URI` was updated and the seed script then completed successfully.
+- Earlier Atlas seed authentication failed after the database-user password changed; the environment value was corrected.
+- The project was later aligned to local MongoDB Community Edition for local setup.
+- Repeated Mongoose seed warnings were resolved by replacing `new: true` with `returnDocument: 'after'`.
