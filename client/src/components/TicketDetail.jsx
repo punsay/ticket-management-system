@@ -6,8 +6,10 @@ import {
   RefreshCw,
   UserRound,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { getTicketById } from '../services/ticketService';
 import { formatDateTime } from '../utils/formatDate';
+import UpdateTicketForm from './UpdateTicketForm';
 
 const PRIORITY_STYLES = {
   High: 'bg-red-100 text-red-800',
@@ -42,7 +44,7 @@ function DetailField({ label, children }) {
   );
 }
 
-function TicketDetail({ ticketId, onBack }) {
+function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -59,6 +61,16 @@ function TicketDetail({ ticketId, onBack }) {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleTicketUpdated() {
+    try {
+      const data = await getTicketById(ticketId);
+      setTicket(data);
+      onTicketUpdated?.();
+    } catch (err) {
+      toast.error(err.message);
     }
   }
 
@@ -144,16 +156,10 @@ function TicketDetail({ ticketId, onBack }) {
           </div>
 
           <div className="space-y-6 px-6 py-5">
-            <section>
-              <h3 className="text-sm font-medium text-gray-900">Description</h3>
-              <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-700">
-                {ticket.description}
-              </p>
-            </section>
+            <UpdateTicketForm ticket={ticket} onUpdated={handleTicketUpdated} />
 
-            <dl className="grid gap-4 sm:grid-cols-2">
+            <dl className="grid gap-4 border-t border-gray-200 pt-6 sm:grid-cols-2">
               <DetailField label="Status">{ticket.status}</DetailField>
-              <DetailField label="Priority">{ticket.priority}</DetailField>
               <DetailField label="Assignee">
                 <span className="inline-flex items-center gap-1.5">
                   <UserRound className="h-4 w-4 text-gray-400" aria-hidden="true" />

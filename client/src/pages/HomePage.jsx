@@ -41,6 +41,7 @@ function HomePage() {
           <TicketDetail
             ticketId={selectedTicketId}
             onBack={() => setSelectedTicketId(null)}
+            onTicketUpdated={() => setListRefreshKey((current) => current + 1)}
           />
         ) : (
           <div className="space-y-6">

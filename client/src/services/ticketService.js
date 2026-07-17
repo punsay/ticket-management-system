@@ -14,3 +14,10 @@ export function createTicket(ticket) {
     body: JSON.stringify(ticket),
   });
 }
+
+export function updateTicket(id, updates) {
+  return apiRequest(`/tickets/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(updates),
+  });
+}

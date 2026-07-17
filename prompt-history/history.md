@@ -3156,3 +3156,74 @@ No documentation updates were required — behaviour matches existing FR-01 and 
 8. Tab through the panel — focus should move to the close button on open; focus rings should be visible on interactive elements.
 
 ---
+
+## 2026-07-17 18:21:21 +0530 — User
+
+**Conversation:** `b859e9af-e710-433b-b3dc-7123001a75b4`
+
+Implement the update ticket form.
+
+Allow users to update the ticket title, description, priority, and assignee from the ticket detail view.
+
+Do not require an acting user for ticket updates.
+
+Use the existing backend API and keep the current ticket status unchanged.
+
+Show clear validation, loading, success, and error states. After a successful update, refresh the displayed ticket details.
+
+Do not implement status changes, comments, search, or filters yet.
+
+Update the relevant documentation if required, run the frontend checks, and report the files changed, verification results, and manual verification steps.
+
+---
+
+## 2026-07-17 18:22:39 +0530 — Assistant
+
+**Conversation:** `b859e9af-e710-433b-b3dc-7123001a75b4`
+
+The update ticket form is implemented and wired into the ticket detail view.
+
+## Summary
+
+Users can edit **title**, **description**, **priority**, and **assignee** from the ticket detail page. No acting user is required. Status is not sent on update, so it stays unchanged. The form follows the same patterns as `CreateTicketForm` for validation, loading, errors, and success feedback.
+
+## Files changed
+
+| File | Change |
+|------|--------|
+| `client/src/services/ticketService.js` | Added `updateTicket(id, updates)` calling `PUT /api/tickets/:id` |
+| `client/src/components/UpdateTicketForm.jsx` | **New** — update form with client validation, assignee loading, submit states |
+| `client/src/components/TicketDetail.jsx` | Embedded update form; refreshes ticket after success; optional list refresh callback |
+| `client/src/pages/HomePage.jsx` | Passes `onTicketUpdated` to refresh the ticket list after updates |
+| `tool-specific/cursor-workflow/tasks.md` | Marked update ticket form task complete |
+
+## Requirements covered
+
+- **FR-04**, **COD-09** — update title, description, priority, assignee without acting user
+- **AC-14** — valid field updates persist and show after reload
+- **AC-15** — assign/reassign to Bob or Carol
+- **AC-16** — empty title/description blocked client-side; backend errors shown inline
+- **AC-17** — invalid assignee rejected by backend with inline error
+
+## Verification results
+
+| Check | Result |
+|-------|--------|
+| `npm run build` (client) | Passed |
+| IDE lints on changed files | No issues |
+
+No dedicated lint script exists in `client/package.json`; production build was used as the frontend check.
+
+## Manual verification steps
+
+1. Start backend and frontend (`cd server && npm run dev`, `cd client && npm run dev`).
+2. Open a ticket from the list **without** selecting an acting user.
+3. Confirm the form is pre-filled with the current title, description, priority, and assignee.
+4. Change fields and click **Save changes** — expect a “Ticket updated” toast, updated header badges, and refreshed metadata (including “Last updated”).
+5. Go back to the list — confirm title/priority reflect the changes.
+6. Clear title or description and submit — expect inline validation errors.
+7. Set assignee to **Unassigned** and save — confirm assignee shows as “Unassigned”.
+8. Reassign to Bob or Carol and save — confirm assignment persists.
+9. Confirm status is unchanged after any update.
+
+---
