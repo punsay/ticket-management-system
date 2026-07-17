@@ -21,3 +21,10 @@ export function updateTicket(id, updates) {
     body: JSON.stringify(updates),
   });
 }
+
+export function addComment(ticketId, comment) {
+  return apiRequest(`/tickets/${ticketId}/comments`, {
+    method: 'POST',
+    body: JSON.stringify(comment),
+  });
+}

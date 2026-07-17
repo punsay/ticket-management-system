@@ -3,6 +3,7 @@ import {
   AlertCircle,
   ArrowLeft,
   Loader2,
+  MessageSquare,
   Pencil,
   RefreshCw,
   UserRound,
@@ -10,6 +11,8 @@ import {
 import { toast } from 'sonner';
 import { getTicketById } from '../services/ticketService';
 import { formatDateTime } from '../utils/formatDate';
+import CommentForm from './CommentForm';
+import CommentList from './CommentList';
 import StatusChangeControl from './StatusChangeControl';
 import UpdateTicketForm from './UpdateTicketForm';
 
@@ -86,6 +89,10 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
   }
 
   function handleStatusChanged() {
+    refreshTicket();
+  }
+
+  function handleCommentAdded() {
     refreshTicket();
   }
 
@@ -241,6 +248,25 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
                   />
                 </div>
               )}
+            </div>
+
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                <MessageSquare className="h-4 w-4" aria-hidden="true" />
+                Comments
+              </h3>
+              <div className="mt-4">
+                <CommentList comments={ticket.comments} />
+              </div>
+              <div className="mt-6">
+                <h4 className="text-sm font-medium text-gray-700">Add a comment</h4>
+                <div className="mt-3">
+                  <CommentForm
+                    ticketId={ticket._id}
+                    onCommentAdded={handleCommentAdded}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </article>

@@ -3417,3 +3417,66 @@ The detail view now has a dedicated **Change status** section that shows only va
 7. (Optional) To test error display, stop the server and attempt a status change — confirm a generic error message appears inline.
 
 ---
+
+## 2026-07-17 19:15:37 +0530 — User
+
+**Conversation:** `04a7653f-f41c-423d-862e-b29f4a285a4d`
+
+Implement the comment form and comment display in the ticket detail view.
+
+Require an acting user before submitting a comment. Display comments oldest first and do not add edit or delete actions.
+
+Use the existing comments API and show appropriate loading, success, validation, and error states.
+
+Keep the existing ticket details, update form, and status controls unchanged. Do not implement search or filters yet.
+
+Update only the relevant documentation, run the frontend checks, and report the files changed and manual verification steps.
+
+---
+
+## 2026-07-17 19:16:23 +0530 — Assistant
+
+**Conversation:** `04a7653f-f41c-423d-862e-b29f4a285a4d`
+
+Comment form and display are wired into the ticket detail view using the existing API and UI patterns.
+
+## Summary
+
+Added a comments section to the ticket detail view: existing comments render oldest first, and a form submits new comments via `POST /api/tickets/:id/comments`. Acting user is required before submit; there are no edit or delete controls.
+
+## Files changed
+
+| File | Change |
+|------|--------|
+| `client/src/services/ticketService.js` | Added `addComment()` |
+| `client/src/components/CommentForm.jsx` | **New** — comment form with validation and error states |
+| `client/src/components/CommentList.jsx` | **New** — comment list, oldest first |
+| `client/src/components/TicketDetail.jsx` | Integrated comments section; ticket details, update form, and status controls unchanged |
+| `tool-specific/cursor-workflow/tasks.md` | Marked comment task complete |
+| `project-checklist.md` | Marked frontend Comments complete |
+
+## Related requirements
+
+- **FR-06, FR-07** — Add and view comments (oldest first)
+- **BR-11** — No comment edit/delete
+- **AC-03, AC-18–AC-21** — Acting user required, validation, display order, no edit/delete
+
+## Frontend checks
+
+| Check | Result |
+|-------|--------|
+| `npm run build` (client) | Passed |
+| IDE lints on changed files | No issues |
+
+## Manual verification steps
+
+1. Start backend and client (`npm run dev` in `server/` and `client/`).
+2. Open a ticket that has seeded comments — confirm they appear **oldest first** with author name, timestamp, and message.
+3. Open a ticket with no comments — confirm **“No comments yet.”** empty state.
+4. Without selecting an acting user, submit a comment — confirm **amber validation message** and no API call.
+5. With an acting user selected, submit an empty comment — confirm **“Comment is required.”** inline error.
+6. With an acting user selected, submit a valid comment — confirm loading state, **“Comment added”** toast, form clears, and the new comment appears at the bottom.
+7. Confirm **no edit or delete** controls on comments.
+8. Confirm ticket details, **Edit ticket**, and **status change** still work as before.
+
+---

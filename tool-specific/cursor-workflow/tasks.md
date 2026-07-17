@@ -61,7 +61,7 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 - [x] Create ticket form — optional assignee (Bob or Carol) (FR-01, AC-05–AC-08)
 - [x] Update ticket form — no acting user required (FR-04, COD-09, AC-14–AC-17)
 - [x] Status change control with error display (FR-05, AC-28–AC-35)
-- [ ] Comment form and display — oldest first, no edit/delete (FR-06, FR-07, BR-11, AC-18–AC-21)
+- [x] Comment form and display — oldest first, no edit/delete (FR-06, FR-07, BR-11, AC-18–AC-21)
 - [ ] Keyword search and status filter controls — work separately (FR-08, FR-09, AC-22–AC-27)
 - [ ] Meaningful UI error messages (NFR-02, NFR-03, AC-39, AC-40)
 

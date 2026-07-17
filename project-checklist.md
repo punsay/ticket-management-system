@@ -57,7 +57,7 @@
 - [ ] Ticket details
 - [ ] Create ticket
 - [ ] Update ticket
-- [ ] Comments
+- [x] Comments
 - [ ] Search and filter
 - [ ] Error handling
 
