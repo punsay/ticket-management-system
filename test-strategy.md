@@ -1,13 +1,13 @@
 # Testing Strategy
 
-Outlines the approach to testing the ticket management system for Core scope. Focuses on manual Postman API verification and automated backend integration tests. Frontend end-to-end testing is out of scope for this document.
+Outlines the testing approach for the ticket management system Core scope. It prioritises the mandatory backend state-machine integration tests, supported by manual Postman verification and focused validation regression checks. Automated frontend end-to-end testing is not planned for Core scope.
 
 ## Overview
 
 Testing is split into two tiers:
 
 1. **Manual API testing (Postman)** — Exploratory and regression checks against a running local server with seeded data. Used to verify full request/response behaviour, error messages, and happy-path workflows before and after backend changes.
-2. **Automated backend integration tests** — Scripted HTTP requests against the Express app and a dedicated test database. Mandatory for the ticket status state machine (AC-45, AC-46) and for ticket/comment validation rules enforced by `server/src/validation/` and `server/src/services/`.
+2. **Automated backend integration tests** — Scripted HTTP requests against the Express app and a dedicated test database. Mandatory for proving the ticket status state machine (AC-45, AC-46). Focused ticket/comment validation tests are included as supporting Core regression coverage because backend validation prevents invalid records.
 
 The backend is the source of truth for validation and status transitions. Tests assert HTTP status codes, the `{ success, data | error }` response envelope (`api-contract.md`), and that invalid data is never persisted.
 
@@ -22,9 +22,9 @@ The backend is the source of truth for validation and status transitions. Tests 
 | Ticket create/update validation rejects bad input before persist | AC-09–AC-11, AC-16–AC-17, AC-36, VR-01–VR-07 |
 | Comment create validation rejects bad input and missing tickets | AC-20, AC-37–AC-38, VR-07, VR-09–VR-10 |
 | Error responses are user-readable and do not expose internals | NFR-02, NFR-03 |
-| Manual checks document interim evidence; automation provides repeatable proof | `test-results.md`, `tasks.md` |
+| Manual checks document interim evidence; mandatory state-machine automation provides repeatable proof | `test-results.md`, `tasks.md` |
 
-## Test Types
+## Test Scope
 
 ### Manual API testing (Postman)
 
@@ -71,11 +71,11 @@ The backend is the source of truth for validation and status transitions. Tests 
 
 Record pass/fail outcomes in `test-results.md`.
 
-### Backend integration tests
+### API / Integration Tests
 
 **When to use**
 
-- Repeatable verification of status state machine and validation (mandatory for Core completion)
+- Repeatable verification of the status state machine (mandatory for Core completion)
 - Pre-merge / pre-submission checks
 - Guarding against regressions in `statusTransitionService`, validation modules, and `ticketService`
 
@@ -97,11 +97,23 @@ tests/
 └── README.md
 ```
 
-Integration tests are the authoritative automated tier for Core backend behaviour. Unit tests for individual functions are optional and not required for Core scope.
+Integration tests are the authoritative automated tier for the mandatory Core state-machine behaviour. Focused validation integration tests provide additional confidence without introducing a separate test tier.
 
-### Out of scope
+### Unit Tests
 
-- Frontend UI / browser automation (covered later against AC-01–AC-04, AC-39, AC-40)
+No separate unit-test suite is planned for Core scope. The status-transition and validation behaviour is exercised through the public API so routing, service logic, persistence, and error responses are verified together. Unit tests may be added later only where isolated logic becomes complex enough to justify them.
+
+### Component Tests
+
+No automated React component-test suite is planned for Core scope. Frontend behaviour will be checked manually during UI implementation, including successful workflows, loading/empty states, and meaningful handling of backend validation or invalid-transition errors.
+
+### Edge Case Tests
+
+Core edge and failure coverage is included within the API integration suite for invalid state transitions, malformed or missing input, invalid user references, missing tickets, and persistence checks after rejected requests. Broader edge-case tiers beyond this focused coverage remain optional Stretch work.
+
+### Tests Not Covered (and why)
+
+- Automated frontend UI / browser testing; manual UI checks are sufficient for the current Core scope
 - Authentication and authorization
 - Ticket/comment delete endpoints (not implemented)
 - Combined search + status filter success path (rejection only is in scope)
@@ -266,5 +278,5 @@ Core backend testing is complete when:
 - Manual validation regression for ticket/comment validation is recorded in `test-results.md`
 - Integration tests pass for all five valid transitions (AC-45)
 - Integration tests pass for representative invalid transitions (AC-46)
-- Integration tests cover the ticket and comment validation scenarios in [Coverage Targets](#coverage-targets)
+- Focused integration tests cover the ticket and comment validation scenarios selected from [Coverage Targets](#coverage-targets)
 - `npm test` is documented in the README test section (when implemented)
