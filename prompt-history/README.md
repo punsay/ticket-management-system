@@ -23,6 +23,7 @@ Each entry includes a local timestamp and, when available, a conversation ID.
 
 - Logging is best-effort. If a write fails, Cursor continues normally (fail open).
 - `history.md` is never overwritten; new entries are appended only.
+- The initial prompt-history setup conversation was not captured automatically because the hooks did not exist yet. It was manually appended to `history.md` for completeness.
 - Very long chats produce a single growing file.
 - Timestamps use the machine's local timezone when the hook runs.
 

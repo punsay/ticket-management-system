@@ -3704,3 +3704,50 @@ Frontend error handling is now clearer and more consistent across all ticket wor
 **Modified:** `client/src/utils/errorMessages.js`, `client/src/components/TicketList.jsx`, `TicketDetail.jsx`, `CreateTicketForm.jsx`, `UpdateTicketForm.jsx`, `StatusChangeControl.jsx`, `CommentForm.jsx`, `ActingUserSelector.jsx`, `ui-flow.md`, `.cursor/rules/frontend.mdc`
 
 ---
+
+## Manually Backfilled Entry — Initial Prompt History Setup
+
+> This conversation occurred before the prompt-history hooks were installed, so it could not be captured automatically. It was manually added from the original Cursor conversation for completeness.
+
+### User
+
+**Timestamp:** 2026-07-13 — exact time unavailable  
+**Capture method:** Manually backfilled
+
+`/create-hook`
+
+Set up automatic prompt history for this repo from day one.
+
+I want every chat with Cursor saved in a prompt-history/ folder as a markdown file, so my AI-assisted workflow is traceable for my assignment.
+
+Please:
+- Log each user prompt when I submit it
+- Log each assistant reply when the agent finishes
+- Add timestamps and clearly label User vs Assistant
+- Append only — never overwrite the history file
+- Use simple bash + python3 only (no extra tools or dependencies)
+- If logging fails, don't block Cursor — fail open
+- Also make sure to include this prompt in the file.
+
+Also add a README in prompt-history/ explaining what gets captured and any limitations.
+
+Keep it minimal. Only create what's needed for this.
+
+### Assistant
+
+**Timestamp:** 2026-07-13 — exact time unavailable  
+**Capture method:** Manually backfilled
+
+Automatic prompt history was set up for the repository.
+
+Created:
+
+- `.cursor/hooks.json`
+- `prompt-history/log-prompt-history.sh`
+- `prompt-history/log-prompt-history.py`
+- `prompt-history/README.md`
+- `setup-prompt-history-hooks.sh`
+
+The setup records submitted prompts and completed assistant responses, appends them to the history file, and fails open if logging encounters an error.
+
+---
