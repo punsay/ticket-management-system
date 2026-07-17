@@ -57,7 +57,7 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 ## Frontend
 
 - [x] Acting-user dropdown — no default; required for create/comment only (FR-11, FR-12, AC-01–AC-04)
-- [ ] Ticket list and detail views (FR-02, FR-03, AC-12, AC-13)
+- [x] Ticket list and detail views (FR-02, FR-03, AC-12, AC-13)
 - [ ] Create ticket form — optional assignee (Bob or Carol) (FR-01, AC-05–AC-08)
 - [ ] Update ticket form — no acting user required (FR-04, COD-09, AC-14–AC-17)
 - [ ] Status change control with error display (FR-05, AC-28–AC-35)

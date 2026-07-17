@@ -1,0 +1,183 @@
+import { useEffect, useState } from 'react';
+import {
+  AlertCircle,
+  ArrowLeft,
+  Loader2,
+  RefreshCw,
+  UserRound,
+} from 'lucide-react';
+import { getTicketById } from '../services/ticketService';
+import { formatDateTime } from '../utils/formatDate';
+
+const PRIORITY_STYLES = {
+  High: 'bg-red-100 text-red-800',
+  Medium: 'bg-amber-100 text-amber-800',
+  Low: 'bg-green-100 text-green-800',
+};
+
+const STATUS_STYLES = {
+  Open: 'bg-blue-100 text-blue-800',
+  'In Progress': 'bg-violet-100 text-violet-800',
+  Resolved: 'bg-emerald-100 text-emerald-800',
+  Closed: 'bg-gray-100 text-gray-800',
+  Cancelled: 'bg-rose-100 text-rose-800',
+};
+
+function DetailBadge({ label, className }) {
+  return (
+    <span
+      className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${className}`}
+    >
+      {label}
+    </span>
+  );
+}
+
+function DetailField({ label, children }) {
+  return (
+    <div>
+      <dt className="text-sm font-medium text-gray-500">{label}</dt>
+      <dd className="mt-1 text-sm text-gray-900">{children}</dd>
+    </div>
+  );
+}
+
+function TicketDetail({ ticketId, onBack }) {
+  const [ticket, setTicket] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  async function loadTicket() {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await getTicketById(ticketId);
+      setTicket(data);
+    } catch (err) {
+      setTicket(null);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadTicket();
+  }, [ticketId]);
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={onBack}
+        className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"
+      >
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        Back to tickets
+      </button>
+
+      {loading && (
+        <div
+          className="flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-6 py-16 text-sm text-gray-500"
+          aria-live="polite"
+        >
+          <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+          Loading ticket...
+        </div>
+      )}
+
+      {!loading && error && (
+        <div
+          className="rounded-lg border border-red-200 bg-red-50 p-6"
+          role="alert"
+          aria-live="polite"
+        >
+          <p className="flex items-start gap-2 text-sm text-red-700">
+            <AlertCircle
+              className="mt-0.5 h-4 w-4 shrink-0"
+              aria-hidden="true"
+            />
+            {error}
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={loadTicket}
+              className="inline-flex items-center gap-1.5 rounded-md bg-white px-3 py-2 text-sm font-medium text-red-700 shadow-sm ring-1 ring-red-200 transition-colors hover:bg-red-100"
+            >
+              <RefreshCw className="h-4 w-4" aria-hidden="true" />
+              Try again
+            </button>
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-red-100"
+            >
+              Back to tickets
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!loading && !error && ticket && (
+        <article className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+          <div className="border-b border-gray-200 px-6 py-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-900">
+                {ticket.title}
+              </h2>
+              <DetailBadge
+                label={ticket.status}
+                className={
+                  STATUS_STYLES[ticket.status] ?? 'bg-gray-100 text-gray-800'
+                }
+              />
+              <DetailBadge
+                label={ticket.priority}
+                className={
+                  PRIORITY_STYLES[ticket.priority] ??
+                  'bg-gray-100 text-gray-800'
+                }
+              />
+            </div>
+          </div>
+
+          <div className="space-y-6 px-6 py-5">
+            <section>
+              <h3 className="text-sm font-medium text-gray-900">Description</h3>
+              <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-700">
+                {ticket.description}
+              </p>
+            </section>
+
+            <dl className="grid gap-4 sm:grid-cols-2">
+              <DetailField label="Status">{ticket.status}</DetailField>
+              <DetailField label="Priority">{ticket.priority}</DetailField>
+              <DetailField label="Assignee">
+                <span className="inline-flex items-center gap-1.5">
+                  <UserRound className="h-4 w-4 text-gray-400" aria-hidden="true" />
+                  {ticket.assignedTo?.name ?? 'Unassigned'}
+                </span>
+              </DetailField>
+              <DetailField label="Created by">
+                <span className="inline-flex items-center gap-1.5">
+                  <UserRound className="h-4 w-4 text-gray-400" aria-hidden="true" />
+                  {ticket.createdBy?.name ?? 'Unknown'}
+                </span>
+              </DetailField>
+              <DetailField label="Created">
+                {formatDateTime(ticket.createdAt)}
+              </DetailField>
+              <DetailField label="Last updated">
+                {formatDateTime(ticket.updatedAt)}
+              </DetailField>
+            </dl>
+          </div>
+        </article>
+      )}
+    </div>
+  );
+}
+
+export default TicketDetail;

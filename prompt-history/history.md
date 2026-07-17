@@ -2955,3 +2955,70 @@ No dedicated lint or test scripts exist in `client/package.json`; production bui
 **Related requirements:** AC-01, AC-02 (behavior unchanged), NFR-02 (meaningful inline errors preserved).
 
 ---
+
+## 2026-07-17 17:29:20 +0530 — User
+
+**Conversation:** `97fdb4db-75ac-4b16-a872-0a249719f113`
+
+Implement the ticket list and ticket detail views.
+
+Load tickets from the existing backend API and allow users to open a ticket to view its complete details.
+
+Include clear loading, empty, and error states.
+
+Keep the implementation limited to these views. Do not add ticket creation, editing, status changes, comments, search, or filters yet.
+
+Run the relevant frontend checks and report the files changed, verification results, and manual verification steps.
+
+
+---
+
+## 2026-07-17 17:30:21 +0530 — Assistant
+
+**Conversation:** `97fdb4db-75ac-4b16-a872-0a249719f113`
+
+Implemented ticket list and detail views wired to the existing backend API.
+
+## What changed
+
+**New files**
+- `client/src/services/ticketService.js` — `getTickets()` and `getTicketById(id)` via `apiClient`
+- `client/src/utils/formatDate.js` — formats ISO timestamps for display
+- `client/src/components/TicketList.jsx` — ticket list with loading, empty, and error states
+- `client/src/components/TicketDetail.jsx` — detail view with loading and error states
+
+**Updated files**
+- `client/src/pages/HomePage.jsx` — main content area; list/detail navigation via local state (no router dependency)
+- `tool-specific/cursor-workflow/tasks.md` — marked ticket list/detail task complete
+
+## Behaviour
+
+- **List (AC-12):** Loads all tickets from `GET /api/tickets` and shows title, description preview, status, priority, assignee, creator, and last updated time.
+- **Detail (AC-13):** Clicking a ticket loads `GET /api/tickets/:id` and shows title, description, priority, status, assignee, creator, `createdAt`, and `updatedAt`.
+- **States:** Loading spinners, empty list message, and inline error panels with **Try again** (same pattern as `ActingUserSelector`).
+- **Out of scope:** No create/edit/status/comment/search/filter UI.
+
+## Verification results
+
+| Check | Result |
+|-------|--------|
+| `npm run build` (client) | Passed |
+| IDE lints on changed files | No issues |
+
+No dedicated lint or test scripts exist in `client/package.json`; production build was used as the frontend check.
+
+## Related requirements
+
+- **FR-02**, **FR-03** — ticket list and detail
+- **AC-12**, **AC-13** — list all tickets; detail shows required fields
+
+## Manual verification steps
+
+1. Start backend: `cd server && npm run dev`
+2. Start frontend: `cd client && npm run dev`
+3. Open `http://localhost:5173` — seeded tickets should load in the list
+4. Click a ticket — detail view shows all fields; **Back to tickets** returns to the list
+5. Stop the backend — list shows an error with **Try again**; restart backend and retry
+6. (Optional) Empty DB — list shows “No tickets yet” instead of an error
+
+---

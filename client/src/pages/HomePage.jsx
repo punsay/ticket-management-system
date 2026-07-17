@@ -1,6 +1,11 @@
+import { useState } from 'react';
 import ActingUserSelector from '../components/ActingUserSelector';
+import TicketDetail from '../components/TicketDetail';
+import TicketList from '../components/TicketList';
 
 function HomePage() {
+  const [selectedTicketId, setSelectedTicketId] = useState(null);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="border-b border-gray-200 bg-white">
@@ -18,6 +23,17 @@ function HomePage() {
           </div>
         </div>
       </header>
+
+      <main className="mx-auto max-w-5xl px-4 py-8">
+        {selectedTicketId ? (
+          <TicketDetail
+            ticketId={selectedTicketId}
+            onBack={() => setSelectedTicketId(null)}
+          />
+        ) : (
+          <TicketList onSelectTicket={setSelectedTicketId} />
+        )}
+      </main>
     </div>
   );
 }
