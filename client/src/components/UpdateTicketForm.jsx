@@ -3,7 +3,12 @@ import { Loader2, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import { updateTicket } from '../services/ticketService';
 import { getUsers } from '../services/userService';
-import { resolveErrorMessage, VALIDATION_MESSAGES } from '../utils/errorMessages';
+import {
+  ERROR_TITLES,
+  getAssigneeLoadErrorMessage,
+  resolveErrorMessage,
+  VALIDATION_MESSAGES,
+} from '../utils/errorMessages';
 import InlineErrorAlert from './InlineErrorAlert';
 
 const PRIORITIES = ['Low', 'Medium', 'High'];
@@ -67,12 +72,7 @@ function UpdateTicketForm({ ticket, onUpdated, onCancel }) {
       setAssignees(supportAgents);
     } catch (err) {
       setAssignees([]);
-      setAssigneeError(
-        resolveErrorMessage(
-          err,
-          'Unable to load support agents. You can still save other ticket changes.'
-        )
-      );
+      setAssigneeError(getAssigneeLoadErrorMessage(err, { forCreate: false }));
     } finally {
       setLoadingAssignees(false);
     }
@@ -260,6 +260,7 @@ function UpdateTicketForm({ ticket, onUpdated, onCancel }) {
             ) : assigneeError ? (
               <div id="update-ticket-assignee" className="mt-2">
                 <InlineErrorAlert
+                  title={ERROR_TITLES.assignees}
                   message={assigneeError}
                   onRetry={loadAssignees}
                   compact
@@ -287,7 +288,7 @@ function UpdateTicketForm({ ticket, onUpdated, onCancel }) {
 
         {submitError && (
           <InlineErrorAlert
-            title="Couldn't save changes"
+            title={ERROR_TITLES.updateTicket}
             message={submitError}
             compact
           />

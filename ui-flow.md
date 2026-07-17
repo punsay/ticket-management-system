@@ -312,7 +312,7 @@ Examples:
 - invalid assignee
 - empty comment
 
-The UI shows a specific, actionable inline message near the relevant field or form. Shared copy lives in `client/src/utils/errorMessages.js` (`VALIDATION_MESSAGES`).
+The UI shows a specific, actionable inline message near the relevant field or form. Shared copy lives in `client/src/utils/errorMessages.js` (`VALIDATION_MESSAGES`). Missing acting-user warnings use `ValidationNotice` for consistent amber styling.
 
 ### Business-rule error
 
@@ -336,9 +336,11 @@ This is not treated as an error.
 
 When tickets, users, or ticket detail cannot be loaded, or a save/refresh fails after an action, the UI shows an inline alert with:
 
-- a short title (e.g. “Couldn't load tickets”)
+- a short title from `ERROR_TITLES` in `client/src/utils/errorMessages.js` (e.g. “Couldn't load tickets”)
 - a context-specific message and, where appropriate, a **Try again** action
 - no stack traces, database details, or environment values
+
+List loading text is also context-specific (e.g. “Searching for …”, “Filtering by …”).
 
 Generic backend or network failures use:
 

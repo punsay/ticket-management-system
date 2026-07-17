@@ -4,8 +4,14 @@ import { toast } from 'sonner';
 import { useActingUser } from '../context/ActingUserContext';
 import { createTicket } from '../services/ticketService';
 import { getUsers } from '../services/userService';
-import { resolveErrorMessage, VALIDATION_MESSAGES } from '../utils/errorMessages';
+import {
+  ERROR_TITLES,
+  getAssigneeLoadErrorMessage,
+  resolveErrorMessage,
+  VALIDATION_MESSAGES,
+} from '../utils/errorMessages';
 import InlineErrorAlert from './InlineErrorAlert';
+import ValidationNotice from './ValidationNotice';
 
 const PRIORITIES = ['Low', 'Medium', 'High'];
 
@@ -40,12 +46,7 @@ function CreateTicketForm({ onCreated, onCancel }) {
       setAssignees(supportAgents);
     } catch (err) {
       setAssignees([]);
-      setAssigneeError(
-        resolveErrorMessage(
-          err,
-          'Unable to load support agents. You can still create the ticket without an assignee.'
-        )
-      );
+      setAssigneeError(getAssigneeLoadErrorMessage(err, { forCreate: true }));
     } finally {
       setLoadingAssignees(false);
     }
@@ -132,12 +133,7 @@ function CreateTicketForm({ onCreated, onCancel }) {
 
       <form className="mt-6 space-y-5" onSubmit={handleSubmit} noValidate>
         {fieldErrors.actingUser && (
-          <p
-            className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800"
-            role="alert"
-          >
-            {fieldErrors.actingUser}
-          </p>
+          <ValidationNotice message={fieldErrors.actingUser} />
         )}
 
         <div>
@@ -244,6 +240,7 @@ function CreateTicketForm({ onCreated, onCancel }) {
             ) : assigneeError ? (
               <div id="ticket-assignee" className="mt-2">
                 <InlineErrorAlert
+                  title={ERROR_TITLES.assignees}
                   message={assigneeError}
                   onRetry={loadAssignees}
                   compact
@@ -271,7 +268,7 @@ function CreateTicketForm({ onCreated, onCancel }) {
 
         {submitError && (
           <InlineErrorAlert
-            title="Couldn't create ticket"
+            title={ERROR_TITLES.createTicket}
             message={submitError}
             compact
           />

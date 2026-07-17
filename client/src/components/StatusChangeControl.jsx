@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { updateTicket } from '../services/ticketService';
-import { resolveErrorMessage } from '../utils/errorMessages';
+import { ERROR_TITLES, resolveErrorMessage } from '../utils/errorMessages';
 import { getNextStatuses } from '../utils/statusTransitions';
 import InlineErrorAlert from './InlineErrorAlert';
 
@@ -84,7 +84,7 @@ function StatusChangeControl({ ticket, onStatusChanged }) {
       {submitError && (
         <div className="mt-4">
           <InlineErrorAlert
-            title="Couldn't change status"
+            title={ERROR_TITLES.statusChange}
             message={submitError}
             compact
           />

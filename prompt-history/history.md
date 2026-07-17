@@ -3628,3 +3628,79 @@ Improved frontend error handling across all completed ticket workflows. Errors a
 **Modified:** `client/src/services/apiClient.js`, `client/src/components/TicketList.jsx`, `TicketDetail.jsx`, `CreateTicketForm.jsx`, `UpdateTicketForm.jsx`, `StatusChangeControl.jsx`, `CommentForm.jsx`, `ActingUserSelector.jsx`, `ui-flow.md`, `.cursor/rules/frontend.mdc`, `tool-specific/cursor-workflow/tasks.md`
 
 ---
+
+## 2026-07-17 19:34:16 +0530 — User
+
+**Conversation:** `5d117c32-b581-47c2-8b46-9a521030171e`
+
+Review and improve the frontend error messages across the completed ticket workflows.
+
+Make errors clear, specific, consistent, and actionable without changing existing behaviour or backend APIs.
+
+Use inline errors where users need details or retry actions, and use toast messages only for brief action feedback.
+
+Cover ticket loading, creation, updates, status changes, comments, search, and filtering.
+
+Update only the relevant documentation, run the frontend checks, and report the files changed and manual verification steps.
+
+
+---
+
+## 2026-07-17 19:35:35 +0530 — Assistant
+
+**Conversation:** `5d117c32-b581-47c2-8b46-9a521030171e`
+
+Frontend error handling is now clearer and more consistent across all ticket workflows. Inline alerts carry detail and retry actions; toasts are reserved for brief success feedback only.
+
+## What changed
+
+**Centralized copy** (`client/src/utils/errorMessages.js`)
+- Added `ERROR_TITLES` for consistent alert headings across workflows
+- Added context helpers: `getTicketListLoadingMessage`, `getTicketDetailErrorMessage` (404-aware), `getTicketRefreshErrorMessage`, `getAssigneeLoadErrorMessage`
+- Search/filter error messages now include the active query or status
+
+**New component** (`client/src/components/ValidationNotice.jsx`)
+- Shared amber styling for client-side validation (missing acting user on create/comment)
+
+**Workflow components**
+
+| Area | Improvement |
+|------|-------------|
+| **Ticket list** | Context-specific loading (“Searching…”, “Filtering by…”) and error titles |
+| **Ticket detail** | 404-specific load message; centralized refresh error copy |
+| **Create / update** | Assignee load errors get titles + retry; shared validation notice |
+| **Status / comments / acting user** | Titles from `ERROR_TITLES` |
+
+**Toasts unchanged (success only):** “Ticket created”, “Ticket updated”, “Status updated to …”, “Comment added”.
+
+## Documentation updated
+- `ui-flow.md` — `ERROR_TITLES`, `ValidationNotice`, context-specific loading
+- `.cursor/rules/frontend.mdc` — validation notice and centralized error helpers
+
+## Checks performed
+- `npm run build` in `client/` — passed
+
+## Related requirements
+**NFR-02**, **NFR-03**, **AC-03**, **AC-09**, **AC-16**, **AC-20**, **AC-35**, **AC-39**, **AC-40**
+
+## Manual verification steps
+
+1. **Backend unavailable** — Stop the server, reload. Acting-user selector and ticket list show connection errors with **Try again**; no stack traces.
+2. **Ticket list load** — With backend running, confirm list loads. Stop backend and use **Try again** on the list error.
+3. **Search** — Search a keyword; confirm “Searching for …” while loading. Search nonsense term → “No matching tickets” (not an error). Stop backend during search → error includes the search term.
+4. **Status filter** — Filter by status; confirm “Filtering by …” while loading. Empty result → empty state (not an error).
+5. **Create ticket validation** — Without acting user, submit empty form → field errors + amber acting-user notice. Create successfully → toast only.
+6. **Create ticket API error** — Stop backend on submit → inline “Couldn't create ticket”.
+7. **Ticket detail load** — Open valid ticket. Stop backend before opening → load error with retry/back. Invalid ID → “not found” message with back action.
+8. **Update ticket** — Clear title and submit → inline validation. Save valid changes → toast only. Assignee load failure → titled error with retry.
+9. **Status change** — Valid transition → toast. Invalid transition → inline backend message (e.g. transition conflict).
+10. **Comment** — Submit without acting user or empty message → validation notices. Valid comment → toast only.
+11. **Refresh failure** — After a successful action with backend stopped before refresh → inline “Couldn't refresh ticket” banner with retry (not toast).
+
+## Files changed
+
+**New:** `client/src/components/ValidationNotice.jsx`
+
+**Modified:** `client/src/utils/errorMessages.js`, `client/src/components/TicketList.jsx`, `TicketDetail.jsx`, `CreateTicketForm.jsx`, `UpdateTicketForm.jsx`, `StatusChangeControl.jsx`, `CommentForm.jsx`, `ActingUserSelector.jsx`, `ui-flow.md`, `.cursor/rules/frontend.mdc`
+
+---

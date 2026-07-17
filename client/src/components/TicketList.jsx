@@ -7,7 +7,11 @@ import {
 } from 'lucide-react';
 import InlineErrorAlert from './InlineErrorAlert';
 import { getTickets } from '../services/ticketService';
-import { getTicketListErrorMessage } from '../utils/errorMessages';
+import {
+  ERROR_TITLES,
+  getTicketListErrorMessage,
+  getTicketListLoadingMessage,
+} from '../utils/errorMessages';
 import { formatDateTime } from '../utils/formatDate';
 
 const PRIORITY_STYLES = {
@@ -86,7 +90,7 @@ function TicketList({ onSelectTicket, refreshKey = 0, search = '', status = '' }
         aria-live="polite"
       >
         <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-        Loading tickets...
+        {getTicketListLoadingMessage({ search, status })}
       </div>
     );
   }
@@ -94,7 +98,7 @@ function TicketList({ onSelectTicket, refreshKey = 0, search = '', status = '' }
   if (error) {
     return (
       <InlineErrorAlert
-        title="Couldn't load tickets"
+        title={ERROR_TITLES.ticketList}
         message={error}
         onRetry={loadTickets}
       />

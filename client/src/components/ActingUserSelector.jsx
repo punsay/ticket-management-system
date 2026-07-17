@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Loader2, UserRound } from 'lucide-react';
 import { useActingUser } from '../context/ActingUserContext';
 import { getUsers } from '../services/userService';
-import { resolveErrorMessage } from '../utils/errorMessages';
+import { ERROR_TITLES, resolveErrorMessage } from '../utils/errorMessages';
 import InlineErrorAlert from './InlineErrorAlert';
 
 function formatUserLabel(user) {
@@ -85,7 +85,7 @@ function ActingUserSelector() {
         <ActingUserLabel />
         <div className="mt-2">
           <InlineErrorAlert
-            title="Couldn't load acting users"
+            title={ERROR_TITLES.actingUsers}
             message={error}
             onRetry={loadUsers}
             compact

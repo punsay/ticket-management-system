@@ -3,8 +3,9 @@ import { Loader2, MessageSquarePlus } from 'lucide-react';
 import { toast } from 'sonner';
 import { useActingUser } from '../context/ActingUserContext';
 import { addComment } from '../services/ticketService';
-import { resolveErrorMessage, VALIDATION_MESSAGES } from '../utils/errorMessages';
+import { ERROR_TITLES, resolveErrorMessage, VALIDATION_MESSAGES } from '../utils/errorMessages';
 import InlineErrorAlert from './InlineErrorAlert';
+import ValidationNotice from './ValidationNotice';
 
 function CommentForm({ ticketId, onCommentAdded }) {
   const { actingUser } = useActingUser();
@@ -70,12 +71,7 @@ function CommentForm({ ticketId, onCommentAdded }) {
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
       {fieldErrors.actingUser && (
-        <p
-          className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800"
-          role="alert"
-        >
-          {fieldErrors.actingUser}
-        </p>
+        <ValidationNotice message={fieldErrors.actingUser} />
       )}
 
       <div>
@@ -102,7 +98,7 @@ function CommentForm({ ticketId, onCommentAdded }) {
 
       {submitError && (
         <InlineErrorAlert
-          title="Couldn't add comment"
+          title={ERROR_TITLES.addComment}
           message={submitError}
           compact
         />

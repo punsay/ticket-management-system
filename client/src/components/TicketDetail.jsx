@@ -7,7 +7,11 @@ import {
   UserRound,
 } from 'lucide-react';
 import { getTicketById } from '../services/ticketService';
-import { resolveErrorMessage } from '../utils/errorMessages';
+import {
+  ERROR_TITLES,
+  getTicketDetailErrorMessage,
+  getTicketRefreshErrorMessage,
+} from '../utils/errorMessages';
 import { formatDateTime } from '../utils/formatDate';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
@@ -65,12 +69,7 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
       setTicket(data);
     } catch (err) {
       setTicket(null);
-      setError(
-        resolveErrorMessage(
-          err,
-          'Unable to load this ticket. It may have been removed. Please try again.'
-        )
-      );
+      setError(getTicketDetailErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -87,12 +86,7 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
       }
       onTicketUpdated?.();
     } catch (err) {
-      setRefreshError(
-        resolveErrorMessage(
-          err,
-          'Your last action may have succeeded, but the ticket could not be refreshed. Please try again.'
-        )
-      );
+      setRefreshError(getTicketRefreshErrorMessage(err));
     }
   }
 
@@ -143,7 +137,7 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
 
       {!loading && error && (
         <InlineErrorAlert
-          title="Couldn't load ticket"
+          title={ERROR_TITLES.ticketDetail}
           message={error}
           onRetry={loadTicket}
         >
@@ -162,7 +156,7 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
           {refreshError ? (
             <div className="border-b border-red-200 bg-red-50 px-6 py-4">
               <InlineErrorAlert
-                title="Couldn't refresh ticket"
+                title={ERROR_TITLES.ticketRefresh}
                 message={refreshError}
                 onRetry={() => refreshTicket()}
                 compact
