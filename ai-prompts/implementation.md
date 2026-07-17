@@ -1,6 +1,6 @@
 # Implementation Prompts
 
-Selected implementation prompts from the full append-only Cursor history.
+Selected implementation prompts from the full append-only Cursor history in `prompt-history/history.md`.
 
 ## Prompt 1 — Scaffold the client and server only
 
@@ -8,171 +8,203 @@ Selected implementation prompts from the full append-only Cursor history.
 
 ### Prompt summary
 
-Create a Vite React frontend and Express backend with the agreed folder structure, scripts, environment configuration, a health endpoint, and a basic client-running page. Do not implement database or feature logic.
+Create a Vite React frontend and Express backend with scripts, environment configuration, a health endpoint, and a basic client page. Do not implement database or feature logic.
 
 ### AI response summary
 
-Cursor created `client/` and `server/`, added development scripts, set up Tailwind, and implemented a basic health route.
+Cursor created `client/` and `server/`, configured Tailwind and development scripts, and added the health route.
 
 ### What I accepted
 
 - JavaScript-only setup
 - Separate client and server packages
-- `server/src/server.js` as the backend entry point
+- `server/src/server.js` entry point
 - Vite development server
 - Health endpoint
-- Placeholder folders for later layers
 
 ### What I changed
 
-Database connection and full error handling were intentionally left for later tasks.
+Database connection and full feature logic were kept for later tasks.
 
 ### What I rejected
 
-Models, seed data, tickets, comments, and other premature implementation.
+Models, seed data, ticket APIs, and other premature implementation.
 
 ### Why
 
-The prompt was deliberately scoped to one task.
+The implementation was intentionally split into small reviewable tasks.
 
 ---
 
-## Prompt 2 — Add the MongoDB connection only
+## Prompt 2 — Add database models and repeatable seed data
 
 **Date:** 2026-07-15
 
 ### Prompt summary
 
-Connect through `MONGODB_URI`, establish the database connection before starting Express, and keep the health endpoint working. Do not add models or APIs.
+Create the User, Ticket, and Comment models, then seed the three required users, varied tickets, unassigned tickets, and comments without duplicates.
 
 ### AI response summary
 
-Cursor added the Mongoose connection module, changed server startup order, and corrected a health-route import.
+Cursor created the Mongoose models and an idempotent seed script.
 
 ### What I accepted
 
-- Environment-only connection string
-- Connect-before-listen startup
-- Clear startup failure
-- No hardcoded credentials
-- Fix to the incorrect route import
-
-### What I changed
-
-The project was later realigned from Atlas-focused instructions to a local MongoDB setup while keeping `MONGODB_URI` configurable.
-
-### What I rejected
-
-Models, seeds, or feature APIs in the same task.
-
-### Why
-
-Each implementation step was kept small and reviewable.
-
----
-
-## Prompt 3 — Create Mongoose models
-
-**Date:** 2026-07-15
-
-### Prompt summary
-
-Create User, Ticket, and Comment models from the documented database design, including fields, references, enums, defaults, timestamps, and indexes.
-
-### AI response summary
-
-Cursor created the three models and exported ticket enums.
-
-### What I accepted
-
-- User role enum
-- Ticket priority/status enums
+- Required fields, enums, references, timestamps, and indexes
 - `Open` default status
-- Optional `assignedTo`
-- Required `createdBy`
-- Comment ticket and creator references
-- Oldest-first comment index
-- Mongoose schema safeguards
+- Optional assignee
+- Predictable sample data
+- Repeatable seed execution
 
 ### What I changed
 
-Assignee business validation and status-transition enforcement remained in services instead of schemas.
+Assignee and transition business rules remained in services, and a deprecated Mongoose option was replaced later.
 
 ### What I rejected
 
-Putting business rules directly into route handlers or models.
+Random seed generation and business logic inside schemas.
 
 ### Why
 
-The documented architecture assigns business rules to services.
+Predictable data and clear layer responsibilities support setup, testing, and review.
 
 ---
 
-## Prompt 4 — Create repeatable seed data
+## Prompt 3 — Implement backend APIs task by task
 
 **Date:** 2026-07-15
 
 ### Prompt summary
 
-Seed Alice Johnson, Bob Smith, Carol Davis, varied tickets, unassigned tickets, and a ticket with multiple comments. Make it safe to run repeatedly.
+Implement seeded users, ticket CRUD, comments, search, status filtering, and status transitions in separate scoped tasks.
 
 ### AI response summary
 
-Cursor created an idempotent seed script using upsert-style operations and added an npm command.
-
-### What I accepted
-
-- Three required users
-- Varied priority/status/assignee data
-- Unassigned samples
-- Multiple comments
-- Repeatable execution
-
-### What I changed
-
-The deprecated Mongoose `new: true` option was later replaced with `returnDocument: 'after'`.
-
-### What I rejected
-
-Random or non-repeatable seed generation.
-
-### Why
-
-Local setup and test evidence require predictable sample data.
-
----
-
-## Prompt 5 — Implement backend APIs task by task
-
-**Dates:** 2026-07-15
-
-### Prompt summary
-
-Implement seeded users, ticket creation/listing, ticket detail/update, comments, keyword search, status filtering, and ticket transitions in separate tasks.
-
-### AI response summary
-
-Cursor followed the layered architecture and added each backend feature incrementally.
+Cursor followed the layered backend architecture and added each Core endpoint incrementally.
 
 ### What I accepted
 
 - Small controllers
-- Service-layer validation and business rules
+- Service-layer business rules
 - Populated user references
 - Oldest-first comments
 - Case-insensitive partial search
 - Exact status filtering
-- Explicit invalid-transition errors
 - Standard response envelopes
+- Clear invalid-transition errors
 
 ### What I changed
 
-The status-transition task was not reimplemented because it had already been added during the ticket-update task. Cursor was asked to verify it instead.
+A later status-transition prompt verified existing logic instead of duplicating it.
 
 ### What I rejected
 
-Duplicating existing logic and proceeding automatically to the next task.
+Duplicate code and automatic continuation into unrelated tasks.
 
 ### Why
 
-The workflow requires checking current implementation state before modifying code.
+Inspecting the current repository before editing prevented unnecessary changes.
+
+---
+
+## Prompt 4 — Add missing backend validation
+
+**Date:** 2026-07-17
+
+### Prompt summary
+
+Review the implemented backend and add only missing ticket/comment validation while preserving APIs and transition behaviour.
+
+### AI response summary
+
+Cursor introduced focused validation helpers and modules and kept database/business checks in services.
+
+### What I accepted
+
+- Safe handling of malformed request objects
+- ObjectId validation
+- Existing error messages and API behaviour
+- No transition logic changes
+
+### What I changed
+
+Validation responsibilities were separated from the service without rewriting the feature.
+
+### What I rejected
+
+Broader API redesign or unrelated production changes.
+
+### Why
+
+The change closed confirmed validation gaps with minimal risk.
+
+---
+
+## Prompt 5 — Implement the frontend Core incrementally
+
+**Date:** 2026-07-17
+
+### Prompt summary
+
+Implement the acting-user selector, ticket list/detail, create/update flows, status control, comments, and independent search/status filtering as separate tasks.
+
+### AI response summary
+
+Cursor implemented all mandatory frontend flows using the existing API, shared services, React context, focused components, and visible loading/empty/error states.
+
+### What I accepted
+
+- No default acting user
+- Create/comment acting-user enforcement
+- Optional Bob/Carol assignee
+- Detail-first views
+- Backend-authoritative status transitions
+- Oldest-first comments
+- Independent search and status filter
+- Responsive Tailwind styling
+
+### What I changed
+
+Create and update forms were hidden behind explicit actions, update no-op submissions stopped producing success toasts, and UI errors were centralized.
+
+### What I rejected
+
+Authentication, delete actions, combined filters, routing abstractions, and other Stretch scope.
+
+### Why
+
+The frontend needed to satisfy Core behaviour while staying simple and consistent.
+
+---
+
+## Prompt 6 — Refine UI without changing behaviour
+
+**Date:** 2026-07-17
+
+### Prompt summary
+
+Improve form presentation and error-message consistency while preserving APIs and existing behaviour.
+
+### AI response summary
+
+Cursor added a create-ticket slide-over, expandable edit form, focused status/comment controls, reusable inline errors, and success-only toasts.
+
+### What I accepted
+
+- List and detail remain primary views
+- Accessible explicit actions
+- Inline retry/error details
+- Toasts only for brief successful actions
+- `lucide-react` and `sonner` as the approved UI dependencies
+
+### What I changed
+
+A no-change update now returns without an API call or success toast.
+
+### What I rejected
+
+Decorative UI expansion and additional component libraries.
+
+### Why
+
+The refinements improved usability without expanding product scope.

@@ -1,6 +1,6 @@
 # Design Prompts
 
-Selected design prompts from the full append-only Cursor history.
+Selected design prompts from the full append-only Cursor history in `prompt-history/history.md`.
 
 ## Prompt 1 — Complete system, database, and API design
 
@@ -8,11 +8,11 @@ Selected design prompts from the full append-only Cursor history.
 
 ### Prompt summary
 
-Complete the system design, database design, and API specification for a small MERN application using React, Tailwind CSS, Express, MongoDB, Mongoose, REST APIs, and backend-enforced ticket transitions.
+Complete the system, database, and API design for a small MERN application with backend-enforced ticket transitions.
 
 ### AI response summary
 
-Cursor proposed a layered backend, three MongoDB collections, references between entities, seed data, and the Core REST endpoints.
+Cursor proposed a React client, layered Express backend, MongoDB collections, entity references, seed data, and Core REST endpoints.
 
 ### What I accepted
 
@@ -20,136 +20,116 @@ Cursor proposed a layered backend, three MongoDB collections, references between
 - Routes → Controllers → Services → Mongoose Models
 - User, Ticket, and Comment collections
 - Backend-authoritative validation
-- Ticket status logic in the service layer
-- Simple REST endpoints
-- No delete endpoints in Core
+- Status rules in the service layer
+- No Core delete endpoints
 
 ### What I changed
 
-API response shapes and combined search/filter behaviour were refined later after a consistency review.
+API response envelopes and simultaneous search/status behaviour were refined after a consistency review.
 
 ### What I rejected
 
-Authentication, rate limiting, pagination, advanced filters, and other Stretch design.
+Authentication, pagination, advanced filters, rate limiting, and other Stretch design.
 
 ### Why
 
-They were not required for the mandatory Core scope.
+The mandatory Core needed a simple design that could be implemented and explained clearly.
 
 ---
 
-## Prompt 2 — Resolve assignee and behaviour ambiguities
+## Prompt 2 — Resolve behavioural ambiguities
 
 **Date:** 2026-07-13
 
 ### Prompt summary
 
-Align project context, requirement analysis, and acceptance criteria with these decisions: assignee optional during creation, assign/reassign later, search and status filtering separate, validate `createdBy`, and require acting-user selection only for ticket and comment creation.
+Align project context, requirements, and acceptance criteria on optional assignment, reassignment, separate search/filter operation, `createdBy` validation, and acting-user requirements.
 
 ### AI response summary
 
-Cursor updated the three documents and renumbered acceptance criteria to remove conflicts.
+Cursor updated the documents and removed conflicting acceptance criteria.
 
 ### What I accepted
 
-- Optional assignee
-- Seeded support agents as valid assignees
+- Optional assignee on create
+- Bob or Carol as valid assignees
+- Assign/reassign later
 - No authentication
 - Separate search and status-filter flows
-- Explicit `createdBy` validation
-- Updates not requiring an acting user
+- Acting user required only for ticket and comment creation
 
 ### What I changed
 
-The later specification narrowed assignees to Bob Smith and Carol Davis only.
+The specification later made the Bob/Carol assignee restriction explicit.
 
 ### What I rejected
 
-Adding prompt-history acceptance criteria or expanding authorization behaviour.
+Prompt-history criteria as product behaviour and expanded authorization rules.
 
 ### Why
 
-Those were outside the simple product behaviour being specified.
+Repository evidence and application acceptance criteria serve different purposes.
 
 ---
 
-## Prompt 3 — Review documents for blocking contradictions
+## Prompt 3 — Review for blocking contradictions
 
 **Date:** 2026-07-13
 
 ### Prompt summary
 
-Read the project context, requirements, spec, acceptance criteria, tasks, designs, API contract, checklist, and Cursor rules. Report only contradictions that would block implementation.
+Compare context, requirements, specification, acceptance criteria, design documents, API contract, checklist, and Cursor rules and report only implementation blockers.
 
 ### AI response summary
 
-Cursor identified two important blockers:
-
-- conflicting API response envelopes;
-- undefined behaviour when both `search` and `status` were supplied.
-
-It also identified a smaller frontend parsing mismatch.
+Cursor found conflicting API envelopes, undefined simultaneous search/status behaviour, and a frontend parsing mismatch.
 
 ### What I accepted
 
-All three findings were valid and actionable.
+All three findings.
 
 ### What I changed
 
-The API contract and relevant Cursor rules were updated to use one standard response shape and an explicit HTTP 400 combined-filter response.
+The API contract and rules were aligned on one response envelope and an HTTP 400 response for combined filters.
 
 ### What I rejected
 
-No optional design changes were accepted during this review.
+Optional design improvements unrelated to the blockers.
 
 ### Why
 
-The review was intentionally restricted to implementation blockers.
+Resolving contradictions before coding reduced rework and inconsistent implementation.
 
 ---
 
-## Prompt 4 — Resolve API contract conflicts
+## Prompt 4 — Align the database environment
 
-**Date:** 2026-07-13
+**Dates:** 2026-07-15 to 2026-07-17
 
 ### Prompt summary
 
-Use one success/error envelope everywhere, reject simultaneous search and status parameters with HTTP 400, and update frontend rules to read `data` and `error.message`.
+Document database access through `MONGODB_URI`, backend-only MongoDB access, Zod input validation, Mongoose schema validation, and separate local development and test databases.
 
 ### AI response summary
 
-Cursor aligned the API specification and backend/frontend rules.
+Cursor updated architecture guidance, environment examples, database setup documentation, and test isolation instructions.
 
 ### What I accepted
 
-```json
-{
-  "success": true,
-  "data": {}
-}
-```
-
-```json
-{
-  "success": false,
-  "error": {
-    "message": ""
-  }
-}
-```
-
-and the exact error:
-
-`Use either search or status filter, not both.`
+- Configurable `MONGODB_URI`
+- React never accesses MongoDB directly
+- Local development database
+- Dedicated local integration-test database
+- No committed credentials
 
 ### What I changed
 
-No further changes were needed at that stage.
+Earlier Atlas-focused wording was replaced with the final local MongoDB setup used by the project.
 
 ### What I rejected
 
-Supporting combined filtering in Core.
+Hardcoded connection values and tests sharing the development database.
 
 ### Why
 
-The confirmed Core scope required the two capabilities to work independently.
+The final setup needed to be reproducible, safe, and consistent with the implemented test strategy.

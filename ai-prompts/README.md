@@ -1,21 +1,19 @@
 # Curated AI Prompts
 
-This folder contains selected prompt evidence grouped by software-development activity.
-
-The complete append-only Cursor Agent log remains in:
+This folder contains selected AI-assisted workflow evidence.
+The complete append-only Cursor chat record remains in:
 
 ```text
 prompt-history/history.md
 ```
 
-These files do not duplicate every interaction. They capture representative prompts and explain:
+The capture method, limitations, and manually backfilled initial setup entry are documented in:
 
-- the prompt or prompt summary;
-- the AI response summary;
-- what was accepted;
-- what was changed;
-- what was rejected;
-- why the decision was made.
+```text
+prompt-history/README.md
+```
+
+These curated files do not replace or modify the raw history. They select representative interactions that show context setting, iteration, validation, correction, and engineering judgment.
 
 ## Files
 
@@ -27,4 +25,13 @@ These files do not duplicate every interaction. They capture representative prom
 - `code-review.md`
 - `documentation.md`
 
-Keep the raw hook history unchanged. Update these curated files only when a prompt provides meaningful lifecycle evidence.
+Each selected entry records:
+
+- the prompt text or summary;
+- the AI response summary;
+- what was accepted;
+- what was changed;
+- what was rejected;
+- why the decision was made.
+
+Only meaningful lifecycle evidence is included. Routine follow-up questions and repeated interactions remain available in `prompt-history/history.md`.

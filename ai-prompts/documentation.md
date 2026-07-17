@@ -1,16 +1,16 @@
 # Documentation Prompts
 
-Selected documentation prompts from the full append-only Cursor history.
+Selected documentation prompts from the full append-only Cursor history in `prompt-history/history.md`.
 
 ## Prompt 1 — Initialise lifecycle documentation
 
 ### Prompt summary
 
-Create Markdown placeholders for requirements, design, API, testing, debugging, review, reflection, PR description, workflow, and Cursor-specific artifacts.
+Create placeholders for requirements, design, API, testing, debugging, review, reflection, PR description, workflow, and Cursor-specific artifacts.
 
 ### AI response summary
 
-Cursor created the initial documentation structure without application code.
+Cursor created the documentation structure without application code or invented decisions.
 
 ### What I accepted
 
@@ -18,139 +18,140 @@ A complete lifecycle-documentation baseline.
 
 ### What I changed
 
-Filenames and locations were later aligned more closely with the updated repository structure.
+Filenames and locations were later aligned with the updated assignment structure.
 
 ### What I rejected
 
-Filling documents with invented project decisions before requirement analysis.
+Filling placeholders with unsupported project claims.
 
 ### Why
 
-Documentation needed to reflect confirmed work rather than fabricated completeness.
+Documents needed to reflect confirmed and completed work.
 
 ---
 
-## Prompt 2 — Complete requirement analysis
+## Prompt 2 — Complete requirements and Cursor workflow artifacts
 
 ### Prompt summary
 
-Document problem statement, goals, users, functional requirements, business rules, validation rules, non-functional requirements, errors, assumptions, exclusions, risks, and open decisions with traceable IDs.
+Create and refine requirement IDs, project context, specification, tasks, acceptance criteria, and persistent Cursor rules.
 
 ### AI response summary
 
-Cursor produced FR, BR, VR, and NFR sections and listed unresolved decisions.
+Cursor established traceable Core requirements and repository-wide guidance for scoped, task-by-task development.
 
 ### What I accepted
 
-- Requirement IDs
-- Explicit status state machine
-- Seeded-user model
-- Backend validation
-- Persistence and error expectations
-- Test requirements
-
-### What I changed
-
-Open decisions were resolved in later prompts and moved into a confirmed-decisions section.
-
-### What I rejected
-
-API endpoints, schema details, and UI components in the requirement document.
-
-### Why
-
-Requirement documentation should describe what the system must do.
-
----
-
-## Prompt 3 — Complete Cursor workflow artifacts
-
-### Prompt summary
-
-Create and refine project context, specification, tasks, acceptance criteria, and rule documentation.
-
-### AI response summary
-
-Cursor created persistent context and repository-wide guardrails for scoped, task-by-task work.
-
-### What I accepted
-
+- FR, BR, VR, NFR, and AC traceability
 - Persistent context reads
+- Architecture and frontend rules
 - Core-scope restrictions
-- Architecture rules
-- Frontend rules
-- Code-quality rules
-- Concise output rules
-- Traceability expectations
+- Concise reporting expectations
 
 ### What I changed
 
-Rules and API documentation were aligned after a contradiction review.
+Rules and API documentation were aligned after contradiction reviews.
 
 ### What I rejected
 
-Rules that duplicated existing guidance or introduced optional features.
+Optional capabilities and duplicated guidance.
 
 ### Why
 
-Persistent instructions should be concise and consistent.
+Persistent instructions should be clear, reusable, and internally consistent.
 
 ---
 
-## Prompt 4 — Update documents after each completed backend phase
+## Prompt 3 — Update documentation after implementation and testing
 
 ### Prompt summary
 
-After implementation and Postman validation, update only the documents affected by the completed task.
+After each feature or test phase, update only the affected tracker, setup, validation, debugging, review, and test-result documents.
 
 ### AI response summary
 
-Cursor progressively updated backend review, workflow, debugging, API progress, comments validation, search, transitions, and database setup records.
+Cursor progressively recorded backend implementation, Postman checks, integration-test setup and results, frontend completion, and UI refinements.
 
 ### What I accepted
 
-Progressive documentation tied to actual implementation.
+- Documentation tied to actual implementation
+- Commands and verification results
+- Requirement/acceptance-criteria references
+- Honest distinction between manual and automated evidence
 
 ### What I changed
 
-The PR description was framed as a final change summary because development occurred directly on the main branch rather than through an actual pull request.
+Outdated trackers were reserved for final reconciliation against the completed repository.
 
 ### What I rejected
 
-Claiming automated coverage where only manual Postman validation existed.
+Claims of automated coverage before the tests existed.
 
 ### Why
 
-Submission documents must remain honest and evidence-based.
+Submission evidence must be accurate and reviewable.
 
 ---
 
-## Prompt 5 — Align with the updated repository structure
+## Prompt 4 — Align the repository with the assignment structure
 
 ### Prompt summary
 
-Review the updated assignment structure and identify missing or renamed lifecycle artifacts.
+Review the updated assignment structure and add or rename missing lifecycle artifacts without disrupting the working MERN layout.
 
 ### AI response summary
 
-The repository was aligned with additional root artifacts, database setup evidence, root tests, curated `ai-prompts/`, and Cursor-specific documents.
+The repository added root lifecycle documents, database setup evidence, root integration tests, curated `ai-prompts/`, and Cursor-specific workflow artifacts.
 
 ### What I accepted
 
-- Keep raw hook history in `prompt-history/`
-- Add curated lifecycle evidence under `ai-prompts/`
-- Keep runtime Mongoose models under `server/src/models/`
-- Use root `database/` for setup, initialization, and seed evidence
-- Use root `tests/` for integration tests
+- Raw history in `prompt-history/history.md`
+- Curated evidence in `ai-prompts/`
+- Runtime source under `client/` and `server/`
+- Setup/seed evidence under `database/`
+- Integration tests under `tests/`
 
 ### What I changed
 
-Existing documents were reused or renamed where possible instead of creating unnecessary duplicate content.
+Existing documents were reused or renamed instead of duplicated.
 
 ### What I rejected
 
-Moving all client/server source files into a generic root `src/`.
+Moving all source files into one generic root `src/` folder.
 
 ### Why
 
-The existing MERN structure is clearer and still follows the required layout as closely as practical.
+The implemented MERN structure remains clearer while following the requested repository layout as closely as practical.
+
+---
+
+## Prompt 5 — Backfill the initial prompt-history setup
+
+**Date:** 2026-07-17
+
+### Prompt summary
+
+Add the original prompt-history setup conversation to the end of the raw history because it occurred before the hooks existed.
+
+### AI response summary
+
+Cursor added a clearly labelled manually backfilled entry and documented the limitation in `prompt-history/README.md`.
+
+### What I accepted
+
+- Explicit capture method
+- Approximate date with unavailable exact time stated
+- Append-only placement
+- Clear separation from automatically captured entries
+
+### What I changed
+
+Nothing in the earlier raw entries was rewritten.
+
+### What I rejected
+
+Presenting the backfilled entry as automatically captured.
+
+### Why
+
+The history should be complete without misrepresenting how the evidence was collected.

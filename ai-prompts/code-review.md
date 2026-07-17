@@ -1,6 +1,6 @@
 # Code Review Prompts
 
-Selected code-review prompts and decisions from the full append-only Cursor history.
+Selected review prompts and decisions from the full append-only Cursor history in `prompt-history/history.md`.
 
 ## Review 1 — Cross-document implementation readiness
 
@@ -8,113 +8,130 @@ Selected code-review prompts and decisions from the full append-only Cursor hist
 
 ### Prompt summary
 
-Review project context, requirements, specification, acceptance criteria, tasks, design documents, API documentation, checklist, and Cursor rules. Report only blockers.
+Review the project context, requirements, specification, acceptance criteria, tasks, designs, API documentation, checklist, and Cursor rules and report only Core blockers.
 
 ### AI response summary
 
-The review found:
-
-1. conflicting API error envelopes;
-2. undefined behaviour for simultaneous search and status parameters;
-3. frontend parsing guidance not fully aligned with the API envelope.
+The review found conflicting response envelopes, undefined simultaneous search/status behaviour, and frontend parsing guidance that did not match the API contract.
 
 ### What I accepted
 
 All three findings.
 
-### Changes made after review
+### What I changed
 
-- Standardised success and error response formats.
-- Added an HTTP 400 combined-filter rule and exact message.
-- Updated frontend service rules to consume `data` and `error.message`.
+- Standardised success and error envelopes.
+- Added the HTTP 400 combined-filter rule.
+- Updated frontend API parsing guidance.
 
-### Suggestions rejected
+### What I rejected
 
-Optional features were not considered.
+Optional feature suggestions.
 
 ### Why
 
-The review was limited to issues that blocked Core implementation.
+The review was intentionally limited to issues that blocked Core implementation.
 
 ---
 
-## Review 2 — Backend architecture and database foundation
+## Review 2 — Backend foundation and APIs
 
 ### Review focus
 
-- Express structure
-- Database configuration
-- Mongoose models
-- Seed data
-- Local environment safety
+Express layering, MongoDB configuration, Mongoose models, repeatable seed data, validation, ticket APIs, comments, search/filter, and status transitions.
 
-### Positive observations
+### What I accepted
 
 - Routes, controllers, services, and models have distinct responsibilities.
-- MongoDB access is restricted to the backend.
-- Zod, Mongoose, and service-level validation have separate purposes.
-- Secrets are environment-based.
+- Business rules stay in services.
+- Backend validation is authoritative.
 - Seed data is representative and repeatable.
+- Search and comments follow the documented behaviour.
+- Invalid transitions return clear errors.
 
-### Changes made after review
+### What I changed
 
-- Corrected the database connection setup.
-- Reorganised backend source files under `server/src/`.
-- Updated local database instructions.
+- Corrected database configuration and route import.
 - Replaced a deprecated Mongoose option.
+- Added focused validation modules.
+- Verified existing transition logic rather than duplicating it.
 
-### Suggestions rejected or deferred
+### What I rejected
 
-- Authentication
-- Full user management
-- Advanced role checks
-- Docker and CI
+Authentication, full user management, Docker, CI, and other Stretch work.
 
 ### Why
 
-These are optional Stretch capabilities.
+They were outside the mandatory project scope.
 
 ---
 
-## Review 3 — Backend feature APIs
+## Review 3 — Automated test implementation
 
 ### Review focus
 
-- Seeded users
-- Ticket CRUD
-- Comments
-- Search and filtering
-- Status transitions
+Mandatory state-machine rules, validation coverage, test database isolation, persistence checks, and production-code stability.
 
-### Positive observations
+### What I accepted
 
-- Controllers remain small.
-- Business rules are implemented in services.
-- Ticket references are populated appropriately.
-- Comments are ordered oldest first.
-- Search escapes regular-expression characters.
-- Invalid transitions produce clear errors.
+- Jest and Supertest integration through the exported Express app
+- Dedicated local test database
+- Deterministic fixtures and cleanup
+- 14 transition tests and 30 validation tests
+- Persistence/non-persistence checks
+- No production changes required
 
-### Changes made after review
+### What I changed
 
-- Search/filter behaviour was documented precisely.
-- Existing transition logic was verified instead of duplicated.
-- Progress and Postman-validation documentation was updated.
+Jest execution was made serial after a shared-database race was found.
 
-### Remaining observations
+### What I rejected
 
-- Automated state-machine integration tests are still required.
-- Backend validation failure tests are recommended.
-- Frontend error handling needs review after the UI is implemented.
-- Final acceptance-criteria verification remains pending.
+Optional test tiers and changes to production code not supported by a confirmed failing test.
+
+### Why
+
+The test implementation needed to be reliable while staying within Core.
+
+---
+
+## Review 4 — Frontend Core and UI feedback
+
+### Review focus
+
+Acting-user rules, ticket flows, API-service separation, valid status controls, comments, independent filters, loading/empty/error states, and accessible form presentation.
+
+### What I accepted
+
+- Focused React components and shared services
+- No default acting user
+- Acting user required only for create/comment
+- Forms hidden behind explicit actions
+- Inline actionable errors
+- Success-only toasts
+- No comment edit/delete or ticket delete UI
+
+### What I changed
+
+- Prevented success feedback for unchanged updates.
+- Centralised error messages and reusable inline alerts.
+- Kept ticket list/detail as the primary views.
+
+### What I rejected
+
+Authentication, combined filtering, extra UI libraries, and unnecessary abstractions.
+
+### Why
+
+The final frontend satisfies the confirmed Core behaviour without scope expansion.
 
 ---
 
 ## Review principles used
 
-- Compare implementation against the confirmed Core requirements.
-- Review AI-generated changes before committing.
-- Reject scope expansion.
+- Compare code with confirmed requirements and acceptance criteria.
+- Inspect existing implementation before editing.
 - Prefer minimal fixes over rewrites.
-- Keep review findings traceable to documentation and commits.
-- Record both accepted and rejected AI suggestions.
+- Verify AI-generated output before committing.
+- Record accepted, changed, and rejected suggestions.
+- Keep review findings traceable to prompts, documents, tests, and commits.

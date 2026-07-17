@@ -1,180 +1,149 @@
 # Testing Prompts
 
-Selected testing and validation prompts from the full append-only Cursor history.
+Selected testing and validation prompts from the full append-only Cursor history in `prompt-history/history.md`.
 
-## Prompt 1 — Make state-machine tests part of acceptance criteria
+## Prompt 1 — Define the testing strategy
 
-**Date:** 2026-07-13
+**Date:** 2026-07-17
 
 ### Prompt summary
 
-Create clear, testable acceptance criteria covering valid and invalid transitions, backend validation, persistence, seed data, meaningful UI errors, and mandatory state-machine integration tests.
+Create a simple strategy covering manual Postman checks and mandatory backend integration tests for status transitions and ticket/comment validation.
 
 ### AI response summary
 
-Cursor created acceptance criteria linked to requirement IDs and included valid/invalid transition test expectations.
+Cursor defined Postman regression coverage and a Jest/Supertest integration tier using an isolated local MongoDB test database.
 
 ### What I accepted
 
-- Explicit testable criteria
-- Coverage of all five valid transition paths
-- Rejection of invalid transitions
-- Backend validation criteria
-- Persistence and seed checks
+- State-machine tests as mandatory
+- Ticket and comment validation coverage
+- Deterministic fixtures and cleanup
+- Persistence and non-persistence assertions
+- Manual checks kept separate from automated evidence
 
 ### What I changed
 
-Acceptance criteria were later updated to reflect optional assignment, separate search/filter behaviour, and exact acting-user rules.
+Optional unit, component, frontend E2E, CI, and Docker testing were excluded from Core.
 
 ### What I rejected
 
-Prompt-history traceability as a separate product acceptance criterion.
+Treating manual Postman verification as a replacement for integration tests.
 
 ### Why
 
-It is repository evidence, not application behaviour.
+The assignment explicitly requires integration tests proving valid and invalid transition rules.
 
 ---
 
-## Prompt 2 — Validate ticket creation and listing APIs
+## Prompt 2 — Assess integration-test readiness
 
-**Date:** 2026-07-15
+**Date:** 2026-07-17
 
 ### Prompt summary
 
-Implement only ticket creation and listing and verify documented validation behaviour.
+Review the backend and test setup without modifying files and report blockers, mismatches, and minimal setup changes.
 
 ### AI response summary
 
-Cursor reported checks for successful listing and creation, default `Open` status, invalid title, description, priority, creator, and assignee.
+Cursor confirmed that the backend was testable but Jest, Supertest, test database lifecycle, test files, and documentation alignment were missing.
 
 ### What I accepted
 
-Manual API verification in Postman as interim evidence.
+- Backend ready as implemented
+- Test-only setup required
+- Separate development and test databases
+- Two planned integration test files
 
 ### What I changed
 
-Automated backend validation tests remain a separate later task.
+Test filenames, database examples, ports, task status, and pending evidence were aligned before test implementation.
 
 ### What I rejected
 
-Treating manual checks as a replacement for the mandatory state-machine integration test tier.
+Production code changes without a failing test proving a defect.
 
 ### Why
 
-The project brief explicitly requires integration tests for ticket transition rules.
+The test harness should exercise the real app without altering working production behaviour unnecessarily.
 
 ---
 
-## Prompt 3 — Validate comments API
+## Prompt 3 — Implement state-transition integration tests
 
-**Date:** 2026-07-15
+**Date:** 2026-07-17
 
 ### Prompt summary
 
-Implement comment creation and ensure detail responses return comments oldest first. Validate message, creator, ticket ID, and ticket existence.
+Add the minimal Jest/Supertest setup and implement only the ticket status-transition suite with persistence checks.
 
 ### AI response summary
 
-Cursor reported successful and failure checks for all documented scenarios.
+Cursor added the shared test setup, isolated database, deterministic fixtures, and 14 status-transition tests.
 
 ### What I accepted
 
-- Valid comment returns 201
-- Missing message returns 400
-- Invalid creator returns 400
-- Missing ticket returns 404
-- Oldest-first retrieval verified
+- All five valid paths
+- Representative invalid, backward, and terminal transitions
+- Invalid status and same-status cases
+- Re-fetch assertions proving persisted or unchanged status
+- No production code changes
 
 ### What I changed
 
-These results were documented in the workflow and testing records.
+A small HTTP helper was used to avoid an environment-specific Supertest dependency-resolution issue.
 
 ### What I rejected
 
-Comment editing and deletion tests.
+Validation tests in the same task.
 
 ### Why
 
-Comment edit/delete are outside Core scope.
+The mandatory signature test tier was implemented first and kept reviewable.
 
 ---
 
-## Prompt 4 — Verify search and status filtering
+## Prompt 4 — Implement ticket and comment validation tests
 
-**Date:** 2026-07-15
+**Date:** 2026-07-17
 
 ### Prompt summary
 
-Implement keyword search and status filtering with minimal changes.
+Add only the required ticket create/update and comment-create validation integration tests using the existing setup.
 
 ### AI response summary
 
-Cursor manually checked:
-
-- unfiltered listing;
-- case-insensitive keyword matching;
-- status filtering;
-- combined query rejection;
-- invalid status rejection;
-- no-result behaviour.
+Cursor added 30 validation tests covering successful requests, representative invalid input, expected responses, and persistence/non-persistence.
 
 ### What I accepted
 
-The manual scenarios and their expected status codes.
+- Ticket create and update validation
+- Comment validation
+- Standard response-envelope assertions
+- No invalid database writes
+- Reuse of shared fixtures and cleanup
 
 ### What I changed
 
-Automated search/filter tests were left as recommended additional coverage, while state-machine integration tests remained mandatory.
+Jest was configured with `maxWorkers: 1` because both suites share one isolated test database and parallel execution caused race conditions.
 
 ### What I rejected
 
-Combined filtering support.
+Optional test tiers and unrelated production changes.
 
 ### Why
 
-The confirmed Core contract requires independent search and status filtering.
+Serial execution made the existing isolated database setup deterministic without adding unnecessary infrastructure.
 
 ---
 
-## Prompt 5 — Verify status-transition implementation
+## Final automated result
 
-**Date:** 2026-07-15
+```text
+Test suites: 2 passed
+Tests:       44 passed
+Command:     cd server && npm test
+Exit code:   0
+```
 
-### Prompt summary
-
-Implement the next status-transition task.
-
-### AI response summary
-
-Cursor detected that transition logic already existed, reviewed the source, and performed end-to-end checks instead of duplicating it.
-
-### What I accepted
-
-Verification of:
-
-- `Open` → `In Progress`
-- invalid `Open` → `Resolved`
-- invalid backward transitions
-- terminal-state rejection
-- same-status no-op
-- invalid status values
-
-### What I changed
-
-Only the task checklist was updated because the feature code already existed.
-
-### What I rejected
-
-Duplicate transition implementation.
-
-### Why
-
-Reviewing the existing code was safer and more accurate than blindly generating new code.
-
-## Remaining testing work
-
-- Add automated integration tests proving every valid transition succeeds.
-- Add invalid-transition integration tests.
-- Add backend validation failure tests.
-- Record commands and final results in `test-results.md`.
+The completed coverage consists of 14 status-transition tests and 30 ticket/comment validation tests. Detailed evidence remains in `test-results.md`.

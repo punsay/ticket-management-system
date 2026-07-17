@@ -1,14 +1,14 @@
 # Planning Prompts
 
-Selected planning prompts from the full append-only Cursor history. The raw record remains in `prompt-history/history.md`.
+Selected planning prompts from the full append-only Cursor history in `prompt-history/history.md`.
 
-## Prompt 1 — Create the initial repository documentation structure
+## Prompt 1 — Create the repository documentation structure
 
 **Date:** 2026-07-11
 
 ### Prompt summary
 
-Create the documentation folders, Cursor workflow files, root configuration files, `.gitignore`, and `.env.example` before writing application code. Add only titles, purposes, and placeholder headings.
+Create the lifecycle-documentation files, Cursor workflow folder, root configuration files, `.gitignore`, and `.env.example` before writing application code.
 
 ### AI response summary
 
@@ -17,21 +17,21 @@ Cursor created the requested documentation scaffold and explained the purpose of
 ### What I accepted
 
 - Documentation-first workflow
-- Separate general documentation and Cursor-specific workflow folders
-- Safe `.env.example` placeholders
-- MERN-focused `.gitignore`
+- Separate general and Cursor-specific artifacts
+- Safe environment placeholders
+- No application code
 
 ### What I changed
 
-A generated code-review filename contained repeated words and was corrected later during repository cleanup.
+A generated code-review filename containing repeated words was corrected during cleanup.
 
 ### What I rejected
 
-Application code and generated requirements at this stage.
+Generated requirements, design decisions, and application code at this stage.
 
 ### Why
 
-The goal was to establish the workflow and repository structure before analysis or implementation.
+The repository needed a clear workflow foundation before analysis and implementation.
 
 ---
 
@@ -41,92 +41,92 @@ The goal was to establish the workflow and repository structure before analysis 
 
 ### Prompt summary
 
-Complete `tool-specific/cursor-workflow/project-context.md` with the project overview, business objective, target users, entities, Core features, stack, principles, constraints, assumptions, exclusions, and success criteria. Avoid implementation details.
+Complete `tool-specific/cursor-workflow/project-context.md` with the project purpose, users, Core scope, stack, constraints, assumptions, exclusions, and success criteria.
 
 ### AI response summary
 
-Cursor created a persistent context document and listed unresolved decisions separately.
+Cursor created a persistent context document and separated unresolved decisions from confirmed requirements.
 
 ### What I accepted
 
 - Context-first development
-- Clear Core and out-of-scope boundaries
-- A separate list of decisions requiring confirmation
+- Core and out-of-scope boundaries
 - Behaviour-focused documentation
+- Explicit unresolved decisions
 
 ### What I changed
 
-The initial context was refined later to use only User, Ticket, and Comment as Core entities and to include the exact ticket transition rules.
+The context was later refined to keep only User, Ticket, and Comment as Core entities and to include the exact status transitions.
 
 ### What I rejected
 
-Unsupported decisions about authentication, deletion, search behaviour, and implementation structure.
+Unsupported assumptions about authentication, deletion, search behaviour, and implementation structure.
 
 ### Why
 
-Those decisions needed to come from confirmed project requirements rather than AI assumptions.
+Future prompts needed stable, confirmed project context rather than AI-invented decisions.
 
 ---
 
-## Prompt 3 — Create the ordered Core task plan
+## Prompt 3 — Create and simplify the Core task plan
 
 **Date:** 2026-07-13
 
 ### Prompt summary
 
-Create a practical Core-only task list covering setup, backend, MongoDB, models, seed data, APIs, comments, search/filtering, status validation, tests, frontend, and final documentation.
+Create an ordered Core-only plan covering setup, backend, database, APIs, tests, frontend, and final documentation, then simplify it into checkboxes that reflect actual progress.
 
 ### AI response summary
 
-Cursor initially created a detailed 30-task plan linked to requirement and acceptance-criteria IDs.
+Cursor first produced a detailed traceable plan, then replaced it with a smaller progress-based checklist.
 
 ### What I accepted
 
 - Ordered delivery phases
-- Traceability to requirements and acceptance criteria
-- Separation of implementation, testing, frontend, and documentation work
+- Requirement and acceptance-criteria traceability
+- Small task boundaries
+- Simple progress checkboxes
 
 ### What I changed
 
-The detailed task tables were later simplified into Markdown checkboxes reflecting actual project progress.
+Task completion was updated after each implemented and verified phase.
 
 ### What I rejected
 
-Optional features and unnecessary task-management complexity.
+Optional features and task-management detail that did not help the one-week Core project.
 
 ### Why
 
-A smaller checklist was easier to maintain during a one-week Core project.
+The task file needed to remain practical and accurately represent repository progress.
 
 ---
 
-## Prompt 4 — Simplify tasks to match real progress
+## Prompt 4 — Review final documentation readiness
 
-**Date:** 2026-07-13
+**Date:** 2026-07-17
 
 ### Prompt summary
 
-Mark completed workflow and analysis tasks, then organise the remaining work into design, rules, setup, backend, testing, frontend, and final documentation sections.
+After completing coding, compare the project trackers and assignment requirements, identify outdated documentation, and create an ordered final-documentation plan without changing application code.
 
 ### AI response summary
 
-Cursor replaced the large task tables with simple checkbox groups.
+The review identified final lifecycle artifacts, README verification, prompt curation, persistence checks, repository hygiene, and tracker reconciliation as the remaining work.
 
 ### What I accepted
 
-- Progress-based task tracking
-- Simple checkboxes
-- Core-only categories
-- Separation of completed and remaining work
+- Evidence-based completion only
+- Documentation and verification before submission
+- Separate raw history and curated prompt evidence
 
 ### What I changed
 
-Task completion was updated incrementally after each implementation phase.
+Outdated checklist items were reserved for reconciliation against actual implementation and test evidence.
 
 ### What I rejected
 
-Keeping the larger artificial task structure after it no longer reflected actual work.
+Marking incomplete or unverified items as complete automatically.
 
 ### Why
 
-The task file should represent the real state of the repository, not only the original plan.
+Final submission documents must remain honest and traceable to the repository.

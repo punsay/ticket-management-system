@@ -45,32 +45,32 @@
 - [x] Search and status filter
 - [x] Status transition rules implemented
 - [x] Backend validation implemented
-- [ ] Backend validation regression-tested in Postman
-- [ ] Error handling
+- [x] Backend validation regression-tested in Postman
+- [x] Error handling
 
 ---
 
 ## 🎨 Frontend
 
 - [x] Acting-user selector
-- [ ] Ticket listing
-- [ ] Ticket details
-- [ ] Create ticket
-- [ ] Update ticket
+- [x] Ticket listing
+- [x] Ticket details
+- [x] Create ticket
+- [x] Update ticket
 - [x] Comments
-- [ ] Search and filter
-- [ ] Error handling
+- [x] Search and filter
+- [x] Error handling
 
 ---
 
 ## 🧪 Testing
 
 - [x] Seeded-users, ticket CRUD, comments, search/filter, and status transitions manually validated in Postman
-- [ ] New ticket/comment validation cases manually validated in Postman
-- [ ] Integration tests
-- [ ] Status transition tests
-- [ ] Testing strategy
-- [ ] Testing report
+- [x] New ticket/comment validation cases manually validated in Postman
+- [x] Integration tests
+- [x] Status transition tests
+- [x] Testing strategy
+- [x] Testing report
 
 ---
 
@@ -85,9 +85,9 @@
 
 ## 🚀 Final Review
 
-- [ ] Application runs successfully
-- [ ] Database persists data
-- [ ] No secrets committed
-- [ ] Meaningful Git commits
-- [ ] Prompt history complete
+- [x] Application runs successfully
+- [x] Database persists data
+- [x] No secrets committed
+- [x] Meaningful Git commits
+- [x] Prompt history complete
 - [ ] Repository ready for submission
