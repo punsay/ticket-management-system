@@ -5,11 +5,29 @@ import CreateTicketForm from '../components/CreateTicketForm';
 import SlideOverPanel from '../components/SlideOverPanel';
 import TicketDetail from '../components/TicketDetail';
 import TicketList from '../components/TicketList';
+import TicketListFilters from '../components/TicketListFilters';
 
 function HomePage() {
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [listRefreshKey, setListRefreshKey] = useState(0);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [activeSearch, setActiveSearch] = useState('');
+  const [activeStatus, setActiveStatus] = useState('');
+
+  function handleSearch(query) {
+    setActiveSearch(query);
+    setActiveStatus('');
+  }
+
+  function handleStatusFilter(status) {
+    setActiveStatus(status);
+    setActiveSearch('');
+  }
+
+  function handleClearFilters() {
+    setActiveSearch('');
+    setActiveStatus('');
+  }
 
   function handleTicketCreated(ticket) {
     setListRefreshKey((current) => current + 1);
@@ -61,9 +79,18 @@ function HomePage() {
                 Create ticket
               </button>
             </div>
+            <TicketListFilters
+              activeSearch={activeSearch}
+              activeStatus={activeStatus}
+              onSearch={handleSearch}
+              onStatusFilter={handleStatusFilter}
+              onClear={handleClearFilters}
+            />
             <TicketList
               onSelectTicket={setSelectedTicketId}
               refreshKey={listRefreshKey}
+              search={activeSearch}
+              status={activeStatus}
             />
           </div>
         )}

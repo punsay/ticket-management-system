@@ -1,7 +1,19 @@
 import { apiRequest } from './apiClient';
 
-export function getTickets() {
-  return apiRequest('/tickets');
+export function getTickets({ search, status } = {}) {
+  const params = new URLSearchParams();
+
+  if (search) {
+    params.set('search', search);
+  }
+
+  if (status) {
+    params.set('status', status);
+  }
+
+  const query = params.toString();
+
+  return apiRequest(`/tickets${query ? `?${query}` : ''}`);
 }
 
 export function getTicketById(id) {

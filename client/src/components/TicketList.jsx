@@ -34,7 +34,28 @@ function Badge({ label, className }) {
   );
 }
 
-function TicketList({ onSelectTicket, refreshKey = 0 }) {
+function getEmptyState(search, status) {
+  if (search) {
+    return {
+      title: 'No matching tickets',
+      message: `No tickets match "${search}". Try a different keyword.`,
+    };
+  }
+
+  if (status) {
+    return {
+      title: 'No matching tickets',
+      message: `No tickets with status "${status}".`,
+    };
+  }
+
+  return {
+    title: 'No tickets yet',
+    message: 'Tickets will appear here once they are created.',
+  };
+}
+
+function TicketList({ onSelectTicket, refreshKey = 0, search = '', status = '' }) {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,7 +65,7 @@ function TicketList({ onSelectTicket, refreshKey = 0 }) {
     setError(null);
 
     try {
-      const data = await getTickets();
+      const data = await getTickets({ search, status });
       setTickets(data);
     } catch (err) {
       setTickets([]);
@@ -56,7 +77,7 @@ function TicketList({ onSelectTicket, refreshKey = 0 }) {
 
   useEffect(() => {
     loadTickets();
-  }, [refreshKey]);
+  }, [refreshKey, search, status]);
 
   if (loading) {
     return (
@@ -97,6 +118,8 @@ function TicketList({ onSelectTicket, refreshKey = 0 }) {
   }
 
   if (tickets.length === 0) {
+    const emptyState = getEmptyState(search, status);
+
     return (
       <div
         className="rounded-lg border border-dashed border-gray-300 bg-white px-6 py-16 text-center"
@@ -107,11 +130,9 @@ function TicketList({ onSelectTicket, refreshKey = 0 }) {
           aria-hidden="true"
         />
         <h2 className="mt-4 text-base font-medium text-gray-900">
-          No tickets yet
+          {emptyState.title}
         </h2>
-        <p className="mt-1 text-sm text-gray-600">
-          Tickets will appear here once they are created.
-        </p>
+        <p className="mt-1 text-sm text-gray-600">{emptyState.message}</p>
       </div>
     );
   }

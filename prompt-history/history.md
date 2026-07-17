@@ -3480,3 +3480,75 @@ Added a comments section to the ticket detail view: existing comments render old
 8. Confirm ticket details, **Edit ticket**, and **status change** still work as before.
 
 ---
+
+## 2026-07-17 19:20:19 +0530 — User
+
+**Conversation:** `0e2e30d7-256f-4336-ad11-629c61e866e1`
+
+Implement keyword search and status filter controls for the ticket list.
+
+Use the existing ticket list API. Search should match ticket title and description, and the status filter should use the supported ticket statuses. Search and status filtering must work separately.
+
+Show appropriate loading, empty, and error states. Keep the existing create, detail, update, status, and comment features unchanged.
+
+Update only the relevant documentation, run the frontend checks, and report the files changed and manual verification steps.
+
+---
+
+## 2026-07-17 19:22:07 +0530 — Assistant
+
+**Conversation:** `0e2e30d7-256f-4336-ad11-629c61e866e1`
+
+Implemented keyword search and status filter controls for the ticket list.
+
+## Summary
+
+Search and status filtering use the existing `GET /api/tickets` API. Only one mode is active at a time — applying search clears status, and selecting a status clears search — matching the API contract (combined params return `400`).
+
+## Files changed
+
+| File | Change |
+|------|--------|
+| `client/src/services/ticketService.js` | `getTickets()` accepts optional `{ search, status }` query params |
+| `client/src/utils/statusTransitions.js` | Exported `TICKET_STATUSES` for the filter dropdown |
+| `client/src/components/TicketListFilters.jsx` | **New** — search form, status select, active-filter chips, clear button |
+| `client/src/components/TicketList.jsx` | Accepts `search`/`status` props; context-aware empty states |
+| `client/src/pages/HomePage.jsx` | Filter state and wiring between filters and list |
+| `tool-specific/cursor-workflow/tasks.md` | Marked search/filter frontend task complete |
+
+## Behaviour
+
+- **Search** — Submit via button or Enter; matches title and description (case-insensitive, partial); clears any status filter
+- **Status filter** — Exact match on `Open`, `In Progress`, `Resolved`, `Closed`, `Cancelled`; clears any search keyword
+- **Loading** — Spinner while fetching (unchanged pattern)
+- **Empty** — Different messages for no tickets, no search matches, and no status matches
+- **Error** — Inline error with retry (unchanged pattern)
+- **Create, detail, update, status, comments** — Unchanged
+
+## Frontend checks
+
+| Check | Result |
+|-------|--------|
+| `npm run build` (client) | Passed |
+
+No dedicated lint script exists in `client/package.json`; production build was used as the frontend check.
+
+## Related requirements
+
+- **FR-08, FR-09** — Keyword search and status filtering
+- **AC-22–AC-27** — Search scope, empty states, independent operation
+
+## Manual verification steps
+
+1. Start MongoDB, seed the DB, and run server + client (`npm run dev` in each).
+2. Open the ticket list — all seeded tickets should appear.
+3. Search for a keyword in a ticket title (e.g. part of a seeded title) → only matching tickets shown; status filter resets to “All statuses”.
+4. Search for text that appears only in a comment → ticket should **not** appear (AC-23).
+5. Search for a non-matching keyword → empty state (“No matching tickets”), not an error.
+6. Select a status (e.g. `Open`) → only tickets with that status; search input clears.
+7. Select a status with no tickets → empty state for that status, not an error.
+8. Click **Clear filters** → full list returns.
+9. Confirm create ticket, open detail, update fields, change status, and add comments still work.
+10. Stop the server and reload the list → generic error with **Try again** button.
+
+---
