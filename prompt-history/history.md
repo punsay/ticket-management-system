@@ -3096,3 +3096,63 @@ No frontend lint script exists in this project; production build was used as the
 **FR-01**, **FR-11**, **FR-12**, **AC-03**, **AC-05**–**AC-08**, **AC-09**, **NFR-02**
 
 ---
+
+## 2026-07-17 18:07:56 +0530 — User
+
+**Conversation:** `9d4aa8ef-3bcf-4945-a1fa-f64b0302f9c0`
+
+Improve the create-ticket UI without changing its existing behaviour.
+
+Keep the ticket list as the main view and hide the form by default. Add a clear Create ticket button that opens the form in a modal or side panel.
+
+Keep all current fields, validation, acting-user requirements, API behaviour, loading, success, and error handling unchanged.
+
+Remove the permanent acting-user warning from the main page and show guidance only when the user tries to submit without selecting an acting user.
+
+Keep the design responsive, accessible, and consistent with the existing frontend styles.
+
+Update only the relevant documentation if required, run the frontend checks, and report the files changed and manual verification steps.
+
+---
+
+## 2026-07-17 18:08:45 +0530 — Assistant
+
+**Conversation:** `9d4aa8ef-3bcf-4945-a1fa-f64b0302f9c0`
+
+The create-ticket flow now keeps the ticket list as the main view and opens the form in a slide-over panel.
+
+## Summary
+
+**What changed**
+- The ticket list is the default home view with a **Create ticket** button in the page header.
+- The form opens in a right-side **slide-over panel** (full width on small screens, `max-w-xl` on larger screens).
+- The permanent acting-user warnings were removed from the main page header and from the form; guidance appears only after a submit attempt without an acting user selected.
+- Form fields, validation, API calls, loading states, toasts, and error handling are unchanged.
+
+## Files changed
+
+| File | Change |
+|------|--------|
+| `client/src/components/SlideOverPanel.jsx` | **New** — accessible slide-over with backdrop, Escape to close, focus management, and scroll lock |
+| `client/src/components/CreateTicketForm.jsx` | Acting-user alert only on submit; optional Cancel button; layout adjusted for panel use |
+| `client/src/pages/HomePage.jsx` | List-first layout; Create ticket button; panel state; removed header acting-user subtitle |
+
+No documentation updates were required — behaviour matches existing FR-01 and AC-05–AC-08.
+
+## Checks performed
+
+- `npm run build` in `client/` — passed
+- No linter errors on changed files
+
+## Manual verification steps
+
+1. Open the app — the ticket list should be the main content; the create form should not be visible.
+2. Click **Create ticket** — the slide-over panel opens from the right with all fields (title, description, priority, optional assignee).
+3. Submit with empty fields — inline validation errors should appear as before.
+4. Submit without selecting an acting user — amber alert: “Select an acting user before creating a ticket.”
+5. Select an acting user, fill required fields, submit — success toast, panel closes, list refreshes, and the new ticket detail view opens.
+6. Open the panel again and use **Cancel**, backdrop click, or **Escape** — panel closes without creating a ticket.
+7. Resize to mobile width — panel should use full width and remain usable.
+8. Tab through the panel — focus should move to the close button on open; focus rings should be visible on interactive elements.
+
+---
