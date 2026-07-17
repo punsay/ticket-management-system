@@ -33,6 +33,10 @@ Manual validation details are recorded in:
 
 ```text
 tests/
+├── helpers/
+│   ├── fixtures.js
+│   ├── http.js
+│   └── setup.js
 ├── integration/
 │   ├── ticket-status-transitions.test.js
 │   └── ticket-comment-validation.test.js
@@ -55,7 +59,17 @@ Automated integration tests must use a separate local database so dev/seed data 
 MONGODB_URI=mongodb://127.0.0.1:27017/ticket_management_system_test
 ```
 
-Run automated tests with `NODE_ENV=test` and the test `MONGODB_URI` above. See `test-strategy.md` for fixture, teardown, and `npm test` wiring (when implemented).
+Run automated tests with `NODE_ENV=test` and the test `MONGODB_URI` above.
+
+**Prerequisites:** MongoDB running locally.
+
+From `server/`:
+
+```bash
+npm test
+```
+
+The `npm test` script sets `NODE_ENV=test` and `MONGODB_URI=mongodb://127.0.0.1:27017/ticket_management_system_test`, then runs Jest against `tests/integration/` via `server/jest.config.js`. Shared setup connects to the test database and drops it after the suite.
 
 ## Mandatory Integration Test Coverage
 
@@ -101,14 +115,14 @@ The tests must confirm that:
 - [x] Backend APIs manually validated in Postman
 - [x] Valid status transitions manually verified
 - [x] Invalid status transitions manually verified
-- [ ] Jest and Supertest integration test setup
-- [ ] Dedicated local MongoDB test database configuration
-- [ ] Automated valid-transition tests
-- [ ] Automated invalid-transition tests
+- [x] Jest and Supertest integration test setup
+- [x] Dedicated local MongoDB test database configuration
+- [x] Automated valid-transition tests
+- [x] Automated invalid-transition tests
 - [ ] Automated ticket validation tests
 - [ ] Automated comment validation tests
-- [ ] Deterministic fixture setup and cleanup
-- [ ] Test results documented
+- [x] Deterministic fixture setup and cleanup
+- [x] Test results documented (status-transition suite)
 
 ## Related Documents
 

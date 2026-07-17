@@ -2612,3 +2612,64 @@ Documentation is aligned with `test-strategy.md` and the readiness assessment. S
 **Related AC IDs referenced in updates:** AC-28–AC-35 (manual transitions), AC-45–AC-46 (automated transitions pending).
 
 ---
+
+## 2026-07-17 15:03:18 +0530 — User
+
+**Conversation:** `6566efc1-ba87-492e-8ea2-7e7cb7fbbb66`
+
+Implement the minimal integration test setup from @test-strategy.md and @.cursor/rules/testing.mdc 
+Add Jest, Supertest, an isolated local test database, shared setup and cleanup, and the npm test script.
+
+Then implement only ticket-status-transitions.test.js.
+
+Cover all required valid transitions and representative invalid transitions, including persistence checks.
+
+Update only the relevant test documentation and task status to reflect the completed setup and actual test results.
+
+Do not implement validation tests or modify production code unless a failing test confirms a defect.
+
+---
+
+## 2026-07-17 15:09:31 +0530 — Assistant
+
+**Conversation:** `6566efc1-ba87-492e-8ea2-7e7cb7fbbb66`
+
+## Summary
+
+Integration test setup and the status-transition suite are in place. No production code was changed.
+
+### Setup added
+
+| File | Purpose |
+|------|---------|
+| `server/package.json` | `jest`, `supertest@6.3.4`, `npm test` script |
+| `server/jest.config.js` | Runs `tests/integration/**/*.test.js` with shared setup |
+| `tests/helpers/setup.js` | Connects to `ticket_management_system_test`, drops DB on teardown |
+| `tests/helpers/fixtures.js` | Creates Alice/Bob/Carol users and tickets at a given status |
+| `tests/helpers/http.js` | JSON request helper (avoids a `mime` resolution conflict with supertest) |
+
+### Tests implemented
+
+`tests/integration/ticket-status-transitions.test.js` — **14 tests, all passing**
+
+**Valid (AC-28–AC-32, AC-45):** Open→In Progress→Resolved→Closed, Open→Cancelled, In Progress→Cancelled — each asserts `200`, `success: true`, and persistence via `GET /api/tickets/:id`.
+
+**Invalid (AC-33–AC-35, AC-46):** Open→Resolved/Closed, In Progress→Open, Resolved→Open/In Progress, Closed→In Progress, Cancelled→Open, terminal-state rejections (`409`), invalid status string (`400`, VR-05), no-op Open→Open (`200`) — each asserts unchanged status on re-fetch.
+
+### Run
+
+```bash
+cd server && npm test
+```
+
+**Result:** exit code `0`, 14/14 passed (recorded in `test-results.md`).
+
+### Documentation updated
+
+- `tests/README.md` — setup, run instructions, status checkboxes
+- `tool-specific/cursor-workflow/tasks.md` — transition test tasks marked complete
+- `test-results.md` — automated run results
+
+Validation integration tests (`ticket-comment-validation.test.js`) were not implemented, per your request.
+
+---
