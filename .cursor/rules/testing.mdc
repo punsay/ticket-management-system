@@ -1,0 +1,86 @@
+---
+description: Core backend testing — integration tests per test-strategy.md
+globs: tests/**/*
+alwaysApply: false
+---
+
+# Testing
+
+`test-strategy.md` is the **source of truth** for what to test, how to run tests, and definition of done. Also read `api-contract.md`, `tool-specific/cursor-workflow/acceptance-criteria.md`, and `tests/README.md` before implementing.
+
+## Before creating or changing anything
+
+1. Inspect existing test files, `server/package.json`, `server/src/app.js`, and related services/models.
+2. Report any mismatch between implementation, `api-contract.md`, `acceptance-criteria.md`, and `test-strategy.md` **before proceeding**.
+3. Make **minimal** changes — tests and test wiring only unless a failing test confirms a production defect.
+
+## Core scope only
+
+**In scope (mandatory):**
+
+- Integration tests for all **five valid** and **representative invalid** ticket status transitions (AC-45, AC-46)
+- Focused **ticket** and **comment validation** integration tests from [Coverage Targets](test-strategy.md)
+- Local `npm test` via Jest + supertest
+- Recording runs in `test-results.md`
+
+**Out of scope — do not implement unless explicitly requested:**
+
+- Unit, React component, or frontend E2E tests
+- CI/CD, Docker, authentication, load/security testing
+- Manual-only spot checks (search, status filter, combined query) unless adding Postman notes
+
+## Stack and approach
+
+| Piece | Usage |
+|-------|--------|
+| **Jest** | Test runner (`server/` devDependency) |
+| **supertest** | HTTP requests against exported Express `app` from `server/src/app.js` — no bound port |
+| **MongoDB** | Real persistence via Mongoose; **no mocks** |
+| **Test DB** | Dedicated local database (e.g. `ticket_management_system_test`) |
+
+```text
+tests/
+├── integration/
+│   ├── ticket-status-transitions.test.js
+│   └── ticket-comment-validation.test.js
+└── README.md
+```
+
+Run with `NODE_ENV=test` and a test `MONGODB_URI` separate from development.
+
+## Database isolation
+
+- **Never** use or modify the development/seed database in automated tests.
+- Set `MONGODB_URI` in test setup to a dedicated test database name.
+- Do **not** depend on `npm run seed` or hardcoded ObjectIds from seed output.
+- Tear down in `afterAll`: drop collections or the test database; disconnect Mongoose.
+
+## Fixtures and assertions
+
+- Create deterministic fixtures in `beforeAll` / `beforeEach`: three users (Alice, Bob, Carol with correct roles), then tickets at the starting status each case needs.
+- Invalid-transition tests use **isolated tickets**; valid transitions may reuse one ticket through a linear lifecycle where safe.
+- After rejected transitions or validation failures, re-fetch via `GET /api/tickets/:id` or direct DB read to confirm **no invalid persist**.
+- Assert HTTP status, `{ success, data | error }` envelope per `api-contract.md`, and readable `error.message` (no stack traces).
+
+### Valid transitions (each: `200`, persisted)
+
+`Open`→`In Progress`, `Open`→`Cancelled`, `In Progress`→`Resolved`, `In Progress`→`Cancelled`, `Resolved`→`Closed`.
+
+Source: `server/src/services/statusTransitionService.js` (`ALLOWED_TRANSITIONS`).
+
+### Invalid transitions (each: `409` or `400` as specified, unchanged on re-fetch)
+
+Include representative cases from `test-strategy.md`: e.g. `Open`→`Resolved`, `Open`→`Closed`, `In Progress`→`Open`, `Resolved`→`Open`, `Closed`→`In Progress`, `Cancelled`→`Open`; no-op same-status (`200`); invalid status string (`400`); terminal `Closed`/`Cancelled` rejecting further status transitions.
+
+### Validation integration tests
+
+Cover ticket create/update and comment create scenarios listed under **Ticket validation** and **Comment validation** in `test-strategy.md` (status codes, messages, no invalid persist).
+
+## Production code changes
+
+- **Do not** change application code to make tests pass unless a test exposes a **confirmed defect** against `api-contract.md` / acceptance criteria.
+- If a defect is confirmed, fix minimally and note the related AC/VR ID.
+
+## Completion summary
+
+After test work, report: changed files, related AC/VR/BR IDs, command run, and pass/fail outcome for `test-results.md`.

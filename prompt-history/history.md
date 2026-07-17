@@ -2373,3 +2373,61 @@ Use the existing project stack and scope. Do not write tests or change applicati
 No tests or application code were changed — only the strategy document. Related requirement: **AC-45, AC-46, AC-36–AC-38** (`tasks.md` testing items).
 
 ---
+
+## 2026-07-17 12:56:57 +0530 — User
+
+**Conversation:** `715958c1-5706-445f-9b7e-5719e13f13e3`
+
+/create-rule 
+
+Review the approved @test-strategy.md and the existing @.cursor/ rules.
+
+Create a focused Cursor rule for implementing and running tests in this project.
+
+The rule must:
+
+- treat test-strategy.md as the testing source of truth
+- keep work within the mandatory Core scope
+- prioritize integration tests for all valid and representative invalid ticket status transitions
+- include ticket and comment validation integration tests as defined in the strategy
+- use Jest, Supertest, the exported Express app, and a dedicated local MongoDB test database
+- prevent tests from using or modifying the development database
+- create deterministic test fixtures and clean them up after execution
+- verify HTTP responses and database persistence or non-persistence
+- avoid changing production code unless a test exposes a confirmed defect
+- avoid implementing optional unit, component, frontend E2E, CI, Docker, authentication, or other Stretch work
+- inspect existing files before creating or changing anything
+- make minimal changes and report any mismatch between implementation, @api-contract.md , @tool-specific/cursor-workflow/acceptance-criteria.md , and @test-strategy.md before proceeding
+
+Create only the rule file. Do not implement tests or modify application code.
+
+---
+
+## 2026-07-17 13:05:44 +0530 — Assistant
+
+**Conversation:** `715958c1-5706-445f-9b7e-5719e13f13e3`
+
+Created `.cursor/rules/testing.mdc` — a file-scoped rule that applies when working under `tests/**/*`.
+
+### What it enforces
+
+- **`test-strategy.md` as source of truth**, with pointers to `api-contract.md`, `acceptance-criteria.md`, and `tests/README.md`
+- **Inspect-first workflow** — review existing files and report doc/implementation mismatches before proceeding
+- **Core scope only** — mandatory status-transition integration tests (AC-45/AC-46) plus ticket/comment validation tests from the strategy
+- **Stack** — Jest, supertest, exported `server/src/app.js`, dedicated local MongoDB test DB (`NODE_ENV=test`)
+- **Isolation** — no dev/seed DB usage; programmatic fixtures; teardown after suites
+- **Assertions** — HTTP status, `{ success, data | error }` envelope, persistence/non-persistence checks
+- **Minimal production changes** — only when a test confirms a real defect
+- **Explicit exclusions** — unit, component, E2E, CI, Docker, auth, and other Stretch work
+
+### How it fits existing rules
+
+| Rule | Relationship |
+|------|----------------|
+| `project-workflow.mdc` | Always-on Core scope and doc-reading; testing rule adds test-specific detail |
+| `code-quality.mdc` | API response shape; testing rule references it for assertions |
+| `architecture-backend.mdc` | Backend layering; testing rule targets integration via the exported app |
+
+No tests or application code were modified.
+
+---

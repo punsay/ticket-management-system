@@ -22,6 +22,7 @@ Rules complement — not replace — `project-context.md`, `spec.md`, `tasks.md`
 | `.cursor/rules/output-format.mdc` | Always | How the agent describes changes |
 | `.cursor/rules/architecture-backend.mdc` | `server/**/*` | Backend layering and validation |
 | `.cursor/rules/frontend.mdc` | `client/**/*` | React structure and UI patterns |
+| `.cursor/rules/testing.mdc` | Test files and test commands | Core-scope test implementation and execution |
 
 ## Main instructions by rule
 
@@ -45,6 +46,10 @@ Prefer readable, focused functions; avoid duplication and unnecessary dependenci
 
 Keep explanations short. Name file paths when describing changes. Show only changed or new sections — not full unchanged files — unless the file is small and new or full content was requested.
 
+### `testing` (test files and test commands)
+
+Treat `test-strategy.md` as the testing source of truth. Keep testing within mandatory Core scope and prioritize integration tests for valid and representative invalid ticket status transitions, ticket validation, and comment validation. Use Jest, Supertest, the exported Express app, and a dedicated local MongoDB test database that is separate from development data. Use deterministic fixtures, clean up test data after execution, and verify both HTTP responses and database persistence or non-persistence. Inspect existing files before changes, keep updates minimal, and change production code only when a test confirms a defect. Do not add optional unit, component, frontend E2E, CI, Docker, authentication, or other Stretch work.
+
 ## How rules support development
 
 **Context-driven:** `project-workflow` points the agent at the same documents a human developer would read first, so implementation aligns with confirmed requirements rather than assumptions.
@@ -66,21 +71,6 @@ Prefer small, focused edits to one rule at a time. After changing a rule, note t
 ## Restrictions (from Core scope)
 
 Regardless of rules, do not implement: authentication, ticket/comment deletion, combined search-and-filter, pagination, or other items listed as out of scope in `spec.md` and `requirements-analysis.md`.
-
-## Rule Refinements
-
-Before implementation, the active Cursor rules were reviewed against the API specification.
-
-The review found inconsistent API response formats across the backend and code-quality rules.
-The rules were aligned to use:
-
-- `success` and `data` for successful responses
-- `success` and `error.message` for failed responses
-
-The frontend rule was also updated to read successful responses from `data` and failures from
-`error.message`.
-
-The API behaviour for combined `search` and `status` parameters was clarified as HTTP 400.
 
 ## Rule Refinements
 
