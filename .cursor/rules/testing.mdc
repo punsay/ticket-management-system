@@ -42,7 +42,7 @@ alwaysApply: false
 tests/
 ├── integration/
 │   ├── ticket-status-transitions.test.js
-│   └── ticket-comment-validation.test.js
+│   └── ticket-and-comment-validation.test.js
 └── README.md
 ```
 

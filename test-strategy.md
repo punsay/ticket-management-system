@@ -93,7 +93,7 @@ Record pass/fail outcomes in `test-results.md`.
 tests/
 ├── integration/
 │   ├── ticket-status-transitions.test.js
-│   └── ticket-comment-validation.test.js
+│   └── ticket-and-comment-validation.test.js
 └── README.md
 ```
 

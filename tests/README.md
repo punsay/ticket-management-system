@@ -39,7 +39,7 @@ tests/
 │   └── setup.js
 ├── integration/
 │   ├── ticket-status-transitions.test.js
-│   └── ticket-comment-validation.test.js
+│   └── ticket-and-comment-validation.test.js
 └── README.md
 ```
 
@@ -69,7 +69,7 @@ From `server/`:
 npm test
 ```
 
-The `npm test` script sets `NODE_ENV=test` and `MONGODB_URI=mongodb://127.0.0.1:27017/ticket_management_system_test`, then runs Jest against `tests/integration/` via `server/jest.config.js`. Shared setup connects to the test database and drops it after the suite.
+The `npm test` script sets `NODE_ENV=test` and `MONGODB_URI=mongodb://127.0.0.1:27017/ticket_management_system_test`, then runs Jest against `tests/integration/` via `server/jest.config.js`. Shared setup connects to the test database and drops it after the suite. Jest runs with `maxWorkers: 1` because integration suites share one test database.
 
 ## Mandatory Integration Test Coverage
 
@@ -119,10 +119,10 @@ The tests must confirm that:
 - [x] Dedicated local MongoDB test database configuration
 - [x] Automated valid-transition tests
 - [x] Automated invalid-transition tests
-- [ ] Automated ticket validation tests
-- [ ] Automated comment validation tests
+- [x] Automated ticket validation tests
+- [x] Automated comment validation tests
 - [x] Deterministic fixture setup and cleanup
-- [x] Test results documented (status-transition suite)
+- [x] Test results documented (status-transition and validation suites)
 
 ## Related Documents
 

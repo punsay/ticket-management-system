@@ -51,7 +51,8 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 - [x] Testing strategy (`test-strategy.md`)
 - [x] Integration tests for valid status transitions (NFR-04, AC-45)
 - [x] Integration tests for invalid status transitions (NFR-05, AC-46)
-- [x] Testing report (`test-results.md`) — status-transition suite recorded
+- [x] Integration tests for ticket and comment validation (AC-09–AC-11, AC-16–AC-17, AC-20, AC-36–AC-38, VR-01–VR-07, VR-09–VR-10)
+- [x] Testing report (`test-results.md`) — status-transition and validation suites recorded
 
 ## Frontend
 

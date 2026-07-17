@@ -4,7 +4,7 @@ Records test execution results, coverage metrics, and outstanding issues discove
 
 ## Overview
 
-Manual API validation has been completed in Postman for seeded users, ticket CRUD, comments, keyword search, status filtering, and ticket status transitions (valid and representative invalid). A dedicated ticket/comment validation layer is implemented in code; Postman regression for validation failure cases is still pending. Automated integration tests for ticket status transitions are implemented and passing; ticket/comment validation integration tests are still pending.
+Manual API validation has been completed in Postman for seeded users, ticket CRUD, comments, keyword search, status filtering, and ticket status transitions (valid and representative invalid). A dedicated ticket/comment validation layer is implemented in code; Postman regression for validation failure cases is still pending. Automated integration tests for ticket status transitions and ticket/comment validation are implemented and passing.
 
 ## Test Summary
 
@@ -15,13 +15,14 @@ Manual API validation has been completed in Postman for seeded users, ticket CRU
 | Comments API | Manual Postman validation | Passed |
 | Search and status filter | Manual Postman validation | Passed |
 | Status transitions | Manual Postman validation + Jest integration | Passed (AC-28–AC-35, AC-45, AC-46) |
-| Ticket/comment validation layer | Code review + Postman | Implemented in backend; validation-failure Postman regression pending |
+| Ticket/comment validation layer | Code review + Jest integration | Passed (AC-09–AC-11, AC-16–AC-17, AC-20, AC-36–AC-38, VR-01–VR-07, VR-09–VR-10) |
 | Frontend workflows | Not yet tested | Pending |
 
 ## Automated Integration Test Run
 
 | Date | Command | Exit code | Result |
 |------|---------|-----------|--------|
+| 2026-07-17 | `cd server && npm test` | 0 | **44/44 passed** — both integration suites |
 | 2026-07-17 | `cd server && npm test` | 0 | **14/14 passed** — `tests/integration/ticket-status-transitions.test.js` |
 
 **Suite:** `ticket-status-transitions.test.js`
@@ -43,9 +44,32 @@ Manual API validation has been completed in Postman for seeded users, ticket CRU
 
 All cases assert `{ success, data | error }` envelope, readable `error.message` (no stack traces), and persistence via `GET /api/tickets/:id`.
 
+**Suite:** `ticket-and-comment-validation.test.js`
+
+**Ticket create validation (AC-09–AC-11, AC-36–AC-38, VR-01–VR-07):**
+
+- Missing/empty title and description (400, no ticket created)
+- Invalid priority; missing, malformed, and non-existent `createdBy` (400, no ticket created)
+- Requester or malformed `assignedTo` (400, no ticket created)
+- Array request body (400, VR-01)
+- Valid create without assignee and with support-agent assignee (`201`, `status: Open`)
+
+**Ticket update validation (AC-16–AC-17, VR-02–VR-04, VR-06):**
+
+- Empty title/description when provided; invalid priority; invalid assignee (400, unchanged on re-fetch)
+- Malformed and non-existent ticket `:id` (404)
+- Valid field update (`200`, persisted)
+
+**Comment create validation (AC-18, AC-20, AC-37–AC-38, VR-01, VR-07, VR-09–VR-10):**
+
+- Valid message and `createdBy` (`201`, persisted on ticket detail)
+- Missing/empty message; missing, malformed, and non-existent `createdBy` (400, no comment created)
+- Malformed and non-existent ticket `:id` (404, no comment created)
+- Array request body (400, VR-01)
+
 ## Coverage Report
 
-Automated coverage is limited to the status-transition integration suite. Ticket and comment validation integration tests are not yet implemented.
+Automated coverage includes the status-transition integration suite and the ticket/comment validation integration suite.
 
 ### Databases
 
@@ -66,10 +90,11 @@ Backend default port for local API and Postman: `5001` (`server/.env.example`).
 - Status filtering was verified for exact allowed status values.
 - Valid and representative invalid ticket status transitions were manually verified.
 - Automated integration tests confirm all five valid transitions, representative invalid transitions, no-op same-status updates, invalid status string rejection, and terminal-state rejection with persistence checks.
+- Automated integration tests confirm ticket create/update and comment create validation, including persistence and non-persistence checks.
 
 ## Failed Tests
 
-No unresolved failures were recorded during completed manual API checks or the status-transition integration suite.
+No unresolved failures were recorded during completed manual API checks or the automated integration suites.
 
 ## Pending Tests
 
@@ -82,16 +107,13 @@ No unresolved failures were recorded during completed manual API checks or the s
 - Reject blank comment messages and malformed comment creator IDs.
 - Confirm valid ticket creation, update, comment creation, and existing status transitions still work.
 
-**Automated integration tests** — remaining planned file per `test-strategy.md`:
-
-- `tests/integration/ticket-comment-validation.test.js` (ticket and comment validation)
+**Automated integration tests** — complete per `test-strategy.md`.
 
 ## Known Issues
 
 - Validation-layer Postman regression checks are still pending.
-- Ticket/comment validation integration tests are still pending.
 - Frontend workflow verification is still pending.
 
 ## Recommendations
 
-Complete the validation-layer Postman regression checks, then add automated integration tests for ticket and comment validation. Frontend workflow verification remains pending.
+Complete the validation-layer Postman regression checks. Frontend workflow verification remains pending.

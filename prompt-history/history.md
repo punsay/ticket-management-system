@@ -2490,7 +2490,7 @@ The backend matches what `test-strategy.md` expects to exercise. What’s missin
 
 | Item | Source of truth (`test-strategy.md` / `testing.mdc`) | Current state |
 |------|------------------------------------------------------|---------------|
-| Planned test files | `ticket-status-transitions.test.js` + `ticket-comment-validation.test.js` | `tests/README.md` lists three files: `ticket-validation.test.js` + `comment-validation.test.js` separately |
+| Planned test files | `ticket-status-transitions.test.js` + `ticket-and-comment-validation.test.js` | `tests/README.md` lists three files: `ticket-validation.test.js` + `comment-validation.test.js` separately |
 | `npm test` | Documented in strategy; wired in `server/package.json` | Not present |
 | Testing strategy task | Complete per `test-strategy.md` | `tasks.md` still has `[ ] Testing strategy` unchecked |
 | Validation evidence | Postman regression recorded in `test-results.md` | `test-results.md` lists validation Postman checks as **pending** (parallel manual track) |
@@ -2538,7 +2538,7 @@ Only test infrastructure — no application code changes:
    - Five valid transitions (`200`, persisted)
    - Representative invalid cases (`409`, unchanged on re-fetch)
    - No-op same-status, invalid status string (`400`), terminal-state rejection
-3. **Implement `ticket-comment-validation.test.js`** — ticket create/update and comment create scenarios from [Coverage Targets](test-strategy.md).
+3. **Implement `ticket-and-comment-validation.test.js`** — ticket create/update and comment create scenarios from [Coverage Targets](test-strategy.md).
 4. **Align `tests/README.md`** with `test-strategy.md` file names and add run instructions.
 5. **Record results** in `test-results.md` (command, exit code, pass/fail summary).
 6. **In parallel (manual)** — complete validation Postman regression still listed as pending in `test-results.md`.
@@ -2578,7 +2578,7 @@ Report the files changed and the reason for each change.
 Documentation is aligned with `test-strategy.md` and the readiness assessment. Summary of changes:
 
 ### `tests/README.md`
-- **Filename:** `comment-validation.test.js` → `ticket-comment-validation.test.js` to match `test-strategy.md` and `.cursor/rules/testing.mdc`.
+- **Filename:** `comment-validation.test.js` → `ticket-and-comment-validation.test.js` to match `test-strategy.md` and `.cursor/rules/testing.mdc`.
 - **Test database section:** Documents dev DB (`ticket_management_system`) vs test DB (`ticket_management_system_test`) and `NODE_ENV=test`.
 
 ### `tool-specific/cursor-workflow/tasks.md`
@@ -2670,6 +2670,66 @@ cd server && npm test
 - `tool-specific/cursor-workflow/tasks.md` — transition test tasks marked complete
 - `test-results.md` — automated run results
 
-Validation integration tests (`ticket-comment-validation.test.js`) were not implemented, per your request.
+Validation integration tests (`ticket-and-comment-validation.test.js`) were not implemented, per your request.
+
+---
+
+## 2026-07-17 15:33:41 +0530 — User
+
+**Conversation:** `e6f6f5f1-5020-4c1f-bc09-3c96cce401cb`
+
+Implement ticket-and-comment-validation.test.js using @test-strategy.md and @.cursor/rules/testing.mdc 
+
+Cover the required ticket create/update validation and comment create validation scenarios, including representative invalid inputs, expected HTTP responses, and persistence or non-persistence checks.
+
+Reuse the existing Jest setup, isolated test database, fixtures, and cleanup.
+
+Update only the relevant test documentation, task status, and actual test results.
+
+Do not add optional tests or modify production code unless a failing test confirms a defect.
+
+---
+
+## 2026-07-17 15:38:14 +0530 — Assistant
+
+**Conversation:** `e6f6f5f1-5020-4c1f-bc09-3c96cce401cb`
+
+Implemented `tests/integration/ticket-and-comment-validation.test.js` with **30 validation tests** covering all scenarios from `test-strategy.md`.
+
+### New test file
+
+**Ticket create** — missing/empty title & description, invalid priority, missing/malformed/non-existent `createdBy`, requester/malformed `assignedTo`, array body (VR-01); happy paths with and without assignee (`201`, `status: Open`).
+
+**Ticket update** — empty title/description, invalid priority, invalid assignee, malformed/non-existent `:id` (`404`); valid field update with persistence check.
+
+**Comment create** — valid comment (`201`); missing/empty message; missing/malformed/non-existent `createdBy`; malformed/non-existent ticket (`404`); array body.
+
+All rejection cases assert `400`/`404`, `{ success: false, error: { message } }` (no stack traces), and no invalid persist via ticket count or re-fetch.
+
+### Test wiring fix
+
+Added `maxWorkers: 1` to `server/jest.config.js` — both suites share one MongoDB test database and were racing when Jest ran files in parallel.
+
+### Documentation updated
+
+- `tests/README.md` — validation tests marked complete
+- `tool-specific/cursor-workflow/tasks.md` — validation integration task completed
+- `test-results.md` — full 44/44 run recorded
+
+### Test run
+
+```bash
+cd server && npm test
+```
+
+**Result:** 44/44 passed (14 status transitions + 30 validation)
+
+### Related IDs
+
+AC-09–AC-11, AC-16–AC-17, AC-18, AC-20, AC-36–AC-38, VR-01–VR-07, VR-09–VR-10
+
+### Note
+
+Non-object bodies are tested via **array** input (`[]`), which reaches the validation layer with `400`. Top-level JSON `null` and string primitives are rejected by Express `json()` parsing before validation (returns `500`) — not changed per your instruction to avoid production edits unless a confirmed defect warrants it.
 
 ---
