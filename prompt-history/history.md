@@ -2431,3 +2431,184 @@ Created `.cursor/rules/testing.mdc` — a file-scoped rule that applies when wor
 No tests or application code were modified.
 
 ---
+
+## 2026-07-17 13:57:48 +0530 — User
+
+**Conversation:** `bc2ce374-1f09-4f7d-a691-6561276bfa47`
+
+Review the current test setup and backend implementation.
+
+Follow @.cursor/rules/testing.mdc and use @test-strategy.md as the source of truth.
+
+Assess whether the project is ready for automated integration tests.
+
+Report:
+
+1. Readiness status
+2. Blockers or mismatches
+3. Minimal setup changes required
+4. Recommended next steps
+
+Do not modify files or implement tests.
+
+
+---
+
+## 2026-07-17 13:58:57 +0530 — Assistant
+
+**Conversation:** `bc2ce374-1f09-4f7d-a691-6561276bfa47`
+
+# Integration Test Readiness Assessment
+
+## 1. Readiness Status
+
+**Partially ready — backend yes, test harness no.**
+
+| Area | Status |
+|------|--------|
+| Backend API (routes, services, validation, transitions) | Ready |
+| Exported Express `app` for supertest | Ready |
+| Manual API verification (transitions, CRUD, search/filter) | Done |
+| Jest / supertest / `npm test` | Not started |
+| `tests/integration/` suite | Not started |
+| Dedicated test DB wiring & teardown | Not started |
+| Automated evidence in `test-results.md` | Not started |
+
+The backend matches what `test-strategy.md` expects to exercise. What’s missing is the test runner, dependencies, DB isolation, and test files. You can start writing integration tests after a small wiring pass — no backend changes are required first.
+
+---
+
+## 2. Blockers and Mismatches
+
+### Hard blockers (must fix before running automation)
+
+1. **No test toolchain** — `server/package.json` has no `jest`, `supertest`, or `npm test` script.
+2. **No test files or layout** — only `tests/README.md` exists; no `tests/integration/` directory.
+3. **No test DB lifecycle** — no setup that sets a dedicated `MONGODB_URI`, connects Mongoose, or tears down after the suite.
+
+### Documentation mismatches (resolve when implementing; not backend defects)
+
+| Item | Source of truth (`test-strategy.md` / `testing.mdc`) | Current state |
+|------|------------------------------------------------------|---------------|
+| Planned test files | `ticket-status-transitions.test.js` + `ticket-comment-validation.test.js` | `tests/README.md` lists three files: `ticket-validation.test.js` + `comment-validation.test.js` separately |
+| `npm test` | Documented in strategy; wired in `server/package.json` | Not present |
+| Testing strategy task | Complete per `test-strategy.md` | `tasks.md` still has `[ ] Testing strategy` unchecked |
+| Validation evidence | Postman regression recorded in `test-results.md` | `test-results.md` lists validation Postman checks as **pending** (parallel manual track) |
+
+### Minor config inconsistencies (non-blocking for supertest)
+
+- **PORT**: `api-contract.md` and root `.env.example` use `5000`; `server/.env.example` and `test-strategy.md` Postman section use `5001`. Irrelevant for integration tests (supertest does not bind a port).
+- **MongoDB target**: root `.env.example` points at Atlas; `server/.env.example` uses local `mongodb://127.0.0.1:27017/ticket_management_system`. Tests should use a separate local DB name per strategy (e.g. `ticket_management_system_test`).
+
+### Backend vs contract — aligned for planned tests
+
+Reviewed implementation against `api-contract.md` and coverage targets:
+
+- **`server/src/app.js`** exports the app without starting a server or connecting to the DB — matches the supertest approach.
+- **`statusTransitionService.js`** — `ALLOWED_TRANSITIONS` matches all five valid transitions and terminal `Closed`/`Cancelled` states.
+- **`ticketService.updateTicket`** — skips transition validation on same-status no-op (`200`); invalid transitions throw `409` with `Cannot transition from X to Y`; invalid status strings return `400`.
+- **Validation modules** — error messages align with strategy (`Title is required`, `Invalid user`, `Assignee must be a support agent`, `Message is required`, etc.).
+- **Response envelope** — `{ success, data | error }` via `AppError` middleware.
+
+No confirmed production defects blocking test implementation were found.
+
+---
+
+## 3. Minimal Setup Changes Required
+
+Only test infrastructure — no application code changes:
+
+1. **Add devDependencies** to `server/package.json`: `jest`, `supertest`.
+2. **Add `npm test` script** — run with `NODE_ENV=test` and a test `MONGODB_URI` (e.g. `mongodb://127.0.0.1:27017/ticket_management_system_test`).
+3. **Add Jest config** — `testMatch` → `tests/integration/**/*.test.js`; reasonable timeout for DB I/O.
+4. **Add shared setup** (e.g. `tests/setup.js` or `tests/helpers/db.js`):
+   - Set `MONGODB_URI` to the test database before connecting
+   - Call `connectDatabase()` from `server/src/config/database.js`
+   - `afterAll`: drop collections or the test DB, then `mongoose.disconnect()`
+5. **Create `tests/integration/`** with the two files named in `test-strategy.md` (not the three-file split in `tests/README.md`).
+6. **Fixture helper** — insert Alice/Bob/Carol (same roles as seed); create tickets via API or direct model writes. Non-`Open` starting statuses can be reached via valid transition chains or direct `Ticket.create()` in fixtures.
+7. **Prerequisite**: local MongoDB running (Community Edition per strategy).
+
+---
+
+## 4. Recommended Next Steps
+
+1. **Wire the harness** — dependencies, Jest config, `npm test`, shared DB setup/teardown.
+2. **Implement `ticket-status-transitions.test.js` first** (AC-45, AC-46):
+   - Five valid transitions (`200`, persisted)
+   - Representative invalid cases (`409`, unchanged on re-fetch)
+   - No-op same-status, invalid status string (`400`), terminal-state rejection
+3. **Implement `ticket-comment-validation.test.js`** — ticket create/update and comment create scenarios from [Coverage Targets](test-strategy.md).
+4. **Align `tests/README.md`** with `test-strategy.md` file names and add run instructions.
+5. **Record results** in `test-results.md` (command, exit code, pass/fail summary).
+6. **In parallel (manual)** — complete validation Postman regression still listed as pending in `test-results.md`.
+
+---
+
+**Bottom line:** The backend is ready to be tested as-is. The project is not ready to *run* automated integration tests until Jest, supertest, test DB isolation, and the integration suite are added. That is a small, test-only setup pass — no production changes expected unless a failing test exposes a real contract violation.
+
+---
+
+## 2026-07-17 14:13:56 +0530 — User
+
+**Conversation:** `00453ed7-f8f6-4465-a925-dec4fc348412`
+
+Review and fix the test-related inconsistencies identified in the readiness assessment.
+
+Follow @.cursor/rules/testing.mdc and use @test-strategy.md as the source of truth.
+
+Align:
+
+planned test filenames in @tests/README.md 
+the testing-strategy task status in @/tool-specific/cursor-workflow/tasks.md 
+validation evidence/status in @test-results.md 
+local development and test database examples
+documented port values where appropriate
+
+Make only minimal documentation or configuration updates. Do not implement tests or modify production code yet.
+
+Report the files changed and the reason for each change.
+
+---
+
+## 2026-07-17 14:22:41 +0530 — Assistant
+
+**Conversation:** `00453ed7-f8f6-4465-a925-dec4fc348412`
+
+Documentation is aligned with `test-strategy.md` and the readiness assessment. Summary of changes:
+
+### `tests/README.md`
+- **Filename:** `comment-validation.test.js` → `ticket-comment-validation.test.js` to match `test-strategy.md` and `.cursor/rules/testing.mdc`.
+- **Test database section:** Documents dev DB (`ticket_management_system`) vs test DB (`ticket_management_system_test`) and `NODE_ENV=test`.
+
+### `tool-specific/cursor-workflow/tasks.md`
+- **Testing strategy task:** Marked `[x] Testing strategy (test-strategy.md)` — the strategy doc exists and is complete.
+- **Note:** `/Users/punsay/Downloads/local-mongodb-doc-updates/tasks.md` was not found; the repo task tracker was updated instead.
+
+### `test-results.md`
+- **Overview/summary:** Separates completed manual checks (including status transitions) from pending validation Postman regression and not-yet-started automation.
+- **Databases table:** Dev vs test DB names and default port `5001`.
+- **Pending tests:** Split into Postman validation regression vs planned integration test files with correct names.
+
+### `.env.example` (root)
+- **Port:** `5000` → `5001`.
+- **MongoDB:** Atlas placeholder → local dev URI `mongodb://127.0.0.1:27017/ticket_management_system`.
+- **Client URL:** `5001` to match backend.
+- **Test DB:** Commented example for `ticket_management_system_test`.
+
+### `server/.env.example`
+- **Test DB:** Commented integration-test URI example per `test-strategy.md`.
+
+### `client/.env.example`
+- **Port:** `VITE_API_URL` `5000` → `5001` to match `server/.env.example` and README.
+
+### `api-contract.md`
+- **Base URL:** Local API `http://localhost:5000/api` → `http://localhost:5001/api`.
+
+### Unchanged (intentionally)
+- No test files, Jest/supertest wiring, or production code — per your request.
+- Integration test tasks in `tasks.md` and `test-results.md` automation rows remain unchecked/pending until implementation.
+
+**Related AC IDs referenced in updates:** AC-28–AC-35 (manual transitions), AC-45–AC-46 (automated transitions pending).
+
+---

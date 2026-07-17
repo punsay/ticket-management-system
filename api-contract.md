@@ -10,7 +10,7 @@ Simple REST endpoints under `/api`. No authentication. The backend validates all
 
 | Environment | Base URL |
 |-------------|----------|
-| Local API | `http://localhost:5000/api` |
+| Local API | `http://localhost:5001/api` |
 | Local client | `http://localhost:5173` (Vite default) |
 
 No API versioning for Core.

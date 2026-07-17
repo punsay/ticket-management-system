@@ -4,7 +4,7 @@
 
 Automated tests for the Support Ticket Management System will be stored in this root-level `tests/` directory.
 
-The backend APIs completed so far have been manually validated using Postman. Automated integration tests are still pending.
+The backend APIs completed so far have been manually validated using Postman. Automated integration tests will be implemented according to `test-strategy.md` and the project testing rule.
 
 ## Manual Validation Completed
 
@@ -27,22 +27,39 @@ Manual validation details are recorded in:
 
 - `test-results.md`
 - `pr-description.md`
-- `code-review-notes-notes.md`
+- `code-review-notes.md`
 
 ## Planned Test Structure
 
 ```text
 tests/
 ├── integration/
-│   └── ticket-status-transitions.test.js
+│   ├── ticket-status-transitions.test.js
+│   └── ticket-comment-validation.test.js
 └── README.md
 ```
 
 Additional helpers may be added only when required by the test implementation.
 
+## Test database
+
+Development and manual Postman checks use the seeded database:
+
+```env
+MONGODB_URI=mongodb://127.0.0.1:27017/ticket_management_system
+```
+
+Automated integration tests must use a separate local database so dev/seed data is not modified:
+
+```env
+MONGODB_URI=mongodb://127.0.0.1:27017/ticket_management_system_test
+```
+
+Run automated tests with `NODE_ENV=test` and the test `MONGODB_URI` above. See `test-strategy.md` for fixture, teardown, and `npm test` wiring (when implemented).
+
 ## Mandatory Integration Test Coverage
 
-The required integration test tier will verify the ticket status state machine through the backend API.
+The required integration test tier will verify ticket status transitions, ticket validation, and comment validation through the backend API.
 
 ### Valid transitions
 
@@ -69,19 +86,34 @@ The tests must confirm that:
 - the expected HTTP response and user-readable error are returned
 - no invalid status value is written to the database
 
+### Ticket and comment validation
+
+Integration tests will also cover the required ticket and comment validation cases defined in `test-strategy.md`.
+
+The tests must confirm that:
+
+- valid requests return the expected HTTP response and are persisted
+- invalid requests return the expected validation response
+- invalid ticket or comment data is not persisted
+
 ## Current Status
 
 - [x] Backend APIs manually validated in Postman
 - [x] Valid status transitions manually verified
 - [x] Invalid status transitions manually verified
-- [ ] Integration test setup
+- [ ] Jest and Supertest integration test setup
+- [ ] Dedicated local MongoDB test database configuration
 - [ ] Automated valid-transition tests
 - [ ] Automated invalid-transition tests
+- [ ] Automated ticket validation tests
+- [ ] Automated comment validation tests
+- [ ] Deterministic fixture setup and cleanup
 - [ ] Test results documented
 
 ## Related Documents
 
 - `test-strategy.md`
+- `.cursor/rules/testing.mdc`
 - `test-results.md`
 - `tool-specific/cursor-workflow/spec.md`
 - `tool-specific/cursor-workflow/acceptance-criteria.md`
