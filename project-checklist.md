@@ -52,6 +52,7 @@
 
 ## 🎨 Frontend
 
+- [x] Acting-user selector
 - [ ] Ticket listing
 - [ ] Ticket details
 - [ ] Create ticket

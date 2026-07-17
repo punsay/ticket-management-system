@@ -2733,3 +2733,225 @@ AC-09–AC-11, AC-16–AC-17, AC-18, AC-20, AC-36–AC-38, VR-01–VR-07, VR-09�
 Non-object bodies are tested via **array** input (`[]`), which reaches the validation layer with `400`. Top-level JSON `null` and string primitives are rejected by Express `json()` parsing before validation (returns `500`) — not changed per your instruction to avoid production edits unless a confirmed defect warrants it.
 
 ---
+
+## 2026-07-17 15:56:54 +0530 — User
+
+**Conversation:** `2477837a-ed5f-483e-9730-fa9f0c8ac4ac`
+
+Implement the acting-user selector.
+
+Requirements:
+
+- load and display the three seeded users
+- do not select a user by default
+- store the selected user for later ticket and comment creation
+- handle loading and error states
+- do not implement other frontend features yet
+- update the relevant task status and documentation
+- report changed files and manual verification steps
+
+Inspect the existing frontend before making changes.
+
+---
+
+## 2026-07-17 15:58:02 +0530 — Assistant
+
+**Conversation:** `2477837a-ed5f-483e-9730-fa9f0c8ac4ac`
+
+Implemented the acting-user selector. Summary below.
+
+## What changed
+
+### New files
+- `client/src/services/apiClient.js` — shared `fetch` wrapper; reads `data` on success and `error.message` on failure
+- `client/src/services/userService.js` — `getUsers()` → `GET /api/users`
+- `client/src/context/ActingUserContext.jsx` — `ActingUserProvider` + `useActingUser()` for shared selection state
+- `client/src/components/ActingUserSelector.jsx` — dropdown with loading, error, and retry states
+
+### Updated files
+- `client/src/App.jsx` — wraps the app in `ActingUserProvider`
+- `client/src/pages/HomePage.jsx` — header with the acting-user selector
+- `tool-specific/cursor-workflow/tasks.md` — acting-user task marked complete
+- `implementation-plan.md` — acting-user task marked complete
+- `project-checklist.md` — acting-user selector added under Frontend
+
+### Removed
+- `client/src/services/.gitkeep`, `client/src/components/.gitkeep` (replaced by real files)
+
+## Behaviour
+
+| Requirement | Implementation |
+|---|---|
+| Load three seeded users | Fetches from `GET /api/users` on mount |
+| No default selection | Placeholder option `"Select acting user"` with `value=""` |
+| Store for later use | Full user object in `ActingUserContext` via `useActingUser()` |
+| Loading / error states | Loading text, error message + retry button |
+| No other frontend features | Only header + selector added |
+
+Future create-ticket and comment forms can read the selection with:
+
+```js
+const { actingUser } = useActingUser();
+// actingUser._id → createdBy
+```
+
+## Related requirements
+
+- **FR-10, FR-11, FR-12** — seeded users, selector, selection for create/comment
+- **AC-01, AC-02** — no pre-selection; three users in dropdown
+- **COD-01** — explicit selection required (enforcement in create/comment comes later)
+
+## Checks performed
+
+- Client production build succeeded (`npm run build`)
+- No linter errors in `client/src`
+
+## Manual verification
+
+1. Ensure MongoDB is running and the database is seeded (`cd server && npm run seed`).
+2. Copy `client/.env.example` to `client/.env` if needed (`VITE_API_URL=http://localhost:5001/api`).
+3. Start backend: `cd server && npm run dev`
+4. Start frontend: `cd client && npm run dev`
+5. Open `http://localhost:5173`
+6. Confirm **"Select acting user"** is shown with no user pre-selected (AC-01).
+7. Open the dropdown and confirm Alice Johnson, Bob Smith, and Carol Davis appear with roles (AC-02).
+8. Select a user and confirm the dropdown reflects the choice.
+9. Switch back to **"Select acting user"** and confirm selection clears.
+10. Stop the backend and refresh the page — confirm an error message and **Try again** appear.
+11. Restart the backend, click **Try again**, and confirm users load again.
+
+---
+
+## 2026-07-17 16:59:16 +0530 — User
+
+**Conversation:** `6fe32c5a-cd87-408a-a6c3-2b088203c76c`
+
+Review and minimally update the @.cursor/rules/frontend.mdc 
+
+Add guidelines to:
+
+* use Tailwind CSS for styling
+* use `lucide-react` as the only icon library
+* use icons to improve clarity and visual hierarchy, not as decoration everywhere
+* use `sonner` as the only toast notification library
+*use Tailwind’s default font stack
+*prefer clean cards, subtle backgrounds, clear hover states, and visible loading and error states
+* keep styling responsive, accessible, and consistent
+* use inline errors when users need details or retry actions
+* use toast messages only for brief action feedback
+* inspect existing UI patterns before introducing new ones
+* avoid custom fonts, additional UI libraries, and unnecessary abstractions
+
+Also add `lucide-react` and `sonner` to the frontend project dependencies so they are available for later frontend implementation prompts.
+
+Do not modify React components, pages, application behaviour, or other application code in this step. Only update the relevant Cursor rule and frontend dependency files.
+
+Report:
+
+* the changed rule file
+* the dependency files changed
+* the documents updated
+* the dependencies installed
+
+
+
+---
+
+## 2026-07-17 16:59:47 +0530 — Assistant
+
+**Conversation:** `6fe32c5a-cd87-408a-a6c3-2b088203c76c`
+
+## Changed rule file
+
+`.cursor/rules/frontend.mdc`
+
+Existing rules (components, services, hooks, loading/empty/error handling) are unchanged. New sections were added:
+
+| Section | Guidelines |
+|---|---|
+| **Stack** | Added `lucide-react` and `sonner` |
+| **Styling** | Tailwind CSS for all styling; default font stack; clean cards, subtle backgrounds, hover states, visible loading/error states; responsive, accessible, consistent; inspect existing UI patterns first |
+| **Icons** | `lucide-react` only; icons for clarity and hierarchy, not decoration everywhere |
+| **Feedback and errors** | `sonner` only for toasts; toasts for brief action feedback; inline errors when users need details or retry actions |
+| **Constraints** | No custom fonts, additional UI libraries, or unnecessary abstractions |
+
+## Dependency files changed
+
+- `client/package.json` — added `lucide-react` and `sonner` to `dependencies`
+- `client/package-lock.json` — updated by `npm install`
+
+## Documents updated
+
+Only `.cursor/rules/frontend.mdc` was updated. No other project docs (e.g. `implementation-plan.md`, `tasks.md`) were modified.
+
+## Dependencies installed
+
+| Package | Declared | Resolved |
+|---|---|---|
+| `lucide-react` | `^0.487.0` | `0.487.0` |
+| `sonner` | `^2.0.3` | `2.0.7` |
+
+No React components, pages, or application code were changed.
+
+---
+
+## 2026-07-17 17:17:34 +0530 — User
+
+**Conversation:** `1681d6a2-70f4-4e28-99ce-98857b74482f`
+
+Review the existing acting-user selector and minimally align its UI with the current frontend rule.
+
+Keep all existing behaviour unchanged. Do not implement other frontend features or modify backend code.
+
+Run the relevant frontend checks and report the files changed, verification results, and manual verification steps.
+
+
+---
+
+## 2026-07-17 17:18:16 +0530 — Assistant
+
+**Conversation:** `1681d6a2-70f4-4e28-99ce-98857b74482f`
+
+## Summary
+
+Aligned `ActingUserSelector` with the frontend rule (`.cursor/rules/frontend.mdc`) with minimal UI-only changes. All logic and behavior are unchanged.
+
+### What changed
+
+| Rule gap | Fix |
+|---|---|
+| Use `lucide-react` for clarity | Added `UserRound` (label), `Loader2` (loading), `AlertCircle` (error), `RefreshCw` (retry) |
+| Visible loading/error states | Spinner on loading; error in a subtle red card with icon |
+| Inline errors for retry actions | Kept inline error + retry (no toast — correct per rule) |
+| Clear hover states | Select hover border; retry button hover background |
+| Consistent Tailwind styling | Shared `ActingUserLabel`; consistent `mt-2` spacing |
+
+No changes to context, services, backend, or selection logic.
+
+### Files changed
+
+- `client/src/components/ActingUserSelector.jsx`
+
+### Verification results
+
+| Check | Result |
+|---|---|
+| `npm run build` (client) | Passed — built in 1.60s |
+| IDE lints on changed file | No issues |
+
+No dedicated lint or test scripts exist in `client/package.json`; production build was used as the frontend check.
+
+### Manual verification steps
+
+1. Start backend and client (`npm run dev` in `server/` and `client/`).
+2. Open the app — confirm a spinner and “Loading users...” appear briefly.
+3. After load — confirm **“Select acting user”** is shown with no pre-selection (AC-01).
+4. Open the dropdown — confirm Alice, Bob, and Carol are listed (AC-02).
+5. Select a user — confirm selection persists in the dropdown.
+6. Switch back to **“Select acting user”** — confirm selection clears.
+7. Stop the backend and reload — confirm inline error with icon and **Try again** button.
+8. Click **Try again** with backend running — confirm the dropdown loads again.
+
+**Related requirements:** AC-01, AC-02 (behavior unchanged), NFR-02 (meaningful inline errors preserved).
+
+---

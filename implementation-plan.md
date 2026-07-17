@@ -70,7 +70,7 @@ Detailed implementation tasks and progress are maintained in:
 
 ### 5. Frontend implementation
 
-- [ ] Add the acting-user selector.
+- [x] Add the acting-user selector.
 - [ ] Add ticket list and ticket detail views.
 - [ ] Add the create-ticket form.
 - [ ] Add ticket field updates and reassignment.

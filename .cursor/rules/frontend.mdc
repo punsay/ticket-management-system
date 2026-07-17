@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Frontend
 
-Stack: React (functional components + hooks), Tailwind CSS, JavaScript.
+Stack: React (functional components + hooks), Tailwind CSS, `lucide-react`, `sonner`, JavaScript.
 
 ## Folder structure
 
@@ -22,13 +22,35 @@ client/src/
 ## Rules
 
 - Use **functional components** and hooks only — no class components.
-- Style with **Tailwind CSS**; avoid inline style objects unless necessary.
 - Keep **API calls in services** (e.g. `ticketService.js`); components call services, not `fetch` directly.
 - Create **custom hooks** only when the same stateful logic appears in multiple components.
 - Keep components **focused and reusable** — one clear responsibility per component.
 - Always handle **loading**, **empty**, and **meaningful error** states in the UI.
 - In **services**, parse the JSON response and read successful payloads from `payload.data` when `payload.success` is `true`.
 - On failure, read the user-facing message from `payload.error.message`.
+
+## Styling
+
+- Use **Tailwind CSS** for all styling; avoid inline style objects unless necessary.
+- Use Tailwind’s **default font stack** — no custom fonts.
+- Prefer **clean cards**, subtle backgrounds, clear hover states, and visible loading and error states.
+- Keep styling **responsive**, **accessible**, and **consistent** across pages and components.
+- **Inspect existing UI patterns** before introducing new ones.
+
+## Icons
+
+- Use **`lucide-react`** as the only icon library.
+- Use icons to improve **clarity and visual hierarchy** — not as decoration everywhere.
+
+## Feedback and errors
+
+- Use **`sonner`** as the only toast notification library.
+- Use **toast messages** only for brief action feedback (e.g. “Ticket saved”).
+- Use **inline errors** when users need details or retry actions.
+
+## Constraints
+
+- Do not add custom fonts, additional UI libraries, or unnecessary abstractions.
 
 ## Example
 

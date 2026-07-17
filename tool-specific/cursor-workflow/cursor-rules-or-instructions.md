@@ -36,7 +36,7 @@ Use **Routes → Controllers → Services → Mongoose Models**. Routes define e
 
 ### `frontend` (client files)
 
-Use React functional components, hooks, and Tailwind CSS. Organize into `pages/`, `components/`, `services/`, `hooks/`, and `utils/`. API calls live in services; custom hooks only when logic is reused. Always show loading, empty, and meaningful error states. No class components.
+Use React functional components, hooks, and Tailwind CSS. Organize into `pages/`, `components/`, `services/`, `hooks/`, and `utils/`. Keep API calls in services and create custom hooks only for reused stateful logic. Use Tailwind’s default font stack, clean cards, subtle backgrounds, clear hover states, and responsive, accessible styling. Use `lucide-react` as the only icon library and `sonner` as the only toast library. Use icons for clarity rather than decoration, toast messages for brief action feedback, and inline errors when users need details or retry actions. Always show loading, empty, and meaningful error states. Inspect existing UI patterns before introducing new ones, and avoid class components, custom fonts, additional UI libraries, and unnecessary abstractions.
 
 ### `code-quality` (always on)
 
@@ -83,6 +83,6 @@ The rules were aligned to use:
 - `success` and `error.message` for failed responses
 
 The frontend rule was also updated to read successful responses from `data` and failures from
-`error.message`.
+`error.message`. It now standardizes Tailwind CSS styling, Tailwind’s default font stack, `lucide-react` icons, and `sonner` toast notifications, while requiring responsive and accessible UI states and discouraging extra UI libraries or unnecessary abstractions.
 
 The API behaviour for combined `search` and `status` parameters was clarified as HTTP 400.

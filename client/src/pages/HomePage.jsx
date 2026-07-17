@@ -1,12 +1,23 @@
+import ActingUserSelector from '../components/ActingUserSelector';
+
 function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center px-4">
-        <h1 className="text-3xl font-semibold text-gray-900">
-          Support Ticket Management System
-        </h1>
-        <p className="mt-4 text-lg text-gray-600">Client is running.</p>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <header className="border-b border-gray-200 bg-white">
+        <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900">
+              Support Ticket Management System
+            </h1>
+            <p className="mt-1 text-sm text-gray-600">
+              Select an acting user before creating tickets or comments.
+            </p>
+          </div>
+          <div className="w-full sm:max-w-md">
+            <ActingUserSelector />
+          </div>
+        </div>
+      </header>
     </div>
   );
 }
