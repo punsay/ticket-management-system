@@ -15,7 +15,28 @@ function ticketToForm(ticket) {
   };
 }
 
-function UpdateTicketForm({ ticket, onUpdated }) {
+function buildPayload(form) {
+  return {
+    title: form.title.trim(),
+    description: form.description.trim(),
+    priority: form.priority,
+    assignedTo: form.assignedTo || null,
+  };
+}
+
+function hasFormChanges(form, ticket) {
+  const current = buildPayload(form);
+  const original = buildPayload(ticketToForm(ticket));
+
+  return (
+    current.title !== original.title ||
+    current.description !== original.description ||
+    current.priority !== original.priority ||
+    current.assignedTo !== original.assignedTo
+  );
+}
+
+function UpdateTicketForm({ ticket, onUpdated, onCancel }) {
   const [form, setForm] = useState(() => ticketToForm(ticket));
   const [assignees, setAssignees] = useState([]);
   const [loadingAssignees, setLoadingAssignees] = useState(true);
@@ -86,15 +107,14 @@ function UpdateTicketForm({ ticket, onUpdated }) {
       return;
     }
 
+    if (!hasFormChanges(form, ticket)) {
+      return;
+    }
+
     setSubmitting(true);
 
     try {
-      const payload = {
-        title: form.title.trim(),
-        description: form.description.trim(),
-        priority: form.priority,
-        assignedTo: form.assignedTo || null,
-      };
+      const payload = buildPayload(form);
 
       await updateTicket(ticket._id, payload);
       toast.success('Ticket updated');
@@ -267,7 +287,17 @@ function UpdateTicketForm({ ticket, onUpdated }) {
           </div>
         )}
 
-        <div>
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
+          {onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              disabled={submitting}
+              className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Cancel
+            </button>
+          )}
           <button
             type="submit"
             disabled={isDisabled}
@@ -276,12 +306,12 @@ function UpdateTicketForm({ ticket, onUpdated }) {
             {submitting ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                Saving changes...
+                Updating ticket...
               </>
             ) : (
               <>
                 <Save className="h-4 w-4" aria-hidden="true" />
-                Save changes
+                Update ticket
               </>
             )}
           </button>

@@ -159,13 +159,15 @@ There are no delete controls for tickets or comments.
 ```text
 User opens ticket detail
     ↓
+User clicks Edit ticket to expand the update form
+    ↓
 User edits title, description, priority, or assignee
     ↓
 User submits update
     ↓
 Backend validates and saves
     ↓
-Updated values are shown
+Updated values are shown and the form collapses
 ```
 
 An acting user is not required for ticket updates because Core does not track who performed the update.

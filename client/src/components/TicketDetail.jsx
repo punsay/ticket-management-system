@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   AlertCircle,
   ArrowLeft,
   Loader2,
+  Pencil,
   RefreshCw,
   UserRound,
 } from 'lucide-react';
@@ -48,6 +49,8 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const editSectionRef = useRef(null);
 
   async function loadTicket() {
     setLoading(true);
@@ -68,6 +71,7 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
     try {
       const data = await getTicketById(ticketId);
       setTicket(data);
+      setIsEditing(false);
       onTicketUpdated?.();
     } catch (err) {
       toast.error(err.message);
@@ -75,8 +79,15 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
   }
 
   useEffect(() => {
+    setIsEditing(false);
     loadTicket();
   }, [ticketId]);
+
+  useEffect(() => {
+    if (isEditing && editSectionRef.current) {
+      editSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [isEditing]);
 
   return (
     <div>
@@ -156,7 +167,12 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
           </div>
 
           <div className="space-y-6 px-6 py-5">
-            <UpdateTicketForm ticket={ticket} onUpdated={handleTicketUpdated} />
+            <div>
+              <h3 className="text-sm font-medium text-gray-500">Description</h3>
+              <p className="mt-2 whitespace-pre-wrap text-sm text-gray-900">
+                {ticket.description}
+              </p>
+            </div>
 
             <dl className="grid gap-4 border-t border-gray-200 pt-6 sm:grid-cols-2">
               <DetailField label="Status">{ticket.status}</DetailField>
@@ -179,6 +195,35 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
                 {formatDateTime(ticket.updatedAt)}
               </DetailField>
             </dl>
+
+            <div className="border-t border-gray-200 pt-6">
+              {!isEditing && (
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(true)}
+                  aria-expanded={false}
+                  aria-controls="edit-ticket-section"
+                  className="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-gray-300 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                >
+                  <Pencil className="h-4 w-4" aria-hidden="true" />
+                  Edit ticket
+                </button>
+              )}
+
+              {isEditing && (
+                <div
+                  ref={editSectionRef}
+                  id="edit-ticket-section"
+                  className="rounded-lg border border-gray-200 bg-gray-50 p-5"
+                >
+                  <UpdateTicketForm
+                    ticket={ticket}
+                    onUpdated={handleTicketUpdated}
+                    onCancel={() => setIsEditing(false)}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </article>
       )}

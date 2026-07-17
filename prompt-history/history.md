@@ -3227,3 +3227,132 @@ No dedicated lint script exists in `client/package.json`; production build was u
 9. Confirm status is unchanged after any update.
 
 ---
+
+## 2026-07-17 18:29:11 +0530 — User
+
+**Conversation:** `592596a7-2cd1-431d-bbb2-00e97e7d27d6`
+
+Improve the ticket update UI without changing its existing behaviour.
+
+Keep ticket details as the main view and hide the update form by default. Add an Edit ticket button that opens the existing form in a expandable section.
+
+Keep the current fields, validation, API handling, and success/error states unchanged. Updating a ticket must not require an acting user, and status must remain unchanged.
+
+Do not implement other features or backend changes.
+
+Update relevant documentation if required, run the frontend checks, and report the files changed and manual verification steps.
+
+---
+
+## 2026-07-17 18:30:18 +0530 — Assistant
+
+**Conversation:** `592596a7-2cd1-431d-bbb2-00e97e7d27d6`
+
+The ticket detail view now leads with read-only information, and the update form is tucked behind an expandable **Edit ticket** section.
+
+## What changed
+
+### `client/src/components/TicketDetail.jsx`
+- Ticket details are the primary view: description (read-only), then metadata (status, assignee, creator, timestamps).
+- The update form is hidden by default and only mounts when **Edit ticket** is clicked.
+- The button toggles the section (`aria-expanded` / `aria-controls`) and switches to **Cancel editing** when open.
+- After a successful save, the detail view refreshes and the form collapses.
+- Navigating to a different ticket resets the edit state.
+
+`UpdateTicketForm.jsx` is unchanged — same fields, validation, API payload, toasts, and inline errors. No acting user is required; status is still not sent on update.
+
+### `ui-flow.md`
+- Update Ticket Flow now documents the **Edit ticket** expand step and post-save collapse.
+
+## Requirements
+
+| ID | Coverage |
+|---|---|
+| **AC-13** | Detail shows description, priority, status, assignee, creator, timestamps |
+| **AC-14–AC-17** | Update behavior unchanged (form logic untouched) |
+| **FR-03, FR-04** | Detail-first layout; update via expandable form |
+
+## Frontend checks
+
+- `npm run build` in `client/` — **passed** (no lint script in the client package)
+
+## Manual verification
+
+1. Start client and server; open a ticket **without** selecting an acting user.
+2. Confirm the form is hidden and you see description + metadata (title/priority/status in the header).
+3. Click **Edit ticket** — the existing update form appears in the expandable section, pre-filled.
+4. Edit fields and click **Save changes** — expect “Ticket updated” toast, refreshed details, and the form to collapse.
+5. Click **Edit ticket** again, make changes, then **Cancel editing** — form closes without saving.
+6. Clear title or description and submit — inline validation errors still appear.
+7. Reassign to Bob/Carol or set **Unassigned** — assignment persists after save.
+8. Confirm status is unchanged after any update.
+9. Return to the list — title/priority reflect saved changes.
+
+---
+
+## 2026-07-17 18:33:47 +0530 — User
+
+**Conversation:** `592596a7-2cd1-431d-bbb2-00e97e7d27d6`
+
+When the expandable section opens the section should scroll into view and cancel and update ticket button should at one place for better ui experience 
+
+---
+
+## 2026-07-17 18:34:31 +0530 — Assistant
+
+**Conversation:** `592596a7-2cd1-431d-bbb2-00e97e7d27d6`
+
+Two UX tweaks are in place:
+
+## Changes
+
+### `client/src/components/TicketDetail.jsx`
+- **Scroll into view:** When the edit section opens, it smoothly scrolls into view via `scrollIntoView({ behavior: 'smooth', block: 'start' })`.
+- **Edit button:** **Edit ticket** only shows when the form is collapsed; it no longer doubles as cancel.
+
+### `client/src/components/UpdateTicketForm.jsx`
+- **Grouped actions:** **Cancel** and **Update ticket** sit together at the bottom of the form (same layout as `CreateTicketForm`).
+- Accepts an optional `onCancel` prop; cancel is disabled while a save is in progress.
+
+## Frontend check
+- `npm run build` — passed
+
+## Manual verification
+1. Open a ticket detail view and click **Edit ticket**.
+2. Confirm the edit section scrolls into view if it was off-screen.
+3. Confirm **Cancel** and **Update ticket** appear side by side at the bottom of the form.
+4. Click **Cancel** — form closes with no save.
+5. Reopen, edit fields, click **Update ticket** — toast appears, details refresh, form collapses.
+
+---
+
+## 2026-07-17 18:36:19 +0530 — User
+
+**Conversation:** `592596a7-2cd1-431d-bbb2-00e97e7d27d6`
+
+No updates were performed still "ticket updated" toast message appears. The toast message should appear only when the ticket has been actually updated . 
+
+---
+
+## 2026-07-17 18:36:49 +0530 — Assistant
+
+**Conversation:** `592596a7-2cd1-431d-bbb2-00e97e7d27d6`
+
+The form now compares submitted values against the current ticket before calling the API.
+
+## Change
+
+### `client/src/components/UpdateTicketForm.jsx`
+- Added `buildPayload` and `hasFormChanges` to compare title, description, priority, and assignee (with trimming/normalization).
+- On submit, if nothing changed, the handler returns early — no API call, no toast, no refresh.
+
+## Frontend check
+- `npm run build` — passed
+
+## Manual verification
+1. Open a ticket and click **Edit ticket**.
+2. Click **Update ticket** without changing anything — no toast, no API request.
+3. Change a field and click **Update ticket** — expect “Ticket updated” toast and refreshed details.
+4. Change a field back to the original value and submit — no toast (values match the saved ticket again).
+
+---
