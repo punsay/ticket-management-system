@@ -2332,3 +2332,44 @@ Get user IDs from `GET /api/users`.
 Status-transition cases (#20–21) are unchanged; included for regression only.
 
 ---
+
+## 2026-07-17 11:52:11 +0530 — User
+
+**Conversation:** `25b9c283-6801-4237-bd63-f6958227224f`
+
+Complete @test-strategy.md based on the existing project documents and implemented backend.
+
+Define a simple testing approach for manual Postman testing and backend integration tests, with required coverage for valid and invalid ticket status transitions and ticket/comment validation.
+
+Use the existing project stack and scope. Do not write tests or change application code yet.
+
+---
+
+## 2026-07-17 11:53:54 +0530 — Assistant
+
+**Conversation:** `25b9c283-6801-4237-bd63-f6958227224f`
+
+`test-strategy.md` is filled in from the project docs and the current backend (`statusTransitionService`, validation modules, `ticketService`, API contract, and acceptance criteria).
+
+### What it defines
+
+**Two tiers**
+1. **Manual Postman** — regression and exploratory checks against a running server with seeded data
+2. **Automated integration tests** — supertest + Jest against `app.js` and a separate test database
+
+**Mandatory automated coverage**
+- All **5 valid transitions** (AC-45, NFR-04)
+- **Representative invalid transitions** with `409` and unchanged DB state (AC-46, NFR-05)
+- **Ticket validation** on create/update (empty fields, priority, assignee, `createdBy`, malformed bodies)
+- **Comment validation** (empty message, invalid/missing user, missing ticket)
+
+**Also covered**
+- Postman setup (base URL `http://localhost:5001/api`, user ID variables, checklist tables)
+- Planned layout under `tests/integration/`
+- Test DB isolation vs dev seed data
+- Local `npm test` workflow; CI noted as optional/out of Core scope
+- Traceability to AC/VR/NFR IDs and definition-of-done for testing
+
+No tests or application code were changed — only the strategy document. Related requirement: **AC-45, AC-46, AC-36–AC-38** (`tasks.md` testing items).
+
+---

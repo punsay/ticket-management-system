@@ -4,7 +4,7 @@ Working draft summarizing the project changes for final submission.
 
 ## Overview
 
-This document summarizes the work completed for the MERN Support Ticket Management System. Planning, design, Cursor workflow rules, project setup, local MongoDB Community Edition integration, data models, seed data, seeded-users API, ticket CRUD APIs, comments, search and status filtering, and ticket status-transition enforcement are complete.
+This document summarizes the work completed for the MERN Support Ticket Management System. Planning, design, Cursor workflow rules, project setup, local MongoDB Community Edition integration, data models, seed data, seeded-users API, ticket CRUD APIs, comments, search and status filtering, ticket status-transition enforcement, and dedicated ticket/comment input validation are complete.
 
 Frontend feature screens and automated integration tests are still in progress.
 
@@ -27,6 +27,7 @@ Completed so far:
 - Added the comment creation API
 - Added keyword search and exact status filtering for tickets
 - Enforced valid ticket status transitions and rejected invalid transitions
+- Added dedicated ticket and comment validation modules with shared request-body and ObjectId checks
 - Manually validated the implemented APIs in Postman
 
 ## Changes
@@ -79,9 +80,11 @@ Completed checks:
 - [x] Comment API manually verified in Postman
 - [x] Search and status-filter APIs manually verified in Postman
 - [x] Valid and invalid status transitions manually verified in Postman
+- [x] New validation-layer regression cases verified in Postman
 
 Pending checks:
 
+- [ ] Backend validation integration tests
 - [ ] Automated comment API integration tests
 - [ ] Valid status-transition integration tests
 - [ ] Invalid status-transition integration tests
