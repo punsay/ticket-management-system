@@ -7,3 +7,10 @@ export function getTickets() {
 export function getTicketById(id) {
   return apiRequest(`/tickets/${id}`);
 }
+
+export function createTicket(ticket) {
+  return apiRequest('/tickets', {
+    method: 'POST',
+    body: JSON.stringify(ticket),
+  });
+}

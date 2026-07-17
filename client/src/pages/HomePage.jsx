@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import ActingUserSelector from '../components/ActingUserSelector';
+import CreateTicketForm from '../components/CreateTicketForm';
 import TicketDetail from '../components/TicketDetail';
 import TicketList from '../components/TicketList';
 
 function HomePage() {
   const [selectedTicketId, setSelectedTicketId] = useState(null);
+  const [listRefreshKey, setListRefreshKey] = useState(0);
+
+  function handleTicketCreated(ticket) {
+    setListRefreshKey((current) => current + 1);
+    setSelectedTicketId(ticket._id);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -31,7 +38,13 @@ function HomePage() {
             onBack={() => setSelectedTicketId(null)}
           />
         ) : (
-          <TicketList onSelectTicket={setSelectedTicketId} />
+          <div className="space-y-8">
+            <CreateTicketForm onCreated={handleTicketCreated} />
+            <TicketList
+              onSelectTicket={setSelectedTicketId}
+              refreshKey={listRefreshKey}
+            />
+          </div>
         )}
       </main>
     </div>

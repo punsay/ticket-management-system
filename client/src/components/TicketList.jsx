@@ -34,7 +34,7 @@ function Badge({ label, className }) {
   );
 }
 
-function TicketList({ onSelectTicket }) {
+function TicketList({ onSelectTicket, refreshKey = 0 }) {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,7 +56,7 @@ function TicketList({ onSelectTicket }) {
 
   useEffect(() => {
     loadTickets();
-  }, []);
+  }, [refreshKey]);
 
   if (loading) {
     return (

@@ -3022,3 +3022,77 @@ No dedicated lint or test scripts exist in `client/package.json`; production bui
 6. (Optional) Empty DB — list shows “No tickets yet” instead of an error
 
 ---
+
+## 2026-07-17 17:36:41 +0530 — User
+
+**Conversation:** `3238141b-8200-4bc1-b2b9-0f7bf2d25be0`
+
+Implement the create ticket form.
+
+Require an acting user before submission. Include title, description, priority, and an optional assignee limited to Bob or Carol.
+
+Use the existing backend API and show clear validation, loading, success, and error states.
+
+After successful creation, refresh the ticket list or open the created ticket.
+
+Do not implement ticket editing, status changes, comments, search, or filters yet.
+
+Update only the relevant documentation and task status to reflect the completed work.
+
+Run the relevant frontend checks and report the files changed, verification results, and manual verification steps.
+
+---
+
+## 2026-07-17 17:37:46 +0530 — Assistant
+
+**Conversation:** `3238141b-8200-4bc1-b2b9-0f7bf2d25be0`
+
+The create ticket form is implemented and wired into the existing frontend.
+
+## What changed
+
+**New**
+- `client/src/components/CreateTicketForm.jsx` — form with title, description, priority, optional assignee (Bob/Carol only), acting-user guard, validation, loading, success toast, and inline errors
+
+**Updated**
+- `client/src/services/ticketService.js` — added `createTicket()` (`POST /api/tickets`)
+- `client/src/pages/HomePage.jsx` — form above the list; on success refreshes the list and opens the new ticket detail
+- `client/src/components/TicketList.jsx` — accepts `refreshKey` to reload after creation
+- `client/src/App.jsx` — added `sonner` `Toaster` for success feedback
+- `tool-specific/cursor-workflow/tasks.md` — marked create ticket form complete
+
+## Behaviour
+
+| Requirement | Implementation |
+|-------------|----------------|
+| Acting user required | Blocked on submit with a clear message; amber hint when none selected |
+| Title, description, priority | Required with client-side validation |
+| Optional assignee | Dropdown limited to Support Agents (Bob Smith, Carol Davis) |
+| Loading / error / success | Submit spinner, inline API errors, `toast.success` on create |
+| After success | Bumps `listRefreshKey` and navigates to the created ticket detail |
+
+## Verification
+
+| Check | Result |
+|-------|--------|
+| `npm run build` (client) | Passed |
+| IDE lints on changed files | No issues |
+
+No frontend lint script exists in this project; production build was used as the check.
+
+## Manual verification steps
+
+1. Start MongoDB, seed the DB, and run server + client (`npm run dev` in each).
+2. Open the app — confirm the **Create ticket** form appears above the ticket list.
+3. **AC-03** — Submit without an acting user → validation error shown.
+4. Select **Alice Johnson**, fill title/description/priority, leave assignee empty → ticket created, toast shown, detail view opens with status **Open** and no assignee.
+5. Go back — new ticket appears in the list.
+6. Create again with **Bob Smith** as assignee → ticket shows Bob as assignee.
+7. Submit with empty title or description → client validation errors.
+8. Stop the server and submit → generic error from the API client (no stack trace).
+
+## Related requirements
+
+**FR-01**, **FR-11**, **FR-12**, **AC-03**, **AC-05**–**AC-08**, **AC-09**, **NFR-02**
+
+---
