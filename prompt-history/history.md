@@ -3552,3 +3552,79 @@ No dedicated lint script exists in `client/package.json`; production build was u
 10. Stop the server and reload the list → generic error with **Try again** button.
 
 ---
+
+## 2026-07-17 19:27:11 +0530 — User
+
+**Conversation:** `26356818-cca8-4832-8766-6c732e4137a0`
+
+Review and improve the frontend error messages across the completed ticket workflows.
+
+Make errors clear, specific, consistent, and actionable without changing existing behaviour or backend APIs.
+
+Use inline errors where users need details or retry actions, and use toast messages only for brief action feedback.
+
+Cover ticket loading, creation, updates, status changes, comments, search, and filtering.
+
+Update only the relevant documentation, run the frontend checks, and report the files changed and manual verification steps.
+
+
+---
+
+## 2026-07-17 19:29:06 +0530 — Assistant
+
+**Conversation:** `26356818-cca8-4832-8766-6c732e4137a0`
+
+Improved frontend error handling across all completed ticket workflows. Errors are now clearer, consistent, and actionable, with inline alerts for failures that need context or retry, and toasts reserved for brief success feedback.
+
+## What changed
+
+**New shared utilities**
+- `client/src/utils/errorMessages.js` — centralizes validation copy, generic fallbacks, and context-aware API error resolution (search vs filter vs load).
+- `client/src/components/InlineErrorAlert.jsx` — reusable inline alert with optional title, retry action, and compact/borderless variants.
+
+**API layer**
+- `client/src/services/apiClient.js` — handles network failures and non-JSON responses with safe user-facing messages (no behavior change on success paths).
+
+**Workflow components**
+
+| Area | Change |
+|------|--------|
+| **Ticket list** (load, search, filter) | Title + context-specific message + Try again |
+| **Ticket detail** (load) | Inline alert with retry and back action |
+| **Ticket detail** (post-action refresh) | Moved from toast to inline banner with retry |
+| **Create / update forms** | Consistent validation copy; submit errors with titles; assignee load errors with retry |
+| **Status changes** | Inline error with title; backend transition messages preserved |
+| **Comments** | Actionable validation + inline submit errors |
+| **Acting user selector** | Inline error with title and retry |
+
+**Toasts unchanged for success only:** “Ticket created”, “Ticket updated”, “Status updated to …”, “Comment added”.
+
+## Documentation updated
+- `ui-flow.md` — error/empty/success feedback patterns
+- `.cursor/rules/frontend.mdc` — inline vs toast guidance
+- `tool-specific/cursor-workflow/tasks.md` — marked meaningful UI errors complete (NFR-02, NFR-03, AC-39, AC-40)
+
+## Checks performed
+- `npm run build` in `client/` — passed
+
+## Manual verification steps
+
+1. **Backend unavailable** — Stop the server, reload the app. Confirm acting-user and ticket list show connection errors with **Try again**; no stack traces.
+2. **Ticket list load** — With backend running, confirm the list loads. Stop backend and click **Try again** on the list error.
+3. **Search empty state** — Search for a nonsense term; confirm “No matching tickets” (not an error).
+4. **Status filter empty state** — Filter to a status with no tickets; confirm empty state (not an error).
+5. **Create ticket validation** — Without acting user, submit empty form; confirm field-level and acting-user messages. Select user and create; confirm success toast only.
+6. **Create ticket API error** — With invalid assignee (if reproducible via API) or backend down on submit; confirm inline “Couldn't create ticket”.
+7. **Ticket detail load** — Open a valid ticket. Try invalid ID in URL/state if possible, or stop backend before opening; confirm load error with retry/back.
+8. **Update ticket** — Clear title and submit; confirm inline validation. Save valid changes; confirm toast only.
+9. **Status change** — On an Open ticket, attempt invalid transition if exposed, or verify valid transition shows toast and invalid shows inline backend message (e.g. transition conflict).
+10. **Comment** — Submit without acting user or empty message; confirm inline validation. Add valid comment; confirm toast only.
+11. **Refresh failure** — After a successful update with backend stopped before refresh, confirm inline “Couldn't refresh ticket” banner with retry (not toast).
+
+## Files changed
+
+**New:** `client/src/utils/errorMessages.js`, `client/src/components/InlineErrorAlert.jsx`
+
+**Modified:** `client/src/services/apiClient.js`, `client/src/components/TicketList.jsx`, `TicketDetail.jsx`, `CreateTicketForm.jsx`, `UpdateTicketForm.jsx`, `StatusChangeControl.jsx`, `CommentForm.jsx`, `ActingUserSelector.jsx`, `ui-flow.md`, `.cursor/rules/frontend.mdc`, `tool-specific/cursor-workflow/tasks.md`
+
+---

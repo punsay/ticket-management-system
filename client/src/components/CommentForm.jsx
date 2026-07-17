@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { AlertCircle, Loader2, MessageSquarePlus } from 'lucide-react';
+import { Loader2, MessageSquarePlus } from 'lucide-react';
 import { toast } from 'sonner';
 import { useActingUser } from '../context/ActingUserContext';
 import { addComment } from '../services/ticketService';
+import { resolveErrorMessage, VALIDATION_MESSAGES } from '../utils/errorMessages';
+import InlineErrorAlert from './InlineErrorAlert';
 
 function CommentForm({ ticketId, onCommentAdded }) {
   const { actingUser } = useActingUser();
@@ -21,11 +23,11 @@ function CommentForm({ ticketId, onCommentAdded }) {
     const errors = {};
 
     if (!actingUser) {
-      errors.actingUser = 'Select an acting user before adding a comment.';
+      errors.actingUser = VALIDATION_MESSAGES.actingUserComment;
     }
 
     if (!message.trim()) {
-      errors.message = 'Comment is required.';
+      errors.message = VALIDATION_MESSAGES.comment;
     }
 
     return errors;
@@ -54,7 +56,12 @@ function CommentForm({ ticketId, onCommentAdded }) {
       toast.success('Comment added');
       onCommentAdded?.();
     } catch (err) {
-      setSubmitError(err.message);
+      setSubmitError(
+        resolveErrorMessage(
+          err,
+          'Unable to add your comment. Check your message and try again.'
+        )
+      );
     } finally {
       setSubmitting(false);
     }
@@ -94,16 +101,11 @@ function CommentForm({ ticketId, onCommentAdded }) {
       </div>
 
       {submitError && (
-        <div
-          className="rounded-md border border-red-200 bg-red-50 p-3"
-          role="alert"
-          aria-live="polite"
-        >
-          <p className="flex items-start gap-2 text-sm text-red-700">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-            {submitError}
-          </p>
-        </div>
+        <InlineErrorAlert
+          title="Couldn't add comment"
+          message={submitError}
+          compact
+        />
       )}
 
       <button

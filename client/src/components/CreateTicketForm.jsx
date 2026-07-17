@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { AlertCircle, Loader2, Plus } from 'lucide-react';
+import { Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { useActingUser } from '../context/ActingUserContext';
 import { createTicket } from '../services/ticketService';
 import { getUsers } from '../services/userService';
+import { resolveErrorMessage, VALIDATION_MESSAGES } from '../utils/errorMessages';
+import InlineErrorAlert from './InlineErrorAlert';
 
 const PRIORITIES = ['Low', 'Medium', 'High'];
 
@@ -25,24 +27,29 @@ function CreateTicketForm({ onCreated, onCancel }) {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    async function loadAssignees() {
-      setLoadingAssignees(true);
-      setAssigneeError(null);
-
-      try {
-        const users = await getUsers();
-        const supportAgents = users.filter((user) => user.role === 'Support Agent');
-        setAssignees(supportAgents);
-      } catch (err) {
-        setAssignees([]);
-        setAssigneeError(err.message);
-      } finally {
-        setLoadingAssignees(false);
-      }
-    }
-
     loadAssignees();
   }, []);
+
+  async function loadAssignees() {
+    setLoadingAssignees(true);
+    setAssigneeError(null);
+
+    try {
+      const users = await getUsers();
+      const supportAgents = users.filter((user) => user.role === 'Support Agent');
+      setAssignees(supportAgents);
+    } catch (err) {
+      setAssignees([]);
+      setAssigneeError(
+        resolveErrorMessage(
+          err,
+          'Unable to load support agents. You can still create the ticket without an assignee.'
+        )
+      );
+    } finally {
+      setLoadingAssignees(false);
+    }
+  }
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -55,19 +62,19 @@ function CreateTicketForm({ onCreated, onCancel }) {
     const errors = {};
 
     if (!actingUser) {
-      errors.actingUser = 'Select an acting user before creating a ticket.';
+      errors.actingUser = VALIDATION_MESSAGES.actingUserCreate;
     }
 
     if (!form.title.trim()) {
-      errors.title = 'Title is required.';
+      errors.title = VALIDATION_MESSAGES.title;
     }
 
     if (!form.description.trim()) {
-      errors.description = 'Description is required.';
+      errors.description = VALIDATION_MESSAGES.description;
     }
 
     if (!form.priority) {
-      errors.priority = 'Priority is required.';
+      errors.priority = VALIDATION_MESSAGES.priority;
     }
 
     return errors;
@@ -104,7 +111,12 @@ function CreateTicketForm({ onCreated, onCancel }) {
       toast.success('Ticket created');
       onCreated(ticket);
     } catch (err) {
-      setSubmitError(err.message);
+      setSubmitError(
+        resolveErrorMessage(
+          err,
+          'Unable to create the ticket. Check your entries and try again.'
+        )
+      );
     } finally {
       setSubmitting(false);
     }
@@ -230,14 +242,13 @@ function CreateTicketForm({ onCreated, onCancel }) {
                 Loading assignees...
               </p>
             ) : assigneeError ? (
-              <p
-                id="ticket-assignee"
-                className="mt-2 flex items-start gap-2 text-sm text-red-600"
-                role="alert"
-              >
-                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                {assigneeError}
-              </p>
+              <div id="ticket-assignee" className="mt-2">
+                <InlineErrorAlert
+                  message={assigneeError}
+                  onRetry={loadAssignees}
+                  compact
+                />
+              </div>
             ) : (
               <select
                 id="ticket-assignee"
@@ -259,16 +270,11 @@ function CreateTicketForm({ onCreated, onCancel }) {
         </div>
 
         {submitError && (
-          <div
-            className="rounded-md border border-red-200 bg-red-50 p-3"
-            role="alert"
-            aria-live="polite"
-          >
-            <p className="flex items-start gap-2 text-sm text-red-700">
-              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-              {submitError}
-            </p>
-          </div>
+          <InlineErrorAlert
+            title="Couldn't create ticket"
+            message={submitError}
+            compact
+          />
         )}
 
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center">

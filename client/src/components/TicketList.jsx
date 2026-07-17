@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import {
-  AlertCircle,
   ChevronRight,
   Inbox,
   Loader2,
-  RefreshCw,
   Ticket,
 } from 'lucide-react';
+import InlineErrorAlert from './InlineErrorAlert';
 import { getTickets } from '../services/ticketService';
+import { getTicketListErrorMessage } from '../utils/errorMessages';
 import { formatDateTime } from '../utils/formatDate';
 
 const PRIORITY_STYLES = {
@@ -69,7 +69,7 @@ function TicketList({ onSelectTicket, refreshKey = 0, search = '', status = '' }
       setTickets(data);
     } catch (err) {
       setTickets([]);
-      setError(err.message);
+      setError(getTicketListErrorMessage(err, { search, status }));
     } finally {
       setLoading(false);
     }
@@ -93,27 +93,11 @@ function TicketList({ onSelectTicket, refreshKey = 0, search = '', status = '' }
 
   if (error) {
     return (
-      <div
-        className="rounded-lg border border-red-200 bg-red-50 p-6"
-        role="alert"
-        aria-live="polite"
-      >
-        <p className="flex items-start gap-2 text-sm text-red-700">
-          <AlertCircle
-            className="mt-0.5 h-4 w-4 shrink-0"
-            aria-hidden="true"
-          />
-          {error}
-        </p>
-        <button
-          type="button"
-          onClick={loadTickets}
-          className="mt-4 inline-flex items-center gap-1.5 rounded-md bg-white px-3 py-2 text-sm font-medium text-red-700 shadow-sm ring-1 ring-red-200 transition-colors hover:bg-red-100"
-        >
-          <RefreshCw className="h-4 w-4" aria-hidden="true" />
-          Try again
-        </button>
-      </div>
+      <InlineErrorAlert
+        title="Couldn't load tickets"
+        message={error}
+        onRetry={loadTickets}
+      />
     );
   }
 

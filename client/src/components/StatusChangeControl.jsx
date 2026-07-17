@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { updateTicket } from '../services/ticketService';
+import { resolveErrorMessage } from '../utils/errorMessages';
 import { getNextStatuses } from '../utils/statusTransitions';
+import InlineErrorAlert from './InlineErrorAlert';
 
 function StatusChangeControl({ ticket, onStatusChanged }) {
   const [submitError, setSubmitError] = useState(null);
@@ -25,7 +27,12 @@ function StatusChangeControl({ ticket, onStatusChanged }) {
       toast.success(`Status updated to ${nextStatus}`);
       onStatusChanged?.();
     } catch (err) {
-      setSubmitError(err.message);
+      setSubmitError(
+        resolveErrorMessage(
+          err,
+          'Unable to change the ticket status. Please try again.'
+        )
+      );
     } finally {
       setSubmittingTo(null);
     }
@@ -75,15 +82,12 @@ function StatusChangeControl({ ticket, onStatusChanged }) {
       )}
 
       {submitError && (
-        <div
-          className="mt-4 rounded-md border border-red-200 bg-red-50 p-3"
-          role="alert"
-          aria-live="polite"
-        >
-          <p className="flex items-start gap-2 text-sm text-red-700">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-            {submitError}
-          </p>
+        <div className="mt-4">
+          <InlineErrorAlert
+            title="Couldn't change status"
+            message={submitError}
+            compact
+          />
         </div>
       )}
     </section>

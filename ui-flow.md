@@ -312,7 +312,7 @@ Examples:
 - invalid assignee
 - empty comment
 
-The UI shows the specific user-readable message.
+The UI shows a specific, actionable inline message near the relevant field or form. Shared copy lives in `client/src/utils/errorMessages.js` (`VALIDATION_MESSAGES`).
 
 ### Business-rule error
 
@@ -320,7 +320,7 @@ Example:
 
 - invalid ticket status transition
 
-The UI shows the backend message without technical details.
+The UI shows the backend message inline (e.g. in the status-change control) without technical details.
 
 ### Empty state
 
@@ -332,15 +332,29 @@ Examples:
 
 This is not treated as an error.
 
-### Backend unavailable
+### Load or persistence failure
 
-The UI shows a generic message such as:
+When tickets, users, or ticket detail cannot be loaded, or a save/refresh fails after an action, the UI shows an inline alert with:
+
+- a short title (e.g. “Couldn't load tickets”)
+- a context-specific message and, where appropriate, a **Try again** action
+- no stack traces, database details, or environment values
+
+Generic backend or network failures use:
 
 ```text
 Unable to complete the request. Please try again.
 ```
 
-No stack traces, database details, or environment values are shown.
+When the backend is unreachable:
+
+```text
+Unable to connect to the server. Check that the backend is running and try again.
+```
+
+### Success feedback
+
+Brief confirmations (ticket created, updated, status changed, comment added) use **toast** messages only — not inline alerts.
 
 ## End-to-End Core Flow
 

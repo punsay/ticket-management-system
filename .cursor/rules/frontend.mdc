@@ -45,8 +45,11 @@ client/src/
 ## Feedback and errors
 
 - Use **`sonner`** as the only toast notification library.
-- Use **toast messages** only for brief action feedback (e.g. “Ticket saved”).
-- Use **inline errors** when users need details or retry actions.
+- Use **toast messages** only for brief action feedback (e.g. “Ticket saved”, “Comment added”).
+- Use **inline errors** when users need details or retry actions (load failures, form submission errors, status-change failures).
+- Centralize user-facing copy in `client/src/utils/errorMessages.js` and reuse `InlineErrorAlert` for consistent layout.
+- Map generic backend failures to context-specific fallbacks; keep backend `error.message` when it is specific (validation, business rules).
+- Network and unparsable responses use safe generic messages from `apiClient.js` — no stack traces or internal details.
 
 ## Constraints
 

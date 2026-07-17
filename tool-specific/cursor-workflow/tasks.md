@@ -63,7 +63,7 @@ Core-scope task tracker for the Support Ticket Management System. See `tool-spec
 - [x] Status change control with error display (FR-05, AC-28–AC-35)
 - [x] Comment form and display — oldest first, no edit/delete (FR-06, FR-07, BR-11, AC-18–AC-21)
 - [x] Keyword search and status filter controls — work separately (FR-08, FR-09, AC-22–AC-27)
-- [ ] Meaningful UI error messages (NFR-02, NFR-03, AC-39, AC-40)
+- [x] Meaningful UI error messages (NFR-02, NFR-03, AC-39, AC-40)
 
 ## Final documentation
 

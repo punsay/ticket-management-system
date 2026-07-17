@@ -1,18 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  AlertCircle,
   ArrowLeft,
   Loader2,
   MessageSquare,
   Pencil,
-  RefreshCw,
   UserRound,
 } from 'lucide-react';
-import { toast } from 'sonner';
 import { getTicketById } from '../services/ticketService';
+import { resolveErrorMessage } from '../utils/errorMessages';
 import { formatDateTime } from '../utils/formatDate';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
+import InlineErrorAlert from './InlineErrorAlert';
 import StatusChangeControl from './StatusChangeControl';
 import UpdateTicketForm from './UpdateTicketForm';
 
@@ -53,6 +52,7 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refreshError, setRefreshError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const editSectionRef = useRef(null);
 
@@ -65,13 +65,20 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
       setTicket(data);
     } catch (err) {
       setTicket(null);
-      setError(err.message);
+      setError(
+        resolveErrorMessage(
+          err,
+          'Unable to load this ticket. It may have been removed. Please try again.'
+        )
+      );
     } finally {
       setLoading(false);
     }
   }
 
   async function refreshTicket({ closeEditForm = false } = {}) {
+    setRefreshError(null);
+
     try {
       const data = await getTicketById(ticketId);
       setTicket(data);
@@ -80,7 +87,12 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
       }
       onTicketUpdated?.();
     } catch (err) {
-      toast.error(err.message);
+      setRefreshError(
+        resolveErrorMessage(
+          err,
+          'Your last action may have succeeded, but the ticket could not be refreshed. Please try again.'
+        )
+      );
     }
   }
 
@@ -98,6 +110,7 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
 
   useEffect(() => {
     setIsEditing(false);
+    setRefreshError(null);
     loadTicket();
   }, [ticketId]);
 
@@ -129,40 +142,34 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
       )}
 
       {!loading && error && (
-        <div
-          className="rounded-lg border border-red-200 bg-red-50 p-6"
-          role="alert"
-          aria-live="polite"
+        <InlineErrorAlert
+          title="Couldn't load ticket"
+          message={error}
+          onRetry={loadTicket}
         >
-          <p className="flex items-start gap-2 text-sm text-red-700">
-            <AlertCircle
-              className="mt-0.5 h-4 w-4 shrink-0"
-              aria-hidden="true"
-            />
-            {error}
-          </p>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={loadTicket}
-              className="inline-flex items-center gap-1.5 rounded-md bg-white px-3 py-2 text-sm font-medium text-red-700 shadow-sm ring-1 ring-red-200 transition-colors hover:bg-red-100"
-            >
-              <RefreshCw className="h-4 w-4" aria-hidden="true" />
-              Try again
-            </button>
-            <button
-              type="button"
-              onClick={onBack}
-              className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-red-100"
-            >
-              Back to tickets
-            </button>
-          </div>
-        </div>
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-red-100"
+          >
+            Back to tickets
+          </button>
+        </InlineErrorAlert>
       )}
 
       {!loading && !error && ticket && (
         <article className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+          {refreshError ? (
+            <div className="border-b border-red-200 bg-red-50 px-6 py-4">
+              <InlineErrorAlert
+                title="Couldn't refresh ticket"
+                message={refreshError}
+                onRetry={() => refreshTicket()}
+                compact
+                borderless
+              />
+            </div>
+          ) : null}
           <div className="border-b border-gray-200 px-6 py-5">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-xl font-semibold text-gray-900">

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { AlertCircle, Loader2, RefreshCw, UserRound } from 'lucide-react';
+import { Loader2, UserRound } from 'lucide-react';
 import { useActingUser } from '../context/ActingUserContext';
 import { getUsers } from '../services/userService';
+import { resolveErrorMessage } from '../utils/errorMessages';
+import InlineErrorAlert from './InlineErrorAlert';
 
 function formatUserLabel(user) {
   return `${user.name} (${user.role})`;
@@ -34,7 +36,12 @@ function ActingUserSelector() {
       setUsers(data);
     } catch (err) {
       setUsers([]);
-      setError(err.message);
+      setError(
+        resolveErrorMessage(
+          err,
+          'Unable to load users. Check your connection and try again.'
+        )
+      );
     } finally {
       setLoading(false);
     }
@@ -76,26 +83,13 @@ function ActingUserSelector() {
     return (
       <div>
         <ActingUserLabel />
-        <div
-          className="mt-2 rounded-md border border-red-200 bg-red-50 p-3"
-          role="alert"
-          aria-live="polite"
-        >
-          <p className="flex items-start gap-2 text-sm text-red-700">
-            <AlertCircle
-              className="mt-0.5 h-4 w-4 shrink-0"
-              aria-hidden="true"
-            />
-            {error}
-          </p>
-          <button
-            type="button"
-            onClick={loadUsers}
-            className="mt-2 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium text-red-700 transition-colors hover:bg-red-100"
-          >
-            <RefreshCw className="h-4 w-4" aria-hidden="true" />
-            Try again
-          </button>
+        <div className="mt-2">
+          <InlineErrorAlert
+            title="Couldn't load acting users"
+            message={error}
+            onRetry={loadUsers}
+            compact
+          />
         </div>
       </div>
     );
