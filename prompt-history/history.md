@@ -3356,3 +3356,64 @@ The form now compares submitted values against the current ticket before calling
 4. Change a field back to the original value and submit — no toast (values match the saved ticket again).
 
 ---
+
+## 2026-07-17 18:42:46 +0530 — User
+
+**Conversation:** `bba309f8-e870-46e3-91d2-48c951f8c299`
+
+Implement the ticket status change control in the ticket detail view.
+
+Show only the valid next statuses based on the current ticket status. Use the existing update API and display clear loading, success, and error feedback.
+
+Keep the existing ticket update form and other behaviour unchanged. Do not implement comments, search, or filters yet.
+
+Update only the relevant documentation, run the frontend checks, and report the files changed and manual verification steps.
+
+
+---
+
+## 2026-07-17 18:43:51 +0530 — Assistant
+
+**Conversation:** `bba309f8-e870-46e3-91d2-48c951f8c299`
+
+Implemented the ticket status change control in the detail view.
+
+## Summary
+
+The detail view now has a dedicated **Change status** section that shows only valid next statuses for the current ticket. Each option calls the existing `PUT /api/tickets/:id` endpoint with `{ status }`. The update form is unchanged.
+
+### Files changed
+
+| File | Change |
+|------|--------|
+| `client/src/utils/statusTransitions.js` | **New** — mirrors backend `ALLOWED_TRANSITIONS` |
+| `client/src/components/StatusChangeControl.jsx` | **New** — status action buttons with loading, success toast, and inline error |
+| `client/src/components/TicketDetail.jsx` | Integrated `StatusChangeControl`; added `refreshTicket` so status updates don't close the edit form |
+| `tool-specific/cursor-workflow/tasks.md` | Marked status change control task complete |
+
+### Behaviour
+
+- **Open** → "Move to In Progress", "Move to Cancelled"
+- **In Progress** → "Move to Resolved", "Move to Cancelled"
+- **Resolved** → "Move to Closed"
+- **Closed / Cancelled** → "This ticket cannot be moved to another status."
+- **Loading** — spinner and "Updating..." on the clicked button; other buttons disabled
+- **Success** — toast (`Status updated to …`) and detail view refreshes
+- **Error** — inline alert with backend message (e.g. invalid transition)
+
+### Checks performed
+
+- `npm run build` in `client/` — passed
+- No linter errors on changed files
+
+### Manual verification steps
+
+1. Start the app (`client` + `server`) with seeded data.
+2. Open an **Open** ticket — confirm two status buttons appear; click **Move to In Progress** and verify the badge, status field, and list update after success toast.
+3. Open an **In Progress** ticket — confirm **Resolved** and **Cancelled** options work.
+4. Open a **Resolved** ticket — confirm only **Move to Closed** appears.
+5. Open a **Closed** or **Cancelled** ticket — confirm the "cannot be moved" message and no action buttons.
+6. Confirm **Edit ticket** still updates title, description, priority, and assignee without requiring an acting user.
+7. (Optional) To test error display, stop the server and attempt a status change — confirm a generic error message appears inline.
+
+---

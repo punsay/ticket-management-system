@@ -10,6 +10,7 @@ import {
 import { toast } from 'sonner';
 import { getTicketById } from '../services/ticketService';
 import { formatDateTime } from '../utils/formatDate';
+import StatusChangeControl from './StatusChangeControl';
 import UpdateTicketForm from './UpdateTicketForm';
 
 const PRIORITY_STYLES = {
@@ -67,15 +68,25 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
     }
   }
 
-  async function handleTicketUpdated() {
+  async function refreshTicket({ closeEditForm = false } = {}) {
     try {
       const data = await getTicketById(ticketId);
       setTicket(data);
-      setIsEditing(false);
+      if (closeEditForm) {
+        setIsEditing(false);
+      }
       onTicketUpdated?.();
     } catch (err) {
       toast.error(err.message);
     }
+  }
+
+  function handleTicketUpdated() {
+    refreshTicket({ closeEditForm: true });
+  }
+
+  function handleStatusChanged() {
+    refreshTicket();
   }
 
   useEffect(() => {
@@ -195,6 +206,13 @@ function TicketDetail({ ticketId, onBack, onTicketUpdated }) {
                 {formatDateTime(ticket.updatedAt)}
               </DetailField>
             </dl>
+
+            <div className="border-t border-gray-200 pt-6">
+              <StatusChangeControl
+                ticket={ticket}
+                onStatusChanged={handleStatusChanged}
+              />
+            </div>
 
             <div className="border-t border-gray-200 pt-6">
               {!isEditing && (
