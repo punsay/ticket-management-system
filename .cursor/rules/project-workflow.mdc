@@ -19,7 +19,7 @@ Read these files first:
 For backend, database, or infrastructure tasks, also read:
 
 - `system-design.md`
-- `'database-design.md'`
+- `database-design.md`
 - `api-contract.md`
 
 For frontend tasks, also read:

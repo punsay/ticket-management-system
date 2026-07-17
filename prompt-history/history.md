@@ -2239,3 +2239,96 @@ Invalid transitions return **HTTP 409** with a readable message via centralized 
 Integration tests for valid and invalid status transitions (**AC-45**, **AC-46**, **NFR-04**, **NFR-05**).
 
 ---
+
+## 2026-07-17 00:30:21 +0530 — User
+
+**Conversation:** `e9ff49c0-7f12-4326-a90c-5a90c0d0e213`
+
+Review the backend and add only the missing validation for tickets and comments. Keep the existing APIs and status-transition logic unchanged. Then list the changed files and Postman test cases.
+
+---
+
+## 2026-07-17 00:34:39 +0530 — Assistant
+
+**Conversation:** `e9ff49c0-7f12-4326-a90c-5a90c0d0e213`
+
+## Review summary
+
+Most ticket and comment validation was already in `ticketService.js`. The gaps were:
+
+1. **No dedicated validation layer** — field checks were mixed into the service (architecture expects a separate validation module).
+2. **Null / non-object request bodies** — `null`, `undefined`, or non-object bodies could throw `TypeError` and return **500** instead of **400**.
+3. **ObjectId format not checked before DB lookup** — malformed `createdBy` / `assignedTo` values relied on `findUserById` returning null; format is now rejected earlier with the documented messages.
+
+**Unchanged:** API routes, response shapes, error messages, status-transition logic (`statusTransitionService`), and assignee / `createdBy` business rules in the service.
+
+---
+
+## Changed files
+
+| File | Change |
+|------|--------|
+| `server/src/validation/helpers.js` | **New** — shared helpers (`isNonEmptyString`, `toRequestObject`, `assertObjectId`) |
+| `server/src/validation/ticketValidation.js` | **New** — `validateCreateTicketInput`, `validateUpdateTicketInput` |
+| `server/src/validation/commentValidation.js` | **New** — `validateCommentInput` |
+| `server/src/services/ticketService.js` | **Updated** — delegates field validation to the validation module; keeps DB/business-rule checks |
+
+---
+
+## Postman test cases
+
+Base URL: `http://localhost:5001/api`  
+Get user IDs from `GET /api/users`.
+
+### Ticket create — `POST /api/tickets`
+
+| # | Body | Expected |
+|---|------|----------|
+| 1 | Valid: `title`, `description`, `priority` (`Low`/`Medium`/`High`), `createdBy` (Alice/Bob/Carol ID) | **201**, `status: "Open"` |
+| 2 | Valid + `assignedTo` (Bob or Carol ID) | **201**, assignee populated |
+| 3 | Omit `title` or `title: ""` or `title: "   "` | **400** `"Title is required"` |
+| 4 | Omit `description` or empty/whitespace | **400** `"Description is required"` |
+| 5 | Omit `priority` or `priority: "Urgent"` | **400** `"Invalid priority"` |
+| 6 | Omit `createdBy` | **400** `"Invalid user"` |
+| 7 | `createdBy: "not-an-objectid"` | **400** `"Invalid user"` |
+| 8 | `createdBy` = valid ObjectId but non-existent user | **400** `"Invalid user"` |
+| 9 | `assignedTo` = Alice’s ID (Requester) | **400** `"Assignee must be a support agent"` |
+| 10 | `assignedTo: "bad-id"` | **400** `"Assignee must be a support agent"` |
+| 11 | `null` body or non-object body | **400** `"Title is required"` (no 500) |
+
+### Ticket update — `PUT /api/tickets/:id`
+
+| # | Body | Expected |
+|---|------|----------|
+| 12 | Valid partial update (e.g. `title`, `priority`) | **200** |
+| 13 | `title: ""` or whitespace only | **400** `"Title is required"` |
+| 14 | `description: ""` or whitespace only | **400** `"Description is required"` |
+| 15 | `priority: "Critical"` or `priority: null` | **400** `"Invalid priority"` |
+| 16 | `assignedTo` = Alice’s ID | **400** `"Assignee must be a support agent"` |
+| 17 | `assignedTo: "bad-id"` | **400** `"Assignee must be a support agent"` |
+| 18 | `assignedTo: null` or `""` | **200**, assignee cleared |
+| 19 | `status: "BadStatus"` | **400** `"Invalid status"` |
+| 20 | Valid transition (e.g. Open → In Progress) | **200** |
+| 21 | Invalid transition (e.g. Open → Resolved) | **409** `"Cannot transition from Open to Resolved"` |
+| 22 | Same status as current (no-op) | **200** |
+
+### Comment create — `POST /api/tickets/:ticketId/comments`
+
+| # | Body | Expected |
+|---|------|----------|
+| 23 | Valid: `message`, `createdBy` (seeded user ID) | **201** |
+| 24 | Omit `message` or empty/whitespace | **400** `"Message is required"` |
+| 25 | Omit `createdBy` | **400** `"Invalid user"` |
+| 26 | `createdBy: "not-an-objectid"` | **400** `"Invalid user"` |
+| 27 | `createdBy` = non-existent user ID | **400** `"Invalid user"` |
+| 28 | Invalid ticket ID in URL | **404** `"Ticket not found"` |
+| 29 | Valid ObjectId but missing ticket | **404** `"Ticket not found"` |
+| 30 | `null` body | **400** `"Message is required"` |
+
+### Related requirements
+
+**VR-02–VR-07, VR-09–VR-11** · **AC-09–AC-11, AC-16–AC-17, AC-20, AC-36–AC-38**
+
+Status-transition cases (#20–21) are unchanged; included for regression only.
+
+---

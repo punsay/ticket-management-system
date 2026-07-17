@@ -65,23 +65,34 @@ This document records reviews of completed implementation phases. It is updated 
 - Confirmed valid status transitions succeed and invalid transitions are rejected
 - Confirmed behaviour through manual Postman checks
 
+### Review 5 — Ticket and comment input validation
+
+**Date:** 2026-07-17
+
+- Reviewed the new validation modules under `server/src/validation/`
+- Confirmed ticket and comment field checks are separated from service-level business rules
+- Confirmed null and non-object request bodies are rejected as validation errors
+- Confirmed malformed `createdBy` and `assignedTo` ObjectIds are rejected before database lookup
+- Confirmed existing API routes, response shapes, error messages, and status-transition logic remain unchanged
+- Postman regression checks are pending
+
 ## Feedback Summary
 
 ### Positive
 
 - Planning and design documents were completed before implementation.
 - Backend source files were reorganized consistently under `server/src/`.
-- Database validation is separated correctly:
-  - Zod for API input
+- Validation responsibilities are separated correctly:
+  - dedicated validation modules for API input
   - Mongoose for schema-level validation
-  - services for business rules
+  - services for database checks and business rules
 - Seed data covers users, varied tickets, assignees, and comments.
 - Secrets remain outside version control.
 
 ### Follow-up items
 
 - Business rules such as valid assignees and ticket status transitions must remain in the service layer.
-- Centralized error handling still needs to be implemented for feature APIs.
+- Confirm centralized error handling covers all feature APIs during the final backend review.
 - Automated integration tests are still required for search, filtering, and status-transition behaviour.
 - Integration tests are still required for valid and invalid status transitions.
 
@@ -94,6 +105,7 @@ This document records reviews of completed implementation phases. It is updated 
 - [x] Review seeded users and ticket CRUD APIs.
 - [x] Review comments API.
 - [x] Review search, filtering, and status-transition behaviour.
+- [x] Review ticket and comment input validation structure.
 - [ ] Review frontend behaviour after UI implementation.
 - [ ] Review integration tests and final acceptance criteria.
 

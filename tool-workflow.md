@@ -81,15 +81,15 @@ backend, and tests follow the same behaviour.
 
 ## Code Generation
 
-I used Cursor to complete the initial React and Express setup, connect the backend to local MongoDB Community Edition, create the Mongoose models, add the seed script, and implement the seeded-users, ticket CRUD, comments, search and status-filtering, and ticket status-transition behaviour. Each prompt was limited to one task, and I reviewed the generated changes before continuing.
+I used Cursor to complete the initial React and Express setup, connect the backend to local MongoDB Community Edition, create the Mongoose models, add the seed script, and implement the seeded-users, ticket CRUD, comments, search and status-filtering, ticket status-transition behaviour, and dedicated ticket/comment input validation. Each prompt was limited to one task, and I reviewed the generated changes before continuing.
 
 ## Validation of AI-Generated Code
 
-I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the local MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB and manually verified the seeded-users, ticket CRUD, comments, search and status-filtering, and valid and invalid ticket status transitions in Postman.
+I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the local MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB and manually verified the seeded-users, ticket CRUD, comments, search and status-filtering, and valid and invalid ticket status transitions in Postman. The new validation-layer changes were reviewed in code; their Postman regression checks are the next validation step.
 
 ## Testing
 
-I manually validated the seeded-users, ticket CRUD, comments, search and status-filtering, and ticket status transitions in Postman. Automated integration tests, including valid and invalid status-transition coverage, are still pending.
+I manually validated the seeded-users, ticket CRUD, comments, search and status-filtering, and ticket status transitions in Postman. Postman regression checks for null/non-object request bodies, malformed ObjectIds, missing fields, and invalid priority values are pending. Automated integration tests, including backend validation and valid/invalid status-transition coverage, are still pending.
 
 ## Debugging
 

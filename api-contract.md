@@ -4,7 +4,7 @@ REST API for the Core Support Ticket Management System. Express backend, JSON re
 
 ## Overview
 
-Simple REST endpoints under `/api`. No authentication. The backend validates all input and enforces ticket status transitions before persisting.
+Simple REST endpoints under `/api`. No authentication. The backend validates all input through dedicated validation modules and enforces ticket status transitions before persisting.
 
 ## Base URL
 
@@ -52,7 +52,7 @@ Or for lists:
 
 | HTTP status | When |
 |-------------|------|
-| `400` | Validation failure |
+| `400` | Validation failure, malformed ObjectId, or invalid request-body format |
 | `404` | Ticket or user not found |
 | `409` | Invalid status transition |
 | `500` | Unexpected server error (generic message only) |
@@ -220,7 +220,7 @@ Server sets `status` to `Open`. Rejects missing/invalid `createdBy`.
 
 The `data` object is the created ticket.
 
-**Response `400`:** Validation error (see Common Response Format).
+**Response `400`:** Validation error, malformed ObjectId, or non-object request body (see Common Response Format).
 
 ---
 
@@ -269,7 +269,7 @@ Status transition rules (backend-enforced):
 
 The `data` object is the updated ticket.
 
-**Response `400`:** Validation error (see Common Response Format).
+**Response `400`:** Validation error, malformed ObjectId, or non-object request body (see Common Response Format).
 
 **Response `404`:** Ticket not found (see Common Response Format).
 
@@ -308,7 +308,7 @@ Add a comment to a ticket.
 
 The `data` object is the created comment.
 
-**Response `400`:** Validation error (see Common Response Format).
+**Response `400`:** Validation error, malformed ObjectId, or non-object request body (see Common Response Format).
 
 **Response `404`:** Ticket not found (see Common Response Format).
 
@@ -318,7 +318,8 @@ The `data` object is the created comment.
 
 - Content-Type: `application/json`
 - Dates: ISO 8601 strings
-- IDs: MongoDB ObjectId strings
+- Request bodies must be JSON objects
+- IDs: valid MongoDB ObjectId strings
 - Populated references (`assignedTo`, `createdBy`) return `{ _id, name }` at minimum
 
 ## Error Codes

@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
 const Ticket = require('../models/ticket');
 const Comment = require('../models/comment');
-const { PRIORITIES, STATUSES } = Ticket;
+const { STATUSES } = Ticket;
 const userService = require('./userService');
 const statusTransitionService = require('./statusTransitionService');
 const AppError = require('../utils/AppError');
+const {
+  validateCreateTicketInput,
+  validateUpdateTicketInput,
+} = require('../validation/ticketValidation');
+const { validateCommentInput } = require('../validation/commentValidation');
 
 const TICKET_POPULATE = [
   { path: 'assignedTo', select: '_id name' },
@@ -12,10 +17,6 @@ const TICKET_POPULATE = [
 ];
 
 const COMMENT_POPULATE = { path: 'createdBy', select: '_id name' };
-
-function isNonEmptyString(value) {
-  return typeof value === 'string' && value.trim().length > 0;
-}
 
 function escapeRegex(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -66,23 +67,8 @@ async function getTicketById(id) {
 }
 
 async function createTicket(input) {
-  const { title, description, priority, assignedTo, createdBy } = input;
-
-  if (!isNonEmptyString(title)) {
-    throw new AppError('Title is required');
-  }
-
-  if (!isNonEmptyString(description)) {
-    throw new AppError('Description is required');
-  }
-
-  if (!priority || !PRIORITIES.includes(priority)) {
-    throw new AppError('Invalid priority');
-  }
-
-  if (!createdBy) {
-    throw new AppError('Invalid user');
-  }
+  const { title, description, priority, assignedTo, createdBy } =
+    validateCreateTicketInput(input);
 
   const creator = await userService.findUserById(createdBy);
   if (!creator) {
@@ -99,8 +85,8 @@ async function createTicket(input) {
   }
 
   const ticket = await Ticket.create({
-    title: title.trim(),
-    description: description.trim(),
+    title,
+    description,
     priority,
     status: 'Open',
     assignedTo: assigneeId,
@@ -120,26 +106,18 @@ async function updateTicket(id, input) {
     throw new AppError('Ticket not found', 404);
   }
 
-  const { title, description, priority, assignedTo, status } = input;
+  const { title, description, priority, assignedTo, status } =
+    validateUpdateTicketInput(input);
 
   if (title !== undefined) {
-    if (!isNonEmptyString(title)) {
-      throw new AppError('Title is required');
-    }
-    ticket.title = title.trim();
+    ticket.title = title;
   }
 
   if (description !== undefined) {
-    if (!isNonEmptyString(description)) {
-      throw new AppError('Description is required');
-    }
-    ticket.description = description.trim();
+    ticket.description = description;
   }
 
   if (priority !== undefined) {
-    if (!PRIORITIES.includes(priority)) {
-      throw new AppError('Invalid priority');
-    }
     ticket.priority = priority;
   }
 
@@ -155,15 +133,9 @@ async function updateTicket(id, input) {
     }
   }
 
-  if (status !== undefined) {
-    if (!STATUSES.includes(status)) {
-      throw new AppError('Invalid status');
-    }
-
-    if (status !== ticket.status) {
-      statusTransitionService.validateTransition(ticket.status, status);
-      ticket.status = status;
-    }
+  if (status !== undefined && status !== ticket.status) {
+    statusTransitionService.validateTransition(ticket.status, status);
+    ticket.status = status;
   }
 
   await ticket.save();
@@ -180,15 +152,7 @@ async function addComment(ticketId, input) {
     throw new AppError('Ticket not found', 404);
   }
 
-  const { message, createdBy } = input;
-
-  if (!isNonEmptyString(message)) {
-    throw new AppError('Message is required');
-  }
-
-  if (!createdBy) {
-    throw new AppError('Invalid user');
-  }
+  const { message, createdBy } = validateCommentInput(input);
 
   const creator = await userService.findUserById(createdBy);
   if (!creator) {
@@ -197,7 +161,7 @@ async function addComment(ticketId, input) {
 
   const comment = await Comment.create({
     ticketId: ticket._id,
-    message: message.trim(),
+    message,
     createdBy: creator._id,
   });
 

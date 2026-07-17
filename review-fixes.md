@@ -220,6 +220,29 @@ Cross-checked the documentation against the implemented models, seed process, AP
 
 **Status:** Completed
 
+---
+
+### RF-11 — Ticket and comment validation separated from services
+
+**Review finding:**  
+Ticket and comment field validation was mixed into the service layer, and null or non-object request bodies could produce an unexpected server error. Malformed user IDs were also not rejected before database lookup.
+
+**Fix applied:**  
+
+- Added shared validation helpers under `server/src/validation/`.
+- Added dedicated ticket and comment validation modules.
+- Added request-body object checks and MongoDB ObjectId format checks.
+- Updated `ticketService.js` to delegate field validation while retaining database checks and business rules.
+- Kept existing API routes, response shapes, error messages, and status-transition logic unchanged.
+
+**Validation:**  
+Code review completed. Postman regression checks are pending.
+
+**Related commit:**  
+_To be added after commit._
+
+**Status:** Implemented; manual validation pending
+
 ## Suggestions Reviewed but Not Applied
 
 ### Authentication
@@ -266,6 +289,7 @@ The following fixes are still pending and should be added after the related impl
 
 - [ ] Add centralized error handling for feature APIs, if not already implemented.
 - [ ] Add mandatory integration tests for valid and invalid ticket status transitions.
+- [ ] Complete Postman regression checks for the new ticket/comment validation layer.
 - [ ] Add automated tests for backend validation and important failure cases.
 - [ ] Review frontend ticket creation, update, comment, search, filter, and status-transition behaviour.
 - [ ] Confirm meaningful frontend error states for rejected backend operations.

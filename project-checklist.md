@@ -44,7 +44,8 @@
 - [x] Comments implemented
 - [x] Search and status filter
 - [x] Status transition rules implemented
-- [ ] Backend validation
+- [x] Backend validation implemented
+- [ ] Backend validation regression-tested in Postman
 - [ ] Error handling
 
 ---
@@ -64,6 +65,7 @@
 ## 🧪 Testing
 
 - [x] Seeded-users, ticket CRUD, comments, search/filter, and status transitions manually validated in Postman
+- [ ] New ticket/comment validation cases manually validated in Postman
 - [ ] Integration tests
 - [ ] Status transition tests
 - [ ] Testing strategy

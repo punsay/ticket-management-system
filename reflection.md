@@ -4,7 +4,7 @@ Personal reflection on the development process, challenges faced, skills gained,
 
 ## Overview
 
-This reflection is being updated throughout the project. So far, planning, design, project setup, local MongoDB Community Edition integration, backend APIs, search and filtering, and ticket status-transition enforcement are complete.
+This reflection is being updated throughout the project. So far, planning, design, project setup, local MongoDB Community Edition integration, backend APIs, search and filtering, ticket status-transition enforcement, and dedicated ticket/comment input validation are complete.
 
 ## What Went Well
 
@@ -14,6 +14,7 @@ This reflection is being updated throughout the project. So far, planning, desig
 - Separating the work into small tasks made it easier to verify each change before continuing.
 - The backend structure was corrected early so all application source code is consistently stored under `server/src/`.
 - The MongoDB connection, models, seed data, backend APIs, search and filtering, and status-transition behaviour were implemented and manually verified successfully.
+- Ticket and comment field validation was separated into dedicated modules without changing existing API behaviour or status-transition rules.
 - Prompt-history automation and meaningful commits provide a traceable development record.
 
 ## Challenges
@@ -31,6 +32,8 @@ This reflection is being updated throughout the project. So far, planning, desig
 - Writing clearer requirements and acceptance criteria before implementation
 - Creating and refining persistent Cursor project rules
 - Using a layered Express architecture
+- Separating request validation from database checks and business rules
+- Validating request-body types and MongoDB ObjectId formats before database operations
 - Organizing backend source code consistently
 - Connecting Mongoose to local MongoDB through environment variables
 - Designing Mongoose schemas with references, enums, timestamps, defaults, and indexes
@@ -45,6 +48,6 @@ This reflection is being updated throughout the project. So far, planning, desig
 
 ## Conclusion
 
-The project foundation and Core backend are now stable. The planning documents, Cursor rules, React and Express setup, local MongoDB connection, models, seed data, APIs, search and filtering, and status-transition rules are aligned and working.
+The project foundation and Core backend are now stable. The planning documents, Cursor rules, React and Express setup, local MongoDB connection, models, seed data, APIs, search and filtering, status-transition rules, and validation structure are aligned. Postman regression checks for the latest validation changes are still pending.
 
 The next major work is the frontend, automated integration tests, final code review, and completion of the project documentation. This reflection will be updated as those phases are completed.
