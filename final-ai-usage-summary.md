@@ -147,7 +147,7 @@ AI was used to:
 - plan the root `tests/` structure;
 - prepare testing documentation and result-reporting structure.
 
-The mandatory automated state-machine integration tests remain one of the most important final completion items until implemented and recorded as passing.
+The mandatory state-machine integration tests and focused ticket/comment validation integration tests were implemented with Jest and Supertest; the final run completed with 44/44 tests passing.
 
 ### 7. Debugging Support
 
@@ -298,6 +298,19 @@ AI usage is visible through:
 - `pr-description.md`
 - Git commit history
 
+## Commit-History Evidence
+
+The commit history provides concrete evidence of how AI was used and reviewed across the lifecycle:
+
+- Planning was committed before feature implementation, including project context, requirements, acceptance criteria, system design, database design, API design, and Cursor rules.
+- AI-generated inconsistencies were reviewed and corrected in dedicated commits such as `docs: validated AI suggestions and updated task plan`, `docs: align API specification with validated Cursor rules`, and `docs: resolved API specification and Cursor rule conflicts`.
+- Backend work was delivered incrementally through separate database, model, seed, users API, ticket CRUD, comments, search/filter, transition, and validation commits.
+- Testing was added after the test strategy and Cursor testing rule were refined, with separate commits for status-transition tests and ticket/comment validation tests.
+- Frontend work was split into acting-user selection, ticket list/detail, create, update, status, comments, search/filter, and later usability/error-state refinements.
+- Prompt history was automated early, then manually backfilled and curated at the end to preserve complete evidence.
+
+This progression shows that AI was used as part of an iterative engineering workflow rather than as a single code-generation step.
+
 ## Final Assessment of AI Contribution
 
 AI was most useful for:
@@ -319,16 +332,6 @@ Human judgment remained necessary for:
 - rejecting unnecessary complexity;
 - confirming that the final implementation matched the actual requirements.
 
-## Remaining AI-Assisted Work
+## Final Completion
 
-Before final submission, AI may still be used to support:
-
-- automated state-machine integration tests;
-- backend validation tests;
-- frontend implementation review;
-- final acceptance-criteria verification;
-- final test-result documentation;
-- final README and setup review;
-- final reflection and repository consistency check.
-
-Any remaining AI-generated changes should continue to be manually reviewed and validated before commit.
+The mandatory Core implementation, automated integration tests, frontend review, acceptance-criteria review, README setup guidance, test-result documentation, reflection, and repository consistency review are complete. Any later maintenance changes should follow the same scoped prompting, review, and validation workflow.

@@ -4,7 +4,7 @@ Personal reflection on the development process, challenges faced, skills gained,
 
 ## Overview
 
-This reflection is being updated throughout the project. So far, planning, design, project setup, local MongoDB Community Edition integration, backend APIs, search and filtering, ticket status-transition enforcement, and dedicated ticket/comment input validation are complete.
+The mandatory Core Support Ticket Management System is complete. The final solution includes the React frontend, Express API, local MongoDB persistence, repeatable seed data, backend validation, controlled ticket status transitions, comments, search, status filtering, meaningful UI states, prompt-history evidence, and passing integration tests.
 
 ## What Went Well
 
@@ -48,6 +48,19 @@ This reflection is being updated throughout the project. So far, planning, desig
 
 ## Conclusion
 
-The project foundation and Core backend are now stable. The planning documents, Cursor rules, React and Express setup, local MongoDB connection, models, seed data, APIs, search and filtering, status-transition rules, and validation structure are aligned. Postman regression checks for the latest validation changes are still pending.
+The complete Core workflow is now aligned from requirements through implementation and verification. The frontend and backend work together against the documented API, the backend remains authoritative for validation and lifecycle rules, and the integration suites provide repeatable evidence with 44/44 passing tests.
 
-The next major work is the frontend, automated integration tests, final code review, and completion of the project documentation. This reflection will be updated as those phases are completed.
+The most valuable lesson was that AI was most effective when used with persistent project context, small scoped tasks, and explicit validation. The next improvement would be to add automated frontend coverage and CI only as optional follow-on work, without weakening the clarity of the completed Core submission.
+
+## What the Commit History Shows
+
+The commit history reinforces several lessons from the project:
+
+- Planning, design, and Cursor rules were committed before most application features, which reduced implementation drift.
+- Documentation corrections were committed separately from feature code, making AI review and human decisions visible.
+- Backend features were delivered in small stages and manually verified before later validation and automated testing work.
+- The testing strategy and testing rule were refined before the integration suites were added.
+- Frontend features were also split into focused commits, followed by separate usability and error-message improvements rather than being treated as complete after the first generated UI.
+- Prompt-history automation was added early, while the missing initial interaction was honestly backfilled later and marked as such.
+
+A weakness in the history is that one initial scaffold commit message appears twice and some commit wording is inconsistent, such as `feat:(server)`. In a future project I would keep commit formatting consistent and check for duplicate commits before pushing. The history is still useful because it clearly shows the progression from planning to implementation, testing, refinement, and final documentation.

@@ -1,14 +1,13 @@
 # Candidate Information
 
 **Name:** Punsay Prakhar  
-**Role:** Senior Software Engineer
-**Primary Technology Stack:** React, JavaScript, Tailwind CSS, Node.js, Express, MongoDB  
-
+**Role:** Senior Software Engineer  
+**Primary Technology Stack:** HTML/CSS, React, Javascript
 **Primary AI Tool Used:** Cursor  
 **Project Option Selected:** Support Ticket Management System  
 
-**Assessment Start Date:** [11.07.2026]  
-**Submission Date:**  
+**Assessment Start Date:** 11 July 2026  
+**Submission Date:** 20 July 2026  
 
 ## Project Summary
 

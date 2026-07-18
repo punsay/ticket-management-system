@@ -1,88 +1,106 @@
 # Cursor Rules and Instructions
 
-How Cursor project rules guide AI-assisted development of the Support Ticket Management System.
+How the active `.cursor/rules/` files guide AI-assisted development of the Support Ticket Management System.
 
-## Why project rules were introduced
+## Purpose
 
-Written requirements and design docs define *what* the system must do, but they do not automatically shape day-to-day coding habits. Project rules in `.cursor/rules/` give Cursor persistent, lightweight guardrails so that:
-
-- The agent reads the right context before making changes
-- Implementation stays within Core scope
-- Backend, frontend, and API conventions stay consistent across tasks
-- Responses stay concise and traceable to requirements
+The project documents define expected behaviour, while Cursor rules provide persistent implementation guardrails. They keep work within Core scope, enforce consistent backend and frontend patterns, guide testing, and require concise, traceable task summaries.
 
 Rules complement — not replace — `project-context.md`, `spec.md`, `tasks.md`, and `acceptance-criteria.md`.
 
-## Active rules
+## Active Rules
 
-| Rule file | Applies | Purpose |
-|-----------|---------|---------|
-| `.cursor/rules/project-workflow.mdc` | Always | Workflow and scope discipline |
-| `.cursor/rules/code-quality.mdc` | Always | Readability, API shape, safe errors |
-| `.cursor/rules/output-format.mdc` | Always | How the agent describes changes |
-| `.cursor/rules/architecture-backend.mdc` | `server/**/*` | Backend layering and validation |
-| `.cursor/rules/frontend.mdc` | `client/**/*` | React structure and UI patterns |
-| `.cursor/rules/testing.mdc` | Test files and test commands | Core-scope test implementation and execution |
+| Rule file | Applies to | Main purpose |
+|---|---|---|
+| `.cursor/rules/project-workflow.mdc` | Always | Read project context, stay in scope, and report traceability |
+| `.cursor/rules/code-quality.mdc` | Always | Readable code, consistent API responses, and safe errors |
+| `.cursor/rules/output-format.mdc` | Always | Concise responses containing relevant changed sections |
+| `.cursor/rules/architecture-backend.mdc` | `server/**/*` | Backend layering, validation, persistence, and error handling |
+| `.cursor/rules/frontend.mdc` | `client/**/*` | React structure, styling, API handling, and UI feedback |
+| `.cursor/rules/testing.mdc` | `tests/**/*` | Core integration-test scope and isolated test data |
 
-## Main instructions by rule
+## Main Instructions
 
-### `project-workflow` (always on)
+### Project workflow
 
-Before major changes, read the workflow docs (`project-context.md`, `spec.md`, `tasks.md`, `acceptance-criteria.md`) and design docs when relevant. Stay in Core scope, do not invent requirements, flag conflicts before coding, and after each task summarize changed files, related FR/BR/VR/NFR/AC IDs, and checks performed.
+Before major changes, read the tool-specific context, specification, task tracker, and acceptance criteria. Read the relevant design, API, requirement, or test documents for the requested work.
 
-### `architecture-backend` (server files)
+Complete only the requested task, remain within Core scope, do not invent features, and report conflicts before coding. After each task, summarize changed files, related requirement or acceptance IDs, and checks performed.
 
-Use **Routes → Controllers → Services → Mongoose Models**. Routes define endpoints; controllers handle HTTP; services hold business rules (including ticket status transitions); models handle persistence. Connect to **MongoDB Atlas** via `MONGODB_URI` only — never hardcode or commit credentials. The React frontend never accesses MongoDB directly. Validate API input with **Zod**; use **Mongoose schema validation** as a persistence safeguard; enforce business rules in services. Use centralized error handling and keep controllers thin.
+### Backend architecture
 
-### `frontend` (client files)
+Use:
 
-Use React functional components, hooks, and Tailwind CSS. Organize into `pages/`, `components/`, `services/`, `hooks/`, and `utils/`. Keep API calls in services and create custom hooks only for reused stateful logic. Use Tailwind’s default font stack, clean cards, subtle backgrounds, clear hover states, and responsive, accessible styling. Use `lucide-react` as the only icon library and `sonner` as the only toast library. Use icons for clarity rather than decoration, toast messages for brief action feedback, and inline errors when users need details or retry actions. Always show loading, empty, and meaningful error states. Inspect existing UI patterns before introducing new ones, and avoid class components, custom fonts, additional UI libraries, and unnecessary abstractions.
+```text
+Routes → Controllers → Services → Mongoose Models
+```
 
-### `code-quality` (always on)
+- Controllers handle HTTP concerns and remain small.
+- Services enforce business rules, including ticket status transitions.
+- Models handle schemas and persistence.
+- Validate request bodies, query parameters, and route parameters with Zod where applicable.
+- Treat backend validation as authoritative and use Mongoose validation as an additional safeguard.
+- Access MongoDB only through the Express backend and read its connection from `MONGODB_URI`.
+- Return `{ success: true, data }` for success and `{ success: false, error: { message } }` for failure.
+- Use centralized error handling and never expose stack traces, secrets, or internal configuration.
 
-Prefer readable, focused functions; avoid duplication and unnecessary dependencies. Comment only non-obvious decisions. Use consistent API responses (`success` + `data` or `error.message`) and appropriate HTTP status codes. Never expose stack traces or secrets to the client.
+> The current `architecture-backend.mdc` still names MongoDB Atlas. It should be minimally aligned with the implemented local MongoDB development setup and separate local test database.
 
-### `output-format` (always on)
+### Frontend
 
-Keep explanations short. Name file paths when describing changes. Show only changed or new sections — not full unchanged files — unless the file is small and new or full content was requested.
+Use React functional components, hooks, Tailwind CSS, `lucide-react`, and `sonner`.
 
-### `testing` (test files and test commands)
+- Keep API requests in service modules rather than components.
+- Read successful API values from `payload.data` and failures from `payload.error.message`.
+- Show loading, empty, validation, and meaningful error states.
+- Use Tailwind’s default font stack and existing responsive, accessible UI patterns.
+- Use `lucide-react` only where icons improve clarity.
+- Use `sonner` for brief action feedback.
+- Use inline messages when users need details or retry actions.
+- Reuse `errorMessages.js`, `InlineErrorAlert`, and `ValidationNotice` for consistent error presentation.
+- Map network and unparsable responses to safe generic messages.
+- Avoid class components, custom fonts, additional UI libraries, and unnecessary abstractions.
 
-Treat `test-strategy.md` as the testing source of truth. Keep testing within mandatory Core scope and prioritize integration tests for valid and representative invalid ticket status transitions, ticket validation, and comment validation. Use Jest, Supertest, the exported Express app, and a dedicated local MongoDB test database that is separate from development data. Use deterministic fixtures, clean up test data after execution, and verify both HTTP responses and database persistence or non-persistence. Inspect existing files before changes, keep updates minimal, and change production code only when a test confirms a defect. Do not add optional unit, component, frontend E2E, CI, Docker, authentication, or other Stretch work.
+### Code quality and output
 
-## How rules support development
+Prefer readable, focused functions, avoid duplicate logic and unnecessary dependencies, and comment only non-obvious decisions.
 
-**Context-driven:** `project-workflow` points the agent at the same documents a human developer would read first, so implementation aligns with confirmed requirements rather than assumptions.
+Cursor responses should be concise, name changed file paths, and show only relevant changed or new sections unless full files are explicitly requested.
 
-**Task-by-task:** After each task in `tasks.md`, the workflow rule expects a summary tied to requirement IDs. Layer-specific rules (`architecture-backend`, `frontend`) activate when editing matching files, so conventions apply at the right time without cluttering unrelated work.
+### Testing
 
-**Traceable:** Together with prompt history and project docs, rules make it easier to show what was built, why, and how it was checked.
+Treat `test-strategy.md` as the source of truth.
 
-## Refining rules during implementation
+- Use Jest and Supertest with the exported Express app.
+- Use real Mongoose persistence against a dedicated local test database.
+- Never use or modify development or seeded data during automated tests.
+- Create deterministic users and tickets for each test.
+- Clean up test data and disconnect Mongoose after execution.
+- Verify HTTP status, API response shape, and persistence or non-persistence.
+- Cover all five valid status transitions, representative invalid transitions, and ticket/comment validation.
+- Keep changes minimal and modify production code only when a test confirms a defect.
+- Do not add optional unit, component, frontend E2E, CI, Docker, authentication, or other Stretch work.
 
-Rules are living guidance, not frozen law. Update a `.mdc` file when:
+## How the Rules Support Traceability
 
-- A repeated mistake appears (add or tighten a rule)
-- A rule conflicts with an updated spec or API doc (align the rule and docs together)
-- A convention proves too heavy for this small project (simplify)
+The rules ensure that Cursor:
 
-Prefer small, focused edits to one rule at a time. After changing a rule, note the reason briefly in a commit or task summary. If a rule and `api-contract.md` diverge (e.g. response envelope shape), update both so they match.
+- Reads persistent project context before implementation
+- Follows the agreed specification and Core boundaries
+- Uses consistent backend, frontend, and testing conventions
+- Reports files changed, requirement links, and verification results
+- Supports traceability from requirements and prompts through code and tests
 
-## Restrictions (from Core scope)
+## Rule Refinements Made During the Project
 
-Regardless of rules, do not implement: authentication, ticket/comment deletion, combined search-and-filter, pagination, or other items listed as out of scope in `spec.md` and `requirements-analysis.md`.
+The rules were refined to:
 
-## Rule Refinements
+- Standardize API success and error envelopes
+- Clarify HTTP 400 behaviour for combined `search` and `status`
+- Add Tailwind CSS, `lucide-react`, and `sonner` frontend guidance
+- Standardize inline validation and error-message UI patterns
+- Add Core integration-testing guidance using Jest, Supertest, and an isolated test database
 
-Before implementation, the active Cursor rules were reviewed against the API specification.
+## Core Restrictions
 
-The review found inconsistent API response formats across the backend and code-quality rules.
-The rules were aligned to use:
-
-- `success` and `data` for successful responses
-- `success` and `error.message` for failed responses
-
-The frontend rule was also updated to read successful responses from `data` and failures from
-`error.message`. It now standardizes Tailwind CSS styling, Tailwind’s default font stack, `lucide-react` icons, and `sonner` toast notifications, while requiring responsive and accessible UI states and discouraging extra UI libraries or unnecessary abstractions.
-
-The API behaviour for combined `search` and `status` parameters was clarified as HTTP 400.
+Do not implement authentication, user management, ticket deletion, comment editing or deletion, combined search-and-filter, pagination, Docker, CI, or other Stretch features unless the project scope is explicitly changed.

@@ -4,7 +4,7 @@ Captures feedback from code reviews, action items, and decisions made during the
 
 ## Overview
 
-This document records reviews of completed implementation phases. It is updated progressively as backend, frontend, testing, and final integration work are completed.
+This document records the completed backend, frontend, testing, and final integration reviews.
 
 ## Review Sessions
 
@@ -74,7 +74,7 @@ This document records reviews of completed implementation phases. It is updated 
 - Confirmed null and non-object request bodies are rejected as validation errors
 - Confirmed malformed `createdBy` and `assignedTo` ObjectIds are rejected before database lookup
 - Confirmed existing API routes, response shapes, error messages, and status-transition logic remain unchanged
-- Postman regression checks are pending
+- Automated validation integration tests cover the implemented validation behaviour
 
 ## Feedback Summary
 
@@ -93,8 +93,9 @@ This document records reviews of completed implementation phases. It is updated 
 
 - Business rules such as valid assignees and ticket status transitions must remain in the service layer.
 - Confirm centralized error handling covers all feature APIs during the final backend review.
-- Automated integration tests are still required for search, filtering, and status-transition behaviour.
-- Integration tests are still required for valid and invalid status transitions.
+- Mandatory status-transition integration tests are implemented and passing.
+- Ticket and comment validation integration tests are implemented and passing.
+- Frontend Core workflows and user-facing error states were reviewed after implementation.
 
 ## Action Items
 
@@ -106,8 +107,8 @@ This document records reviews of completed implementation phases. It is updated 
 - [x] Review comments API.
 - [x] Review search, filtering, and status-transition behaviour.
 - [x] Review ticket and comment input validation structure.
-- [ ] Review frontend behaviour after UI implementation.
-- [ ] Review integration tests and final acceptance criteria.
+- [x] Review frontend behaviour after UI implementation.
+- [x] Review integration tests and final acceptance criteria.
 
 ## Resolved Items
 
@@ -116,3 +117,39 @@ This document records reviews of completed implementation phases. It is updated 
 - Resolved MongoDB Atlas authentication failure caused by an outdated local password.
 - Aligned the project with local MongoDB Community Edition setup requirements.
 - Resolved repeated Mongoose deprecation warnings in the seed script.
+
+
+### Review 6 — Frontend Core workflows
+
+**Date:** 2026-07-17
+
+- Reviewed acting-user selection, ticket list/detail, ticket creation and update, status changes, comments, search, status filtering, and error states.
+- Confirmed the create and update forms open from explicit actions instead of remaining permanently visible.
+- Confirmed acting-user selection is required only for ticket and comment creation.
+- Confirmed concise success feedback and actionable inline error states are used consistently.
+
+### Review 7 — Automated tests and final alignment
+
+**Date:** 2026-07-18
+
+- Reviewed both Jest/Supertest integration suites.
+- Confirmed 44/44 tests pass against the isolated local test database.
+- Confirmed valid and invalid status transitions, ticket validation, comment validation, and persistence/non-persistence checks are covered.
+- Cross-checked the final root documentation against the completed Core implementation and assignment requirements.
+
+## Commit Evidence
+
+The Git history shows that the project was implemented incrementally rather than as one generated change:
+
+| Phase | Representative commits |
+|---|---|
+| Project context and design | `docs: add project context, requirements, and acceptance criteria`; `docs: add system, database, API design and workflow artifacts`; `chore(cursor): added persistent workflow and cursor coding rules` |
+| AI review and specification correction | `docs: validated AI suggestions and updated task plan`; `docs: align API specification with validated Cursor rules`; `docs: resolved API specification and Cursor rule conflicts` |
+| Backend foundation and database | `feat(server): add MongoDB connection and align backend architecture`; `feat(server): add User, Ticket, and Comment models`; `feat(server): seed users, tickets, and comments` |
+| Backend features | `feat(server): add seeded users API`; `feat(server): add ticket CRUD APIs`; `feat(server): add ticket comments API`; `feat:(server): add ticket search filtering, status filtering, enforce ticket status transitions` |
+| Validation and testing | `feat(server): add ticket and comment validation with document updates`; `test(server): add ticket status transition integration tests`; `test(server): add integration(ticket and comment) tests and update test documentation` |
+| Frontend delivery | `feat(client): add acting-user selector, UI guidelines(cursor rule and docs), and frontend dependencies(sonner and lucide-react)` through `feat(client): add ticket search and status filter` |
+| Frontend refinement | `feat(client): open create-ticket form from modal and refine form UI`; `feat(client): open ticket update form from edit action and other validation improvements`; `feat(client): meaningful ui error messages`; `style(client): improve error message UI` |
+| Prompt-history evidence | `Added Cursor hooks to auto-capture prompt history`; `docs: backfill initial prompt history setup`; `docs: align curated AI prompts with final project history` |
+
+This sequence supports the review conclusion that planning, implementation, validation, UI refinement, testing, and documentation were completed as separate traceable steps.

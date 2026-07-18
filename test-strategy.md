@@ -105,7 +105,7 @@ No separate unit-test suite is planned for Core scope. The status-transition and
 
 ### Component Tests
 
-No automated React component-test suite is planned for Core scope. Frontend behaviour will be checked manually during UI implementation, including successful workflows, loading/empty states, and meaningful handling of backend validation or invalid-transition errors.
+No automated React component-test suite is planned for Core scope. Frontend behaviour is checked manually for the completed Core workflows, including successful workflows, loading/empty states, and meaningful handling of backend validation or invalid-transition errors.
 
 ### Edge Case Tests
 
@@ -124,18 +124,18 @@ Core edge and failure coverage is included within the API integration suite for 
 | Tool | Purpose |
 |------|---------|
 | **Postman** | Manual API exploration and regression |
-| **Jest** | Test runner (to be added to `server/` devDependencies) |
+| **Jest** | Test runner configured in `server/` devDependencies |
 | **supertest** | HTTP assertions against Express `app` without binding a port |
 | **MongoDB Community Edition** | Persistence for manual (seed DB) and integration (test DB) runs |
 | **Mongoose** | Same ODM as production; tests use real DB, not mocks |
 
-**Planned npm script** (to be added in `server/package.json`):
+**npm script:**
 
 ```bash
 npm test
 ```
 
-Runs Jest from the repo root or `server/` with `NODE_ENV=test` and a test `MONGODB_URI`. Exact wiring is defined when tests are implemented.
+Runs Jest/Supertest integration tests against the exported Express app and the isolated `ticket_management_system_test` database.
 
 ## Coverage Targets
 
@@ -273,10 +273,10 @@ A minimal pipeline could run on push: install dependencies, start MongoDB servic
 
 ## Definition of done (testing)
 
-Core backend testing is complete when:
+Core backend testing is complete because:
 
-- Manual validation regression for ticket/comment validation is recorded in `test-results.md`
 - Integration tests pass for all five valid transitions (AC-45)
 - Integration tests pass for representative invalid transitions (AC-46)
 - Focused integration tests cover the ticket and comment validation scenarios selected from [Coverage Targets](#coverage-targets)
-- `npm test` is documented in the README test section (when implemented)
+- `npm test` is documented in the README test section
+- The final automated run reports 44/44 passing tests

@@ -236,12 +236,96 @@ Ticket and comment field validation was mixed into the service layer, and null o
 - Kept existing API routes, response shapes, error messages, and status-transition logic unchanged.
 
 **Validation:**  
-Code review completed. Postman regression checks are pending.
+Code review and automated integration validation completed.
 
 **Related commit:**  
-_To be added after commit._
+`feat(server): add ticket and comment validation with document updates`
 
-**Status:** Implemented; manual validation pending
+**Status:** Completed
+
+### RF-12 — Mandatory integration tests added
+
+**Review finding:**  
+Manual Postman checks alone did not satisfy the assignment's mandatory automated state-machine test requirement.
+
+**Fix applied:**  
+
+- Added Jest and Supertest integration-test setup using the exported Express application.
+- Added a dedicated local test database.
+- Added valid and invalid ticket status-transition tests.
+- Added focused ticket-create, ticket-update, and comment-create validation tests.
+- Added persistence and non-persistence assertions.
+
+**Validation:**  
+Ran `cd server && npm test`; both suites passed with 44/44 tests.
+
+**Related commits:**
+
+- `docs(testing): manually refine Cursor-generated strategy for Core test scope`
+- `docs(cursor): add testing rule and update rule documentation`
+- `docs: align test setup documentation and configuration`
+- `test(server): add ticket status transition integration tests`
+- `test(server): add integration(ticket and comment) tests and update test documentation`
+
+**Status:** Completed
+
+---
+
+### RF-13 — Frontend workflows completed and refined
+
+**Review finding:**  
+The Core required a complete frontend, and the first generated forms needed UI refinement so the ticket list remained the primary view and error feedback was clearer.
+
+**Fix applied:**  
+
+- Added acting-user selection, ticket list/detail, create, update, status change, comments, search, and status filtering.
+- Opened create and update forms from explicit user actions rather than showing them permanently.
+- Added meaningful loading, validation, success, empty, backend, and network states.
+- Standardized brief action feedback with `sonner` and icons with `lucide-react`.
+
+**Validation:**  
+Manually verified the Core frontend workflows against the backend API and assignment acceptance criteria.
+
+**Related commits:**
+
+- `feat(client): add acting-user selector, UI guidelines(cursor rule and docs), and frontend dependencies(sonner and lucide-react)`
+- `feat(client): add ticket list and detail views`
+- `feat(client): add create ticket form`
+- `feat(client): open create-ticket form from modal and refine form UI`
+- `feat(client): open ticket update form from edit action and other validation improvements`
+- `feat(client): add ticket status change control`
+- `feat(client): add ticket comments`
+- `feat(client): add ticket search and status filter`
+- `feat(client): meaningful ui error messages`
+- `style(client): improve error message UI`
+
+**Status:** Completed
+
+---
+
+### RF-14 — Prompt history completed and curated
+
+**Review finding:**  
+The assignment requires enough prompt history to evaluate context setting, iteration, correction, testing, debugging, review, and documentation use.
+
+**Fix applied:**  
+
+- Added automatic prompt-history hooks.
+- Manually backfilled the initial hook-setup interaction that occurred before the hooks existed.
+- Aligned the curated `ai-prompts/` evidence with the final project history.
+
+**Validation:**  
+Reviewed the prompt-history and curated AI-prompt documents for traceability across the lifecycle.
+
+**Related commits:**
+
+- `Added Cursor hooks to auto-capture prompt history`
+- `docs: backfill initial prompt history setup`
+- `docs: align curated AI prompts with final project history`
+
+**Status:** Completed
+
+---
 
 ## Suggestions Reviewed but Not Applied
 
@@ -283,19 +367,15 @@ _To be added after commit._
 
 **Reason:** Runtime Mongoose models belong to the backend application under `server/src/models/`. The root `database/` directory is reserved for setup, initialization, schema/migration evidence, seed data, and setup notes.
 
-## Open Review Fixes
+## Final Review Fixes
 
-The following fixes are still pending and should be added after the related implementation or review is completed.
-
-- [ ] Add centralized error handling for feature APIs, if not already implemented.
-- [ ] Add mandatory integration tests for valid and invalid ticket status transitions.
-- [ ] Complete Postman regression checks for the new ticket/comment validation layer.
-- [ ] Add automated tests for backend validation and important failure cases.
-- [ ] Review frontend ticket creation, update, comment, search, filter, and status-transition behaviour.
-- [ ] Confirm meaningful frontend error states for rejected backend operations.
-- [ ] Run the final acceptance-criteria review.
-- [ ] Record final test results in `test-results.md`.
-- [ ] Update this file with any fixes made during frontend, automated-testing, and final-integration review.
+- [x] Confirmed centralized feature error handling and safe client-facing messages.
+- [x] Added mandatory integration tests for valid and invalid ticket status transitions.
+- [x] Added automated ticket and comment validation coverage.
+- [x] Reviewed frontend ticket creation, update, comments, search, filtering, and status transitions.
+- [x] Confirmed meaningful frontend validation, business-rule, loading, empty, and network error states.
+- [x] Completed the final acceptance-criteria review.
+- [x] Recorded the final 44/44 automated test result in `test-results.md`.
 
 ## Summary
 
@@ -309,4 +389,4 @@ The completed review fixes have mainly improved:
 - documentation accuracy, and
 - traceability between review findings and commits.
 
-The most important remaining review fix is to add and pass the mandatory state-machine integration tests.
+All mandatory Core review fixes are complete. Optional frontend automation and CI remain outside Core scope.

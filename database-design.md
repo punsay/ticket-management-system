@@ -141,7 +141,7 @@ The seed script is idempotent and can be rerun without creating duplicate seed r
 
 | Layer | Tool | Responsibility |
 |-------|------|----------------|
-| **API boundary** | Zod | Validate request bodies, query parameters, and route parameters |
+| **API boundary** | Dedicated validation modules | Validate request-body shape, required fields, enum values, and ObjectId formats |
 | **Persistence** | Mongoose schemas | Types, enums, and required fields as a safeguard on save |
 | **Business rules** | Services | Assignee rules, `createdBy` checks, status transitions |
 

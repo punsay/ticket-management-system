@@ -36,9 +36,13 @@ The review was intentionally limited to issues that blocked Core implementation.
 
 ## Review 2 — Backend foundation and APIs
 
-### Review focus
+### Prompt summary
 
-Express layering, MongoDB configuration, Mongoose models, repeatable seed data, validation, ticket APIs, comments, search/filter, and status transitions.
+Review the implemented Express and MongoDB backend for architecture, database configuration, models, seed data, validation, ticket APIs, comments, search/filter behaviour, and status-transition enforcement.
+
+### AI response summary
+
+Cursor confirmed that the layered backend was suitable, identified an incorrect route import and a deprecated Mongoose option, and recommended focused validation improvements without redesigning the APIs.
 
 ### What I accepted
 
@@ -51,7 +55,7 @@ Express layering, MongoDB configuration, Mongoose models, repeatable seed data, 
 
 ### What I changed
 
-- Corrected database configuration and route import.
+- Corrected database configuration and the route import.
 - Replaced a deprecated Mongoose option.
 - Added focused validation modules.
 - Verified existing transition logic rather than duplicating it.
@@ -68,9 +72,13 @@ They were outside the mandatory project scope.
 
 ## Review 3 — Automated test implementation
 
-### Review focus
+### Prompt summary
 
-Mandatory state-machine rules, validation coverage, test database isolation, persistence checks, and production-code stability.
+Review integration-test readiness and implement only the mandatory status-transition and ticket/comment validation coverage using an isolated test database.
+
+### AI response summary
+
+Cursor confirmed the backend could be tested without production changes, added the minimal Jest setup, and identified a shared-database race when the two suites ran in parallel.
 
 ### What I accepted
 
@@ -78,12 +86,12 @@ Mandatory state-machine rules, validation coverage, test database isolation, per
 - Dedicated local test database
 - Deterministic fixtures and cleanup
 - 14 transition tests and 30 validation tests
-- Persistence/non-persistence checks
+- Persistence and non-persistence checks
 - No production changes required
 
 ### What I changed
 
-Jest execution was made serial after a shared-database race was found.
+Jest execution was made serial after the shared-database race was found.
 
 ### What I rejected
 
@@ -97,9 +105,13 @@ The test implementation needed to be reliable while staying within Core.
 
 ## Review 4 — Frontend Core and UI feedback
 
-### Review focus
+### Prompt summary
 
-Acting-user rules, ticket flows, API-service separation, valid status controls, comments, independent filters, loading/empty/error states, and accessible form presentation.
+Review the completed frontend flows and refine usability and error feedback without changing the confirmed Core behaviour or backend APIs.
+
+### AI response summary
+
+Cursor kept the ticket list and detail views primary, hid forms behind explicit actions, centralised inline errors, retained success-only toasts, and prevented unchanged updates from producing false success feedback.
 
 ### What I accepted
 

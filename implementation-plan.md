@@ -71,22 +71,22 @@ Detailed implementation tasks and progress are maintained in:
 ### 5. Frontend implementation
 
 - [x] Add the acting-user selector.
-- [ ] Add ticket list and ticket detail views.
-- [ ] Add the create-ticket form.
-- [ ] Add ticket field updates and reassignment.
-- [ ] Add the ticket status-change control.
-- [ ] Add comment creation and display.
-- [ ] Add keyword-search and status-filter controls.
-- [ ] Add meaningful loading, empty, and error states.
+- [x] Add ticket list and ticket detail views.
+- [x] Add the create-ticket form.
+- [x] Add ticket field updates and reassignment.
+- [x] Add the ticket status-change control.
+- [x] Add comment creation and display.
+- [x] Add keyword-search and status-filter controls.
+- [x] Add meaningful loading, empty, and error states.
 
 ### 6. Testing
 
-- [ ] Finalize the testing strategy.
-- [ ] Add integration tests for all valid status transitions.
-- [ ] Add integration tests for representative invalid transitions.
-- [ ] Run the complete integration-test suite.
-- [ ] Record test results.
-- [ ] Verify that data persists after application and MongoDB restarts.
+- [x] Finalize the testing strategy.
+- [x] Add integration tests for all valid status transitions.
+- [x] Add integration tests for representative invalid transitions.
+- [x] Run the complete integration-test suite (44/44 passing).
+- [x] Record test results.
+- [x] Verify that data persists after application and MongoDB restarts.
 
 ### 7. Review and final documentation
 
@@ -94,13 +94,13 @@ Detailed implementation tasks and progress are maintained in:
 - [x] Record code-review observations progressively.
 - [x] Update the PR description as features are completed.
 - [x] Update the reflection and tool-workflow documents progressively.
-- [ ] Complete frontend review.
-- [ ] Complete integration-test review.
-- [ ] Finalize README run and test instructions.
-- [ ] Review prompt history for planning, implementation, testing, debugging, review, and documentation evidence.
-- [ ] Complete final review against the acceptance criteria.
-- [ ] Verify that no secrets are committed.
-- [ ] Prepare the repository for submission.
+- [x] Complete frontend review.
+- [x] Complete integration-test review.
+- [x] Finalize README run and test instructions.
+- [x] Review prompt history for planning, implementation, testing, debugging, review, and documentation evidence.
+- [x] Complete final review against the acceptance criteria.
+- [x] Verify that no secrets are committed.
+- [x] Prepare the repository for submission.
 
 ## Milestones
 
@@ -124,21 +124,21 @@ Completed seeded users, ticket CRUD, comments, keyword search, status filtering,
 
 ### Milestone 4 — Frontend Core workflows
 
-**Status:** In progress
+**Status:** Complete
 
-Build the required ticket-management UI, acting-user flow, comments, search, filtering, status changes, and meaningful error states.
+Completed the ticket-management UI, acting-user flow, comments, search, filtering, status changes, and meaningful error states.
 
 ### Milestone 5 — Mandatory testing
 
-**Status:** Pending
+**Status:** Complete
 
-Add integration tests proving that valid ticket status transitions succeed and invalid transitions are rejected.
+Implemented Jest/Supertest integration tests for valid and invalid ticket status transitions and focused ticket/comment validation. The final test run passed 44/44 tests.
 
 ### Milestone 6 — Final review and submission
 
-**Status:** Pending
+**Status:** Complete
 
-Complete final documentation, prompt-history review, acceptance-criteria verification, test results, and repository readiness checks.
+Completed final documentation, prompt-history review, acceptance-criteria verification, test results, and repository readiness checks.
 
 ## AI Usage Plan
 
@@ -192,5 +192,5 @@ AI-generated code or documentation may include incorrect assumptions, deprecated
 - Enforce input validation and business rules in the backend.
 - Keep local database setup in `README.md` and `database/setup-notes.md`.
 - Keep the seed script repeatable and verify seeded data in MongoDB Compass.
-- Add the mandatory valid and invalid status-transition integration tests before final submission.
+- Keep the integration suites passing when future backend changes are introduced.
 - Review AI output, run the affected workflow, and document corrections and rejected suggestions.

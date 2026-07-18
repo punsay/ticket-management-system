@@ -1,12 +1,12 @@
-# Project Change Summary
+# PR Description
 
-Working draft summarizing the project changes for final submission.
+Final summary of the completed mandatory Core implementation.
 
 ## Overview
 
 This document summarizes the work completed for the MERN Support Ticket Management System. Planning, design, Cursor workflow rules, project setup, local MongoDB Community Edition integration, data models, seed data, seeded-users API, ticket CRUD APIs, comments, search and status filtering, ticket status-transition enforcement, and dedicated ticket/comment input validation are complete.
 
-Frontend feature screens and automated integration tests are still in progress.
+The frontend Core workflows and automated integration tests are complete. The final automated run passed 44/44 tests.
 
 ## Summary
 
@@ -39,11 +39,15 @@ Completed so far:
 - Reviewed and resolved contradictions between API documentation and Cursor rules
 - Recorded prompts and AI-assisted decisions for traceability
 
-### Frontend foundation
+### Frontend
 
-- Initialized a React application with Vite
-- Added Tailwind CSS setup
-- Added a basic page to verify the client runs
+- Added an acting-user selector with no default selection
+- Added ticket list and detail views
+- Added ticket creation and update forms opened from explicit UI actions
+- Added reassignment and controlled status-change workflows
+- Added comments in oldest-first order
+- Added keyword search and status filtering
+- Added responsive loading, empty, validation, success, and error states
 
 ### Backend foundation
 
@@ -82,14 +86,70 @@ Completed checks:
 - [x] Valid and invalid status transitions manually verified in Postman
 - [x] New validation-layer regression cases verified in Postman
 
-Pending checks:
+Final checks:
 
-- [ ] Backend validation integration tests
-- [ ] Automated comment API integration tests
-- [ ] Valid status-transition integration tests
-- [ ] Invalid status-transition integration tests
-- [ ] Frontend workflow verification
-- [ ] Final review against AC-01 through AC-48
+- [x] Backend validation integration tests
+- [x] Automated comment validation integration tests
+- [x] Valid status-transition integration tests
+- [x] Invalid status-transition integration tests
+- [x] Frontend Core workflow verification
+- [x] Final review against the acceptance criteria
+- [x] `cd server && npm test` - 44/44 passing
+
+## Implementation Timeline and Commit Evidence
+
+### Planning and workflow foundation
+
+- `docs: initialized project documentation structure`
+- `Added Cursor hooks to auto-capture prompt history`
+- `docs: add project context, requirements, and acceptance criteria`
+- `docs: validated AI suggestions and updated task plan`
+- `docs: add system, database, API design and workflow artifacts`
+- `chore(cursor): added persistent workflow and cursor coding rules`
+- `docs: align API specification with validated Cursor rules`
+- `docs: resolved API specification and Cursor rule conflicts`
+
+### Application foundation and backend
+
+- `feat: add initial React client and Express server`
+- `feat(server): add MongoDB connection and align backend architecture`
+- `feat(server): add User, Ticket, and Comment models`
+- `feat(server): seed users, tickets, and comments`
+- `feat(server): add seeded users API`
+- `feat(server): add ticket CRUD APIs`
+- `feat(server): add ticket comments API`
+- `feat:(server): add ticket search filtering, status filtering, enforce ticket status transitions`
+- `feat(server): add ticket and comment validation with document updates`
+- `fix(seed): replace deprecated mongoose option and document local database setup`
+
+### Testing
+
+- `docs(testing): manually refine Cursor-generated strategy for Core test scope`
+- `docs(cursor): add testing rule and update rule documentation`
+- `docs: align test setup documentation and configuration`
+- `test(server): add ticket status transition integration tests`
+- `test(server): add integration(ticket and comment) tests and update test documentation`
+
+### Frontend
+
+- `feat(client): add acting-user selector, UI guidelines(cursor rule and docs), and frontend dependencies(sonner and lucide-react)`
+- `feat(client): add ticket list and detail views`
+- `feat(client): add create ticket form`
+- `feat(client): open create-ticket form from modal and refine form UI`
+- `feat(client): open ticket update form`
+- `feat(client): open ticket update form from edit action and other validation improvements`
+- `feat(client): add ticket status change control`
+- `feat(client): add ticket comments`
+- `feat(client): add ticket search and status filter`
+- `feat(client): meaningful ui error messages`
+- `style(client): improve error message UI`
+
+### Final AI-history alignment
+
+- `docs: backfill initial prompt history setup`
+- `docs: align curated AI prompts with final project history`
+
+The history contains two commits with the same message, `feat: add initial React client and Express server`. This is retained as part of the actual repository history rather than rewritten in the documentation.
 
 ## Related Issues and Fixes
 

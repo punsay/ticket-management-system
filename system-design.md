@@ -4,7 +4,7 @@ High-level architecture for the Core Support Ticket Management System. Derived f
 
 ## Overview
 
-A small MERN application with a React frontend and an Express API backed by **local MongoDB Community Edition**. The client calls REST endpoints only — it never connects to MongoDB directly. The Express backend connects via the `MONGODB_URI` environment variable, validates incoming API data with **Zod**, enforces ticket status transitions, and persists through **Mongoose** (schema-level validation as a safeguard).
+A small MERN application with a React frontend and an Express API backed by **local MongoDB Community Edition**. The client calls REST endpoints only — it never connects to MongoDB directly. The Express backend connects via the `MONGODB_URI` environment variable, validates incoming API data with dedicated validation modules, enforces ticket status transitions, and persists through **Mongoose** (schema-level validation as a safeguard).
 
 There is no authentication. Seeded users are selected in the UI and sent as `createdBy` on ticket and comment creation only.
 
@@ -116,7 +116,7 @@ Built with React and Tailwind CSS. Uses `fetch` (or a thin wrapper) to call the 
 - **No authentication in Core** — Trusted internal environment; `createdBy` validated as an existing seeded user only.
 - **No secrets in repo** — `MONGODB_URI` and other config via environment variables; never commit real credentials.
 - **Frontend isolation** — React calls the REST API only; no direct MongoDB or Mongoose access.
-- **Backend is authoritative** — All business rules enforced server-side; Zod validates API input; Mongoose schemas add persistence-level checks.
+- **Backend is authoritative** — All business rules are enforced server-side; dedicated validation modules validate API input and Mongoose schemas add persistence-level safeguards.
 - **Safe errors** — Error handler returns generic messages; no stack traces to client (NFR-03).
 - **CORS** — Restrict to local dev origin in development.
 
@@ -131,7 +131,7 @@ Local development only for Core:
 
 Production deployment is outside Core scope. Data persists across normal application and local MongoDB restarts.
 
-## Project Structure (planned)
+## Project Structure
 
 ```
 ticket-management-system/
@@ -157,9 +157,11 @@ server/src/
 ├── models/
 ├── routes/
 ├── services/
+├── validation/
 ├── utils/
 ├── app.js
 └── server.js
+```
 
 ## References
 

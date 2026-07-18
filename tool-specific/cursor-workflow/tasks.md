@@ -1,80 +1,90 @@
 # Tasks
 
-Core-scope task tracker for the Support Ticket Management System. See `tool-specific/cursor-workflow/spec.md` and `tool-specific/cursor-workflow/acceptance-criteria.md` for behaviour details.
+Core-scope task tracker for the Support Ticket Management System. Behaviour details are defined in `spec.md` and `acceptance-criteria.md`.
 
-## Completed
+## Workflow Foundation
 
-- [x] Prompt-history automation (`prompt-history/`, `.cursor/hooks.json`)
-- [x] Documentation structure (``, `tool-specific/cursor-workflow/`)
-- [x] Project context (`tool-specific/cursor-workflow/project-context.md`)
-- [x] Requirement analysis (`requirements-analysis.md`)
-- [x] Acceptance criteria (`tool-specific/cursor-workflow/acceptance-criteria.md`)
-- [x] Core specification (`tool-specific/cursor-workflow/spec.md`)
+- [x] Prompt-history automation and append-only logging
+- [x] Manual backfill of the initial prompt-history setup
+- [x] Required repository and lifecycle-document structure
+- [x] Project context
+- [x] Requirement analysis
+- [x] Acceptance criteria
+- [x] Core specification
+- [x] Cursor rules and instructions
+- [x] Curated `ai-prompts/` records aligned with project history
 
-## Design documents
+## Design and Planning
 
-- [x] System design (`system-design.md`)
-- [x] Database design (`database-design.md`)
-- [x] API specification (`api-contract.md`)
-- [x] Review planning, design documents, and Cursor rules for implementation-blocking conflicts
-  - Resolved API response-envelope conflict
-  - Defined HTTP 400 behaviour when `search` and `status` are supplied together
+- [x] Implementation plan (`implementation-plan.md`)
+- [x] Design notes (`design-notes.md`)
+- [x] Data model (`data-model.md`)
+- [x] API contract (`api-contract.md`)
+- [x] UI flow (`ui-flow.md`)
+- [x] Review design documents and Cursor rules for conflicts
+  - [x] Align API response envelopes
+  - [x] Define HTTP 400 when `search` and `status` are supplied together
 
-## Cursor rules
+## Project Setup
 
-- [x] Cursor rules and instructions (`tool-specific/cursor-workflow/cursor-rules-or-instructions.md`)
-
-## Project setup
-
-- [x] Scaffold client and server structure
-- [x] Configure environment variables and dev scripts (NFR-08, AC-47)
-- [x] Add initial README project overview and setup placeholders
-- [x] Configure local MongoDB Community Edition for development
-- [x] Add local database setup and seed instructions
-- [x] Verify seeded data in MongoDB Compass
+- [x] Scaffold React client and Express server
+- [x] Configure environment variables and development scripts
+- [x] Configure local MongoDB Community Edition
+- [x] Add separate local test database configuration
+- [x] Add seed data and setup instructions
+- [x] Verify seeded data locally
 
 ## Backend
 
-- [x] Express server with safe error handling (VR-01, NFR-03)
-- [x] MongoDB connection (NFR-01, FR-13, AC-41)
-- [x] User, Ticket, and Comment models (FR-10, BR-02, BR-03)
-- [x] Seed three users and sample tickets (NFR-06, AC-42, AC-43)
-- [x] Ticket create, list, detail, and update (FR-01–FR-04, AC-05–AC-17)
-- [x] Backend validation for ticket and comment inputs, excluding status transitions (VR-01–VR-07, VR-09–VR-11, AC-09–AC-11, AC-16, AC-17, AC-37, AC-38)
-- [x] Comments — add and return oldest first (FR-06, FR-07, AC-18–AC-21)
-- [x] Keyword search on title and description (FR-08, AC-22–AC-24)
-- [x] Status filter on ticket list (FR-09, AC-25–AC-27)
-- [x] Status transition rules enforced on update (FR-05, BR-04, BR-05, VR-08, AC-28–AC-35)
+- [x] Express server and centralized safe error handling
+- [x] MongoDB connection
+- [x] User, Ticket, and Comment models
+- [x] Seed three users, sample tickets, and comments
+- [x] Seeded users API
+- [x] Ticket create, list, detail, and update APIs
+- [x] Ticket comments API
+- [x] Keyword search on title and description
+- [x] Status filtering
+- [x] Enforced valid status transitions and rejection of invalid transitions
+- [x] Ticket and comment request validation
 
 ## Testing
 
-- [x] Testing strategy (`test-strategy.md`)
-- [x] Integration tests for valid status transitions (NFR-04, AC-45)
-- [x] Integration tests for invalid status transitions (NFR-05, AC-46)
-- [x] Integration tests for ticket and comment validation (AC-09–AC-11, AC-16–AC-17, AC-20, AC-36–AC-38, VR-01–VR-07, VR-09–VR-10)
-- [x] Testing report (`test-results.md`) — status-transition and validation suites recorded
+- [x] Core test strategy
+- [x] Jest, Supertest, exported Express app, fixtures, and cleanup
+- [x] Dedicated test database protection
+- [x] Valid status-transition integration tests
+- [x] Invalid status-transition integration tests
+- [x] Ticket and comment validation integration tests
+- [x] Test results documented
 
 ## Frontend
 
-- [x] Acting-user dropdown — no default; required for create/comment only (FR-11, FR-12, AC-01–AC-04)
-- [x] Ticket list and detail views (FR-02, FR-03, AC-12, AC-13)
-- [x] Create ticket form — optional assignee (Bob or Carol) (FR-01, AC-05–AC-08)
-- [x] Update ticket form — no acting user required (FR-04, COD-09, AC-14–AC-17)
-- [x] Status change control with error display (FR-05, AC-28–AC-35)
-- [x] Comment form and display — oldest first, no edit/delete (FR-06, FR-07, BR-11, AC-18–AC-21)
-- [x] Keyword search and status filter controls — work separately (FR-08, FR-09, AC-22–AC-27)
-- [x] Meaningful UI error messages (NFR-02, NFR-03, AC-39, AC-40)
+- [x] Acting-user selector with no default selection
+- [x] Ticket list and detail views
+- [x] Create-ticket form
+- [x] Create form opened from a modal instead of displayed upfront
+- [x] Ticket update form opened from an edit action
+- [x] Status-change control
+- [x] Comment form and oldest-first comment display
+- [x] Keyword search and status filter controls
+- [x] Meaningful user-readable error messages
+- [x] Error-message UI refinement
+- [x] Tailwind CSS, `lucide-react`, and `sonner` conventions documented
 
-## Final documentation
+## Final Documentation and Verification
 
-- [ ] Debugging log (`debugging-notes.md`)
-- [ ] Code review (`code-review-notes.md`)
-- [ ] Reflection (`reflection.md`)
-- [ ] PR description (`pr-description.md`)
-- [ ] Tool workflow (`tool-workflow.md`)
-- [ ] Review prompt history and confirm key prompts, refinements, and corrections are captured (NFR-09)
-- [ ] Finalize and verify README setup, seed, run, and test instructions (NFR-07, AC-44)
-- [ ] Final review against AC-01–AC-48
-- [ ] Verify data persists after application and MongoDB restarts (AC-41)
-- [ ] Verify no secrets committed and no delete UI (AC-47, AC-48)
-- [ ] Repository ready for submission
+- [x] Finalize `debugging-notes.md`
+- [x] Finalize `code-review-notes.md`
+- [x] Finalize `review-fixes.md`
+- [x] Finalize `reflection.md`
+- [x] Finalize `pr-description.md`
+- [x] Finalize `tool-workflow.md`
+- [x] Finalize `final-ai-usage-summary.md`
+- [x] Verify README setup, seed, run, and test instructions
+- [x] Review prompt history for key iterations, corrections, and validation evidence
+- [x] Verify data persistence after application and MongoDB restarts
+- [x] Verify no secrets are committed
+- [x] Verify no ticket or comment delete UI exists
+- [x] Complete final review against AC-01 through AC-48
+- [x] Mark repository ready for submission

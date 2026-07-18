@@ -4,35 +4,31 @@ Persistent background for AI-assisted development of the Support Ticket Manageme
 
 ## Project Overview
 
-The Support Ticket Management System is an internal web application that helps teams record, track, and resolve support requests. Users can create tickets for issues or requests, monitor their progress through defined statuses, add comments for collaboration, and find tickets using search and filters.
+The Support Ticket Management System is an internal web application that helps teams record, track, and resolve support requests. Users can create tickets, monitor progress through defined statuses, add comments, and find tickets using search or status filtering.
 
-The **core scope** for this project is a functional ticket lifecycle tool for internal users: create tickets, view and update them, manage status transitions, collaborate via comments, and search or filter the ticket list.
+The **Core scope** is a functional internal ticket lifecycle tool: create, view, update, comment on, search, filter, and progress tickets through enforced status transitions.
 
-**Potential future enhancements** may include authentication, role-based access, notifications, file attachments, reporting, pagination, and API documentation. These are outside the current Core scope.
+Potential future enhancements such as authentication, role-based access, notifications, attachments, reporting, pagination, and API documentation are outside Core scope.
 
 ## Business Objective
 
-Provide a single, reliable place for internal teams to log support issues, track resolution progress, and maintain a clear history of communication — reducing lost requests, duplicate effort, and unclear ownership.
+Provide one reliable place for internal teams to log support issues, track resolution progress, and maintain clear communication history.
 
 ## Target Users
 
 Internal staff who need to:
 
-- **Submit** support requests or report issues on behalf of themselves or their team
-- **Work on** tickets by updating status, priority, assignee, and adding comments
-- **Find** existing tickets quickly to avoid duplication and check progress
+- Submit support requests
+- Work on tickets by updating fields, status, assignee, and comments
+- Find existing tickets and review progress
 
-All users are internal. For Core, users are pre-seeded in the database — there is no login, registration, or user-management UI.
+Users are pre-seeded for Core. There is no login, registration, or user-management UI.
 
 ## Core Entities
 
-Core scope includes three entities only. Status is a field on Ticket, not a separate entity.
-
 ### User
 
-Seeded internal user. No user-management interface or authentication is required for Core.
-
-Required fields:
+Seeded internal user with:
 
 - id
 - name
@@ -41,35 +37,31 @@ Required fields:
 
 ### Ticket
 
-Represents a support request.
-
-Required fields:
+Support request with:
 
 - id
 - title
 - description
 - priority — `Low`, `Medium`, or `High`
 - status — `Open`, `In Progress`, `Resolved`, `Closed`, or `Cancelled`
-- assignedTo — optional reference to a seeded User
-- createdBy — reference to a seeded User
+- assignedTo — optional seeded User reference
+- createdBy — seeded User reference
 - createdAt
 - updatedAt
 
 ### Comment
 
-Represents a message added to a ticket.
-
-Required fields:
+Ticket message with:
 
 - id
-- ticketId — reference to a Ticket
+- ticketId — Ticket reference
 - message
-- createdBy — reference to a seeded User
+- createdBy — seeded User reference
 - createdAt
 
 ## Ticket Lifecycle
 
-Status is a controlled field on the Ticket entity. The backend must enforce these valid transitions:
+The backend enforces these transitions:
 
 - Open → In Progress
 - Open → Cancelled
@@ -77,104 +69,100 @@ Status is a controlled field on the Ticket entity. The backend must enforce thes
 - In Progress → Cancelled
 - Resolved → Closed
 
-All other transitions must be rejected by the backend. The frontend should display a clear error when a rejected transition is attempted.
+All other transitions are rejected. The frontend shows a meaningful error for rejected transitions.
 
 ## Core Features
 
-- **Ticket creation** — Log a new support request with title, description, priority, creator, and an optional assignee
-- **Ticket listing** — View all tickets in a browsable list
-- **Ticket detail** — View full information for a single ticket
-- **Ticket updates** — Edit title, description, priority, and assignee; change status only through valid transitions
-- **Status transitions** — Move tickets through the allowed lifecycle states; reject all others
-- **Comments** — Add and view discussion on a ticket
-- **Search and filter** — Keyword search across ticket title and description, and status filtering on the ticket list; each works independently in Core scope
+- Create tickets with an acting user and optional assignee
+- List persisted tickets
+- View ticket details and comments
+- Update title, description, priority, and assignee
+- Change status only through valid transitions
+- Add comments and display them oldest first
+- Search ticket title and description
+- Filter tickets by status
+- Show meaningful UI loading, empty, validation, and error states
 
 ## Technology Stack
 
-| Technology | Role | Why it fits |
-|------------|------|-------------|
-| **React** | Frontend UI | Component-based UI suited to interactive lists, forms, and detail views |
-| **JavaScript** | Language (client and server) | Single language across the stack, lowering context-switching cost |
-| **Tailwind CSS** | Styling | Utility-first styling for rapid, consistent internal-tool UI |
-| **Node.js** | Server runtime | JavaScript on the server pairs naturally with the React frontend |
-| **Express** | HTTP API layer | Lightweight, well-understood framework for REST-style APIs |
-| **MongoDB Atlas** | Data store | Managed cloud database; flexible document model for tickets and comments |
+| Technology | Role |
+|---|---|
+| React | Frontend UI |
+| JavaScript | Client and server language |
+| Tailwind CSS | Frontend styling |
+| Node.js | Server runtime |
+| Express | Backend API |
+| MongoDB Community Edition | Local development database |
+| Mongoose | MongoDB modelling and persistence |
 
-## High-Level Engineering Principles
+A dedicated local MongoDB test database is used for integration tests and remains separate from development data.
 
-- **Clarity over cleverness** — Prefer simple, readable, and maintainable solutions suitable for a small project
-- **Validate at boundaries** — Validate incoming requests and enforce business rules before persisting data
-- **Fail gracefully** — Surface meaningful errors to users without exposing internal details
-- **Keep scope tight** — Deliver the core ticket workflow completely before considering enhancements
-- **Document as you go** — Maintain design docs, prompt history, and testing records for traceability
-- **No secrets in source** — Use environment variables for sensitive configuration; never commit database credentials
-- **Database via API only** — MongoDB Atlas is accessed only by the Express backend (`MONGODB_URI`); the React frontend never connects to MongoDB directly
+## Engineering Principles
 
-## Project Constraints
+- Prefer clear, maintainable solutions
+- Validate requests and business rules before persistence
+- Keep controllers thin and business rules in services
+- Show user-readable errors without exposing internal details
+- Complete Core before considering Stretch work
+- Maintain prompt history and lifecycle documentation
+- Use environment variables for configuration and commit no secrets
+- Access MongoDB only through the Express API; the React client never connects directly
 
-- Internal users only; no public or customer self-service portal in core scope
-- Seeded users only; no authentication or user-management UI in core scope
-- Time-boxed delivery: complete the end-to-end Core workflow before optional enhancements
-- Use React, Node.js, Express, MongoDB Atlas, JavaScript, and Tailwind CSS
-- AI-assisted development must remain traceable via project documentation and prompt history
+## Constraints and Assumptions
 
-## Assumptions
+- Internal, single-team usage
+- Seeded users only; no authentication
+- Acting-user selection is required for ticket and comment creation only
+- Ticket updates do not record who performed the update
+- Assignee is optional and, when provided, must be Bob Smith or Carol Davis
+- Search and status filtering work independently in Core
+- Ticket and comment editing/deletion rules follow the specification
+- Data volume is moderate and does not require pagination or advanced optimization
 
-- Users operate within a trusted internal environment
-- A single team or organization uses the system (no multi-tenant isolation required in core scope)
-- Users are pre-seeded; the UI provides a simple user selector to choose the acting user without login
-- Acting-user selection is required only when creating tickets and comments, not when updating tickets
-- Assignee is optional on ticket creation; when provided, it must reference a seeded support agent (Bob Smith or Carol Davis).
-- Ticket volume is moderate and does not require specialized performance optimization in the initial release
+## Out of Scope
 
-## Out-of-Scope Items
-
-- User authentication, registration, and user-management interfaces
-- External customer portal or public ticket submission
-- Email, SMS, or push notifications
-- SLA timers, escalation rules, or automated routing
-- File or image attachments on tickets
-- Advanced analytics, dashboards, or export reporting
-- Multi-organization or multi-tenant support
-- Mobile-native applications
-- Real-time collaborative editing or live chat
+- Authentication, registration, and user management
+- Ticket or comment deletion
+- Comment editing
+- Combined search and status filtering
+- Priority or assignee filters, sorting, and pagination
+- Notifications, attachments, reporting, and dashboards
+- Multi-tenant support
+- Real-time collaboration
+- Docker, CI, and deployment work
 
 ## Success Criteria
 
-The Core project is successful when an internal user can:
+Core is successful when a user can:
 
 1. Create a valid ticket through the UI
-2. View all persisted tickets and their comments
-3. Open a ticket detail view
-4. Update the title, description, priority, and assignee
-5. Add and view comments
-6. Search tickets by keyword (title and description) or filter by status, each independently
-7. Perform only valid status transitions
-8. Receive a meaningful error when an invalid transition or invalid input is submitted
-9. Restart the application without losing persisted data
+2. View persisted tickets and ticket details
+3. Update ticket fields and assignee
+4. Add and view comments
+5. Search by keyword or filter by status independently
+6. Perform only valid status transitions
+7. Receive meaningful validation and failure messages
+8. Restart the application and database without losing persisted data
 
 Additionally:
 
-- The backend validates all ticket and comment input and rejects invalid records
-- Integration tests cover the ticket status state machine, including both allowed and rejected transitions
-- Seed data provides sample internal users and sample tickets for local testing
-- The repository includes clear MongoDB Atlas setup and seed instructions
-- No secrets are committed to the repository
-
----
+- Backend validation rejects invalid ticket and comment records
+- Integration tests cover valid and representative invalid status transitions
+- Integration tests cover ticket and comment validation
+- Local MongoDB setup and seed instructions are documented
+- Seed data includes Alice Johnson, Bob Smith, Carol Davis, sample tickets, and comments
+- No secrets are committed
 
 ## Confirmed Core Decisions
 
-- Seed three internal users:
-  - Alice Johnson — Requester
-  - Bob Smith — Support Agent
-  - Carol Davis — Support Agent
-- The UI will provide a simple dropdown to select the acting seeded user without authentication.
-- Acting-user selection is required only when creating tickets and comments, not when updating tickets.
-- The selected user will be used as `createdBy` when creating tickets and comments.
-- Assignee is optional on ticket creation; when `assignedTo` is provided, it must reference a seeded support agent (Bob Smith or Carol Davis).
-- A ticket may be assigned or reassigned later through ticket updates.
-- Keyword search and status filtering work independently; combined search-and-filter is outside Core scope.
-- The backend validates that `createdBy` references an existing seeded user; authentication is not required.
-- Ticket deletion is outside the Core scope.
-- Comment deletion and editing are outside the Core scope.
+- Alice Johnson — Requester
+- Bob Smith — Support Agent
+- Carol Davis — Support Agent
+- No acting user is selected by default
+- Acting user becomes `createdBy` for new tickets and comments
+- Acting user is not required for ticket updates
+- Bob or Carol may be selected as assignee
+- Comments are displayed oldest first and cannot be edited or deleted
+- Ticket deletion is not included
+- Search covers title and description only
+- Search and status filter are not combined in Core

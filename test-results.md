@@ -4,7 +4,7 @@ Records test execution results, coverage metrics, and outstanding issues discove
 
 ## Overview
 
-Manual API validation has been completed in Postman for seeded users, ticket CRUD, comments, keyword search, status filtering, and ticket status transitions (valid and representative invalid). A dedicated ticket/comment validation layer is implemented in code; Postman regression for validation failure cases is still pending. Automated integration tests for ticket status transitions and ticket/comment validation are implemented and passing.
+Manual API validation has been completed in Postman for seeded users, ticket CRUD, comments, keyword search, status filtering, and ticket status transitions (valid and representative invalid). A dedicated ticket/comment validation layer is implemented and covered by automated integration tests. Automated integration tests for ticket status transitions and ticket/comment validation are implemented and passing.
 
 ## Test Summary
 
@@ -16,7 +16,7 @@ Manual API validation has been completed in Postman for seeded users, ticket CRU
 | Search and status filter | Manual Postman validation | Passed |
 | Status transitions | Manual Postman validation + Jest integration | Passed (AC-28–AC-35, AC-45, AC-46) |
 | Ticket/comment validation layer | Code review + Jest integration | Passed (AC-09–AC-11, AC-16–AC-17, AC-20, AC-36–AC-38, VR-01–VR-07, VR-09–VR-10) |
-| Frontend workflows | Not yet tested | Pending |
+| Frontend Core workflows | Manual browser verification | Passed |
 
 ## Automated Integration Test Run
 
@@ -96,24 +96,25 @@ Backend default port for local API and Postman: `5001` (`server/.env.example`).
 
 No unresolved failures were recorded during completed manual API checks or the automated integration suites.
 
+## Frontend Manual Verification
+
+The completed Core UI was manually checked for:
+
+- acting-user loading, selection, and missing-user guidance;
+- ticket listing, detail loading, creation, update, and reassignment;
+- valid status-change controls and readable rejected-operation errors;
+- comment creation and oldest-first display;
+- keyword search, exact status filtering, empty results, and reset behaviour;
+- loading, success, validation, backend, and network error states.
+
 ## Pending Tests
 
-**Postman regression (validation layer)** — record pass/fail here after running:
-
-- Reject null, undefined, array, or other non-object request bodies with `400`.
-- Reject missing or blank ticket title and description.
-- Reject invalid priority values.
-- Reject malformed `createdBy` and `assignedTo` ObjectIds.
-- Reject blank comment messages and malformed comment creator IDs.
-- Confirm valid ticket creation, update, comment creation, and existing status transitions still work.
-
-**Automated integration tests** — complete per `test-strategy.md`.
+No mandatory Core tests are pending. Automated browser tests and CI are optional Stretch work.
 
 ## Known Issues
 
-- Validation-layer Postman regression checks are still pending.
-- Frontend workflow verification is still pending.
+No unresolved Core test failures are recorded.
 
 ## Recommendations
 
-Complete the validation-layer Postman regression checks. Frontend workflow verification remains pending.
+Keep `npm test` passing after future backend changes. Add frontend automation only as optional follow-on work.

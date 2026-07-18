@@ -4,7 +4,7 @@ A small MERN application for creating, assigning, tracking, commenting on, searc
 
 ## Current Status
 
-Planning and specification are complete. System design and implementation are in progress.
+The mandatory Core application is complete. The frontend, backend API, local MongoDB persistence, seed data, validation, error handling, search and status filtering, ticket lifecycle enforcement, prompt history, and required integration tests are implemented.
 
 ## Technology Stack
 
@@ -88,7 +88,18 @@ mongodb://127.0.0.1:27017/
 
 Open the `ticket_management_system` database and verify the `users`, `tickets`, and `comments` collections.
 
-### 6. Stop MongoDB
+### 6. Run the automated tests
+
+The Express server does not need to be running for the integration tests. MongoDB must be available locally.
+
+```bash
+cd server
+npm test
+```
+
+The automated test suites use the separate `ticket_management_system_test` database and currently contain 44 passing integration tests.
+
+### 7. Stop MongoDB
 
 ```bash
 brew services stop mongodb-community

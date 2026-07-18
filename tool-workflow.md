@@ -85,11 +85,11 @@ I used Cursor to complete the initial React and Express setup, connect the backe
 
 ## Validation of AI-Generated Code
 
-I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the local MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB and manually verified the seeded-users, ticket CRUD, comments, search and status-filtering, and valid and invalid ticket status transitions in Postman. The new validation-layer changes were reviewed in code; their Postman regression checks are the next validation step.
+I verified the generated setup by running the frontend and backend, checking the health endpoint, confirming the local MongoDB connection, and running the seed script. I also checked the created users, tickets, and comments in MongoDB and manually verified the seeded-users, ticket CRUD, comments, search and status-filtering, and valid and invalid ticket status transitions in Postman. The validation-layer changes were reviewed in code and verified through focused Jest/Supertest integration tests.
 
 ## Testing
 
-I manually validated the seeded-users, ticket CRUD, comments, search and status-filtering, and ticket status transitions in Postman. Postman regression checks for null/non-object request bodies, malformed ObjectIds, missing fields, and invalid priority values are pending. Automated integration tests, including backend validation and valid/invalid status-transition coverage, are still pending.
+I manually validated the seeded-users, ticket CRUD, comments, search and status-filtering, and ticket status transitions in Postman. I then added Jest/Supertest integration tests for valid and invalid status transitions and ticket/comment validation. The final automated run passed 44/44 tests against an isolated local test database.
 
 ## Debugging
 
@@ -102,12 +102,35 @@ I documented two setup issues in `debugging-notes.md`:
 
 ## Code Review
 
-I completed an initial review of the project setup, backend structure, MongoDB connection, Mongoose models, seed data, seeded-users API, ticket CRUD APIs, comments API, search and filtering, and ticket status transitions. The review notes and remaining follow-up items are recorded in `code-review-notes.md`.
+I reviewed the project setup, backend structure, MongoDB connection, models, seed data, APIs, validation, frontend Core workflows, automated tests, and final documentation alignment. Findings and applied fixes are recorded in `code-review-notes.md` and `review-fixes.md`.
 
 ## Responsible Information Sharing
 
 I avoid sharing secrets, real credentials, private environment values, and unnecessary sensitive information with AI tools. Environment-specific values are represented through `.env.example`, while real `.env` files are excluded from Git.
 
+## Commit-Based Workflow Evidence
+
+The Git history demonstrates how this workflow was applied:
+
+1. **Context and planning first:** project documentation, requirements, acceptance criteria, design artifacts, and Cursor rules were committed before the main feature work.
+2. **AI output reviewed:** separate documentation commits record corrected task planning, aligned API response rules, and the decision to reject combined search and status filtering.
+3. **Backend implemented incrementally:** database connection, models, seed data, users API, ticket CRUD, comments, search/filtering, state transitions, and validation were committed as separate steps.
+4. **Tests followed an approved strategy:** the test strategy and Cursor testing rule were refined before the two integration-test commits.
+5. **Frontend built in focused slices:** acting-user selection, list/detail, create, update, status, comments, and search/filter were implemented separately, followed by form and error-state refinements.
+6. **History completed honestly:** prompt hooks were added early; the initial uncaptured prompt was later backfilled and labelled, then curated AI prompts were aligned to the final history.
+
+Representative commits include:
+
+- `docs: validated AI suggestions and updated task plan`
+- `docs: align API specification with validated Cursor rules`
+- `feat(server): add ticket and comment validation with document updates`
+- `test(server): add ticket status transition integration tests`
+- `test(server): add integration(ticket and comment) tests and update test documentation`
+- `feat(client): open create-ticket form from modal and refine form UI`
+- `feat(client): open ticket update form from edit action and other validation improvements`
+- `style(client): improve error message UI`
+- `docs: align curated AI prompts with final project history`
+
 ## Reusing This Workflow
 
-_To be completed near the end of the project._
+I would reuse this workflow by keeping the same sequence: establish persistent context, convert the brief into requirements and acceptance criteria, design before coding, implement one scoped task at a time, validate each change, record corrections, and finish with automated tests and a repository-wide consistency review. The project-specific content can change while the workflow, Cursor rules, prompt-history approach, and evidence structure remain reusable.
